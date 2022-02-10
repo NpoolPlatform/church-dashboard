@@ -54,6 +54,7 @@ interface AddLanguageResponse {
 }
 
 interface CreateAppLanguageRequest {
+  TargetAppID: string
   Info: AppLanguage
   Message: ReqMessage
 }

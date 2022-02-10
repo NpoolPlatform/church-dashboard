@@ -78,6 +78,7 @@ const onUpdate = (appLanguage: AppLanguage) => {
 const onSubmit = (appLanguage: AppLanguage) => {
   modifying.value = false
   store.dispatch(LangActionTypes.CreateAppLanguage, {
+    TargetAppID: selectedApp.value.App.ID,
     Info: appLanguage,
     Message: {
       ModuleKey: ModuleKey.ModuleApplications,

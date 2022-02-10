@@ -112,7 +112,7 @@ const actions: ActionTree<LanguagesState, RootState> = {
   [ActionTypes.CreateAppLanguage] ({ commit }, req: CreateAppLanguageRequest) {
     doAction<CreateAppLanguageRequest, CreateAppLanguageResponse>(
       commit,
-      API.CREATE_APP_LANGUAGE,
+      API.CREATE_APP_LANGUAGE_FOR_OTHER_APP,
       req,
       req.Message,
       (resp: CreateAppLanguageResponse): void => {
