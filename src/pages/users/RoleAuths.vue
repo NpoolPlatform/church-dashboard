@@ -88,11 +88,11 @@
         flat
         selection='multiple'
         :title='t("MSG_ALL_RESOURCE")'
-        :rows='allResources'
+        :rows='myAllResources'
       >
         <template #top-right>
           <div class='row'>
-            <q-space />
+            <q-input v-model='apiPattern' dense :label='t("MSG_INPUT_API")' />
             <q-btn dense @click='onAddResourcesToUser'>
               {{ $t('MSG_ADD_TO_USER') }}
             </q-btn>
@@ -208,6 +208,16 @@ const roleNames = computed(() => {
 })
 
 const allResources = computed(() => store.getters.getExpandAPIs)
+const apiPattern = ref('')
+const myAllResources = ref(allResources.value)
+watch(apiPattern, () => {
+  if (apiPattern.value.length > 0) {
+    myAllResources.value = allResources.value.filter((pattern) => {
+      return pattern.Path.includes(apiPattern.value)
+    })
+  }
+})
+
 const appAuths = computed(() => store.getters.getAuthsByApp(selectedAppID.value))
 const userAuths = computed(() => store.getters.getAuthsByAppUser(selectedAppID.value, selectedUserID.value))
 const roleAuths = computed(() => store.getters.getAuthsByAppRole(selectedAppID.value, selectedRoleID.value))
