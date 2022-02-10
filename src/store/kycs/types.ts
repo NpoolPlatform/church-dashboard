@@ -21,7 +21,7 @@ interface GetKYCsResponse {
 }
 
 interface GetKYCsRequest {
-  AppID: string
+  TargetAppID: string
   Message: ReqMessage
 }
 
