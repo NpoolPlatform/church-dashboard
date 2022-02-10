@@ -28,6 +28,7 @@ interface GetAppContactsByOtherAppResponse {
 }
 
 interface CreateAppContactRequest {
+  TargetAppID: string
   Info: AppContact
   Message: ReqMessage
 }

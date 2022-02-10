@@ -98,6 +98,7 @@ const onSubmit = (contact: AppContact) => {
   modifying.value = false
 
   store.dispatch(action, {
+    TargetAppID: selectedApp.value.App.ID,
     Info: contact,
     Message: {
       ModuleKey: ModuleKey.ModuleApplications,

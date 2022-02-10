@@ -98,6 +98,7 @@ const onSubmit = (template: AppSMSTemplate) => {
   modifying.value = false
 
   store.dispatch(action, {
+    TargetAppID: selectedApp.value.App.ID,
     Info: template,
     Message: {
       ModuleKey: ModuleKey.ModuleApplications,

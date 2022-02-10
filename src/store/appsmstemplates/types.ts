@@ -28,6 +28,7 @@ interface GetAppSMSTemplatesByOtherAppResponse {
 }
 
 interface CreateAppSMSTemplateRequest {
+  TargetAppID: string
   Info: AppSMSTemplate
   Message: ReqMessage
 }

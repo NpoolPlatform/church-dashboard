@@ -32,6 +32,7 @@ interface GetAppEmailTemplatesByOtherAppResponse {
 }
 
 interface CreateAppEmailTemplateRequest {
+  TargetAppID: string
   Info: AppEmailTemplate
   Message: ReqMessage
 }
