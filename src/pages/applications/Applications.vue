@@ -94,6 +94,7 @@ const onSubmit = (app: Application) => {
   })
 
   store.dispatch(appCtrlAction, {
+    TargetAppID: app.App.ID,
     Info: app.Ctrl,
     Message: {
       ModuleKey: ModuleKey.ModuleApplications,

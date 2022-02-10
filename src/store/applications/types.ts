@@ -69,6 +69,7 @@ interface UpdateAppControlResponse {
 }
 
 interface CreateAppControlRequest {
+  TargetAppID: string
   Info: AppControl
   Message: ReqMessage
 }

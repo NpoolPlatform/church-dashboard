@@ -129,7 +129,7 @@ const actions: ActionTree<ApplicationsState, RootState> = {
   [ActionTypes.CreateAppControl] ({ commit }, req: CreateAppControlRequest) {
     doAction<CreateAppControlRequest, CreateAppControlResponse>(
       commit,
-      API.CREATE_APP_CONTROL,
+      API.CREATE_APP_CONTROL_FOR_OTHER_APP,
       req,
       req.Message,
       (resp: CreateAppControlResponse): void => {
