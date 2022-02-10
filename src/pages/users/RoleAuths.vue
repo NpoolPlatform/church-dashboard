@@ -321,6 +321,7 @@ const onAddResourcesToUser = () => {
   selectedResources.value.forEach((resource: ExpandAPI) => {
     store.dispatch(AuthActionTypes.CreateAppUserAuthForOtherApp, {
       TargetAppID: selectedAppID.value,
+      TargetUserID: selectedUserID.value,
       Info: {
         AppID: selectedAppID.value,
         UserID: selectedUserID.value,

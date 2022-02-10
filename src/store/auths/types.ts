@@ -45,6 +45,7 @@ interface CreateAppAuthForOtherAppResponse {
 
 interface CreateAppUserAuthForOtherAppRequest {
   TargetAppID: string
+  TargetUserID: string
   Info: AppUserAuth
   Message: ReqMessage
 }
