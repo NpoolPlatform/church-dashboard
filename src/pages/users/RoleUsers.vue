@@ -108,6 +108,7 @@ const myRoleUsers = computed(() => {
       const user = store.getters.getUserByAppUserID(roleuser.AppID, roleuser.UserID)
       if (user) {
         users.push({
+          ID: user.User?.ID,
           RoleUserID: roleuser.ID as string,
           EmailAddress: user.User?.EmailAddress,
           PhoneNO: user.User?.PhoneNO,
@@ -130,10 +131,17 @@ const myAppUsers = computed(() => {
   const users = [] as Array<userWithRoles>
   if (appUsers.value) {
     appUsers.value.forEach((user) => {
+      for (let i = 0; i < myRoleUsers.value.length; i++) {
+        if (user.User?.ID === myRoleUsers.value[i].ID) {
+          return
+        }
+      }
+
       const roleNames = [] as Array<string>
       user.Roles?.forEach((role) => {
         roleNames.push(role.Role)
       })
+
       users.push({
         ID: user.User?.ID,
         AppID: user.User?.AppID as string,
