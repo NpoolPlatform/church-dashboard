@@ -15,6 +15,19 @@
       </div>
     </template>
   </q-table>
+  <q-table
+    v-model:selected='selectedGood'
+    row-key='ID'
+    flat
+    dense
+    :rows='allGoods'
+    selection='single'
+  />
+  <q-table
+    flat
+    dense
+    :rows='goodBenefit ? [goodBenefit] : []'
+  />
   <q-dialog
     v-model='modifying'
     position='right'
@@ -26,7 +39,7 @@
 </template>
 
 <script setup lang='ts'>
-import { onMounted, ref, computed, onUnmounted } from 'vue'
+import { onMounted, ref, computed, onUnmounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useStore } from 'src/store'
@@ -37,6 +50,8 @@ import { FunctionVoid } from 'src/types/types'
 import { MutationTypes as AccountsMutationTypes } from 'src/store/accounts/mutation-types'
 import { ActionTypes as AccountsActionTypes } from 'src/store/accounts/action-types'
 import { CoinAccount } from 'src/store/accounts/types'
+import { GoodBase } from 'src/store/goods/types'
+import { ActionTypes as GoodActionTypes } from 'src/store/goods/action-types'
 
 const store = useStore()
 // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -48,7 +63,6 @@ const updating = ref(false)
 const modifying = ref(false)
 
 const accounts = computed(() => store.getters.getCoinAccounts)
-
 const selectedAccount = ref()
 
 const onRowClick = (row: CoinAccount) => {
@@ -63,9 +77,47 @@ const onCreateCoinAccountClick = () => {
   modifying.value = true
 }
 
+const allGoods = computed(() => {
+  const goods = [] as Array<GoodBase>
+  store.getters.getAllGoods.forEach((good) => {
+    goods.push(good.Good)
+  })
+  return goods
+})
+const selectedGood = ref([] as Array<GoodBase>)
+watch(selectedGood, () => {
+  selectedGood.value.forEach((good) => {
+    store.dispatch(AccountsActionTypes.GetGoodBenefitByGood, {
+      GoodID: good.ID as string,
+      Message: {
+        ModuleKey: ModuleKey.ModuleGoods,
+        Error: {
+          Title: t('MSG_GET_GOOD_BENEFIT_FAIL'),
+          Popup: true,
+          Type: NotificationType.Error
+        }
+      }
+    })
+  })
+})
+const goodBenefit = computed(() => {
+  return selectedGood.value && selectedGood.value.length > 0 ? store.getters.getGoodBenefitByGood(selectedGood.value[0].ID as string) : undefined
+})
+
 const unsubscribe = ref<FunctionVoid>()
 
 onMounted(() => {
+  store.dispatch(GoodActionTypes.GetAllGoods, {
+    Message: {
+      ModuleKey: ModuleKey.ModuleGoods,
+      Error: {
+        Title: t('MSG_GET_ALL_GOODS_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+  })
+
   store.dispatch(AccountsActionTypes.GetCoinAccounts, {
     Message: {
       ModuleKey: ModuleKey.ModuleGoods,

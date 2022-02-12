@@ -6,7 +6,7 @@ import { AugmentedActionContext, RootState } from '../index'
 import { CoinAccountMutations } from './mutations'
 import { API } from './const'
 import { doAction } from '../action'
-import { GetCoinAccountsRequest, GetCoinAccountsResponse } from './types'
+import { GetCoinAccountsRequest, GetCoinAccountsResponse, GetGoodBenefitByGoodRequest, GetGoodBenefitByGoodResponse } from './types'
 
 interface CoinAccountActions {
   [ActionTypes.GetCoinAccounts]({
@@ -16,6 +16,14 @@ interface CoinAccountActions {
     RootState,
     CoinAccountMutations<CoinAccountsState>>,
     req: GetCoinAccountsRequest): void
+
+  [ActionTypes.GetGoodBenefitByGood]({
+    commit
+  }: AugmentedActionContext<
+  CoinAccountsState,
+    RootState,
+    CoinAccountMutations<CoinAccountsState>>,
+    req: GetGoodBenefitByGoodRequest): void
 }
 
 const actions: ActionTree<CoinAccountsState, RootState> = {
@@ -27,6 +35,17 @@ const actions: ActionTree<CoinAccountsState, RootState> = {
       req.Message,
       (resp: GetCoinAccountsResponse): void => {
         commit(MutationTypes.SetCoinAccounts, resp.Infos)
+      })
+  },
+
+  [ActionTypes.GetGoodBenefitByGood] ({ commit }, req: GetGoodBenefitByGoodRequest) {
+    doAction<GetGoodBenefitByGoodRequest, GetGoodBenefitByGoodResponse>(
+      commit,
+      API.GET_GOOD_BENEFIT_BY_GOOD,
+      req,
+      req.Message,
+      (resp: GetGoodBenefitByGoodResponse): void => {
+        commit(MutationTypes.SetGoodBenefit, resp.Info)
       })
   }
 }
