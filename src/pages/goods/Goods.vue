@@ -90,7 +90,7 @@ import { notify, notificationPop } from 'src/store/notifications/helper'
 import { useI18n } from 'vue-i18n'
 import { DeviceInfo, FeeType, Good, GoodBase, VendorLocation } from 'src/store/goods/types'
 import { FunctionVoid } from 'src/types/types'
-import { Coin, CreateCoinRequest } from 'src/store/coins/types'
+import { Coin, CreateCoinRequest, UpdateCoinRequest } from 'src/store/coins/types'
 
 const CreateGoodMenu = defineAsyncComponent(() => import('src/components/good/CreateGoodMenu.vue'))
 const CreateDeviceMenu = defineAsyncComponent(() => import('src/components/good/CreateDeviceMenu.vue'))
@@ -372,16 +372,34 @@ const onUpdateCoinInfo = (coin: Coin) => {
 const onCreateCoinInfoSubmit = (coin: Coin) => {
   addingType.value = AddingType.AddingNone
 
-  const req = coin as CreateCoinRequest
-  req.Message = {
-    ModuleKey: ModuleKey.ModuleGoods,
-    Error: {
-      Title: t('MSG_CREATE_COIN_FAIL'),
-      Popup: true,
-      Type: NotificationType.Error
+  if (coin.ID && coin.ID.length > 0) {
+    const req = {
+      ID: coin.ID,
+      PreSale: coin.PreSale,
+      Logo: coin.Logo,
+      ReservedAmount: coin.ReservedAmount
+    } as UpdateCoinRequest
+    req.Message = {
+      ModuleKey: ModuleKey.ModuleGoods,
+      Error: {
+        Title: t('MSG_CREATE_COIN_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
     }
+    store.dispatch(CoinActionTypes.UpdateCoin, req)
+  } else {
+    const req = coin as CreateCoinRequest
+    req.Message = {
+      ModuleKey: ModuleKey.ModuleGoods,
+      Error: {
+        Title: t('MSG_CREATE_COIN_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+    store.dispatch(CoinActionTypes.CreateCoin, req)
   }
-  store.dispatch(CoinActionTypes.CreateCoin, req)
 }
 
 const onCreateGoodSubmit = (good: Good) => {

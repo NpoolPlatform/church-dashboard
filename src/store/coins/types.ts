@@ -26,10 +26,24 @@ interface CreateCoinResponse {
   Info: Coin
 }
 
+interface UpdateCoinRequest {
+  ID: string
+  PreSale: boolean
+  Logo: string
+  ReservedAmount: number
+  Message: ReqMessage
+}
+
+interface UpdateCoinResponse {
+  Info: Coin
+}
+
 export {
   Coin,
   GetCoinsRequest,
   GetCoinsResponse,
   CreateCoinRequest,
-  CreateCoinResponse
+  CreateCoinResponse,
+  UpdateCoinRequest,
+  UpdateCoinResponse
 }

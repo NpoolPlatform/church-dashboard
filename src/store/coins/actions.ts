@@ -1,6 +1,6 @@
 import { ActionTypes } from './action-types'
 import { MutationTypes } from './mutation-types'
-import { CreateCoinRequest, CreateCoinResponse, GetCoinsRequest, GetCoinsResponse } from './types'
+import { CreateCoinRequest, CreateCoinResponse, GetCoinsRequest, GetCoinsResponse, UpdateCoinRequest, UpdateCoinResponse } from './types'
 import { CoinsState } from './state'
 import { ActionTree } from 'vuex'
 import { AugmentedActionContext, RootState } from '../index'
@@ -24,6 +24,14 @@ interface CoinActions {
     RootState,
     CoinMutations<CoinsState>>,
     req: CreateCoinRequest): void
+
+  [ActionTypes.UpdateCoin]({
+    commit
+  }: AugmentedActionContext<
+    CoinsState,
+    RootState,
+    CoinMutations<CoinsState>>,
+    req: UpdateCoinRequest): void
 }
 
 const actions: ActionTree<CoinsState, RootState> = {
@@ -45,6 +53,17 @@ const actions: ActionTree<CoinsState, RootState> = {
       req,
       req.Message,
       (resp: CreateCoinResponse): void => {
+        commit(MutationTypes.SetCoins, [resp.Info])
+      })
+  },
+
+  [ActionTypes.UpdateCoin] ({ commit }, req: UpdateCoinRequest) {
+    doAction<UpdateCoinRequest, UpdateCoinResponse>(
+      commit,
+      API.UPDATE_COIN,
+      req,
+      req.Message,
+      (resp: UpdateCoinResponse): void => {
         commit(MutationTypes.SetCoins, [resp.Info])
       })
   }
