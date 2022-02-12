@@ -1,5 +1,5 @@
 <template>
-  <q-card>
+  <q-card class='container'>
     <q-card-section>
       <q-item-label>{{ $t('MSG_CREATE_GOOD') }}</q-item-label>
     </q-card-section>
@@ -398,6 +398,9 @@ onMounted(() => {
 </script>
 
 <style lang='sass' scoped>
+.container
+  min-width: 800px
+
 .submit-btn
   margin-top: 24px
   background-color: $blue-6
