@@ -143,5 +143,7 @@ export default {
   MSG_DELETE_AUTH_FAIL: '解除资源授权失败',
   MSG_INPUT_API: '输入API',
   MSG_COIN_PRESALE_WARN: '预售币种修改可能引起系统风险, 请明确知道你在做什么',
-  MSG_WARN_MUST_POSITIVE: '必须为正数'
+  MSG_WARN_MUST_POSITIVE: '必须为正数',
+  MSG_CREATE_COIN_ACCOUNT: '创建账户',
+  MSG_GET_COIN_ACCOUNTS_FAIL: 'You failed to get accounts'
 }
