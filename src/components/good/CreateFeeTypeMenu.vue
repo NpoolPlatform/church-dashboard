@@ -42,28 +42,29 @@
 </template>
 
 <script setup lang='ts'>
-import { ref, defineEmits, watch, withDefaults, defineProps, toRef } from 'vue'
+import { ref, defineEmits, watch, defineProps, toRef, computed } from 'vue'
 import { FeeType } from 'src/store/goods/types'
 import { useI18n } from 'vue-i18n'
 
 interface Props {
-  inputFeeType: string
-  inputFeeDescription: string
-  inputPayType: string
+  editFeeType?: FeeType
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  inputFeeType: '',
-  inputFeeDescription: '',
-  inputPayType: ''
+const props = defineProps<Props>()
+const editFeeType = toRef(props, 'editFeeType')
+
+const myFeeType = ref(editFeeType.value?.FeeType)
+const myFeeDescription = ref(editFeeType.value?.FeeType)
+const myPayType = ref(editFeeType.value?.PayType)
+
+const feeType = computed(() => {
+  return {
+    ID: editFeeType.value?.ID,
+    FeeType: myFeeType.value,
+    FeeDescription: myFeeDescription.value,
+    PayType: myPayType.value
+  } as FeeType
 })
-
-const inputFeeType = toRef(props, 'inputFeeType')
-const inputFeeDescription = toRef(props, 'inputFeeDescription')
-
-const myFeeType = ref(inputFeeType.value)
-const myFeeDescription = ref(inputFeeDescription.value)
-const myPayType = ref('amount')
 
 // eslint-disable-next-line @typescript-eslint/unbound-method
 const { t } = useI18n({ useScope: 'global' })
@@ -79,29 +80,15 @@ const payTypes = [
 ]
 
 const emit = defineEmits<{(e: 'submit', info: FeeType): void,
-  (e: 'update:inputFeeType', type: string): void
-  (e: 'update:inputFeeDescription', type: string): void
-  (e: 'update:inputPayType', type: string): void
+  (e: 'update', info: FeeType): void
 }>()
 
 const onSubmit = () => {
-  emit('submit', {
-    FeeType: myFeeType.value,
-    FeeDescription: myFeeDescription.value,
-    PayType: myPayType.value
-  })
+  emit('submit', feeType.value)
 }
 
-watch(myFeeType, function (val) {
-  emit('update:inputFeeType', val)
-})
-
-watch(myFeeDescription, function (val) {
-  emit('update:inputFeeDescription', val)
-})
-
-watch(myPayType, function (val) {
-  emit('update:inputPayType', val)
+watch(feeType, () => {
+  emit('update', feeType.value)
 })
 
 </script>

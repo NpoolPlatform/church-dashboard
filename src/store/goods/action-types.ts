@@ -11,6 +11,7 @@ export enum ActionTypes {
   CreateFeeType = 'CREATE_FEE_TYPE',
   CreateFee = 'CREATE_FEE',
   CreateGood = 'CREATE_GOOD',
+  UpdateGood = 'UPDATE_GOOD',
   GetAllPriceCurrencys = 'GET_ALL_PRICE_CURRENCYS',
   CreatePriceCurrency = 'CREATE_PRICE_CURRENCY'
 }

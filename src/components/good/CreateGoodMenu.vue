@@ -189,85 +189,28 @@
 
 <script setup lang='ts'>
 import { DefaultID } from 'src/const/const'
-import { Coin } from 'src/store/coins/types'
-import { DeviceInfo, FeeType, Good, PriceCurrency, VendorLocation } from 'src/store/goods/types'
-import { withDefaults, defineProps, toRef, computed, ref, defineEmits } from 'vue'
+import { FeeType, Good, VendorLocation } from 'src/store/goods/types'
+import { defineProps, toRef, computed, ref, defineEmits, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useStore } from 'src/store'
+import { ActionTypes as GoodActionTypes } from 'src/store/goods/action-types'
+import { ActionTypes as CoinActionTypes } from 'src/store/coins/action-types'
+import { ModuleKey, Type as NotificationType } from 'src/store/notifications/const'
+
+const store = useStore()
 
 interface Props {
-  inputTitle: string
-  inputActuals: boolean
-  inputBenefitType: string
-  inputClassic: boolean
-  inputTotal: number
-  inputDurationDays: number
-  inputSeparateFee: boolean
-  inputPrice: number
-  inputUnitPower: number
-  inputCoinType: string
-  devices: Array<DeviceInfo>
-  vendorLocations: Array<VendorLocation>
-  coins: Array<Coin>
-  feeTypes: Array<FeeType>
-  priceCurrencys: Array<PriceCurrency>
+  editGood?: Good
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  inputTitle: '',
-  inputActuals: true,
-  inputBenefitType: 'platform',
-  inputClassic: true,
-  inputTotal: 0,
-  inputDurationDays: 360,
-  inputSeparateFee: true,
-  inputPrice: 0,
-  inputCoinType: ''
-})
+const props = defineProps<Props>()
+const editGood = toRef(props, 'editGood')
 
-const inputTitle = toRef(props, 'inputTitle')
-const inputActuals = toRef(props, 'inputActuals')
-const inputSeparateFee = toRef(props, 'inputSeparateFee')
-const inputClassic = toRef(props, 'inputClassic')
-const inputTotal = toRef(props, 'inputTotal')
-const inputPrice = toRef(props, 'inputPrice')
-const inputDurationDays = toRef(props, 'inputDurationDays')
-const inputUnitPower = toRef(props, 'inputUnitPower')
-
-const devices = computed(() => {
-  const devices = toRef(props, 'devices')
-  if (devices.value) {
-    return devices.value
-  }
-  return []
-})
-const vendorLocations = computed(() => {
-  const vendorLocations = toRef(props, 'vendorLocations')
-  if (vendorLocations.value) {
-    return vendorLocations.value
-  }
-  return []
-})
-const coins = computed(() => {
-  const coins = toRef(props, 'coins')
-  if (coins.value) {
-    return coins.value
-  }
-  return [] as Array<Coin>
-})
-const feeTypes = computed(() => {
-  const feeTypes = toRef(props, 'feeTypes')
-  if (feeTypes.value) {
-    return feeTypes.value
-  }
-  return []
-})
-const priceCurrencys = computed(() => {
-  const priceCurrencys = toRef(props, 'priceCurrencys')
-  if (priceCurrencys.value) {
-    return priceCurrencys.value
-  }
-  return []
-})
+const devices = computed(() => store.getters.getAllDevices)
+const vendorLocations = computed(() => store.getters.getAllVendorLocations)
+const coins = computed(() => store.getters.getCoins)
+const feeTypes = computed(() => store.getters.getAllFeeTypes)
+const priceCurrencys = computed(() => store.getters.getAllPriceCurrencys)
 
 const selectedCoinIndex = ref(0)
 const myCoinType = computed(() => coins.value[selectedCoinIndex.value].Name)
@@ -283,14 +226,14 @@ const vendorLocationLabel = computed(() =>
 )
 const vendorLocationID = computed(() => vendorLocations.value[selectedVendorLocationIndex.value].ID)
 
-const myTitle = ref(inputTitle.value)
-const myActuals = ref(inputActuals.value)
-const mySeparateFee = ref(inputSeparateFee.value)
-const myClassic = ref(inputClassic.value)
-const myTotal = ref(inputTotal.value)
-const myPrice = ref(inputPrice.value)
-const myDurationDays = ref(inputDurationDays.value)
-const myUnitPower = ref(inputUnitPower.value)
+const myTitle = ref(editGood.value?.Title)
+const myActuals = ref(editGood.value?.Actuals)
+const mySeparateFee = ref(editGood.value?.SeparateFee)
+const myClassic = ref(editGood.value?.Classic)
+const myTotal = ref(editGood.value?.Total)
+const myPrice = ref(editGood.value?.Price)
+const myDurationDays = ref(editGood.value?.DurationDays)
+const myUnitPower = ref(editGood.value?.UnitPower)
 
 const selectedPriceCurrencyIndex = ref(0)
 const priceCurrencyType = computed(() => priceCurrencys.value[selectedPriceCurrencyIndex.value].Name)
@@ -337,10 +280,13 @@ const vendorLocationToLabel = (vendorLocation: VendorLocation) => {
     vendorLocation.Address
 }
 
-const emit = defineEmits<{(e: 'submit', good: Good): void}>()
+const emit = defineEmits<{(e: 'submit', good: Good): void,
+  (e: 'update', good: Good): void
+}>()
 
-const onSubmit = () => {
-  emit('submit', {
+const good = computed(() => {
+  return {
+    ID: editGood.value?.ID,
     DeviceInfoID: deviceID.value as string,
     SeparateFee: mySeparateFee.value,
     UnitPower: myUnitPower.value,
@@ -353,14 +299,22 @@ const onSubmit = () => {
     Price: myPrice.value,
     BenefitType: myBenefitType.value,
     Classic: myClassic.value,
-    SupportCoinTypeIDs: [] as Array<string>,
+    SupportCoinTypeIDs: editGood.value?.SupportCoinTypeIDs,
     Title: myTitle.value,
     Total: myTotal.value,
     Unit: myUnit.value,
-    FeeIDs: [] as Array<string>,
+    FeeIDs: editGood.value?.FeeIDs,
     PriceCurrency: priceCurrencyID.value as string
-  })
+  } as Good
+})
+
+const onSubmit = () => {
+  emit('submit', good.value)
 }
+
+watch(good, () => {
+  emit('update', good.value)
+})
 
 const onDeviceItemClick = (index: number) => {
   selectedDeviceIndex.value = index
@@ -377,6 +331,69 @@ const onCoinItemClick = (index: number) => {
 const onPriceCurrencyItemClick = (index: number) => {
   selectedPriceCurrencyIndex.value = index
 }
+
+onMounted(() => {
+  store.dispatch(GoodActionTypes.GetAllDevices, {
+    Message: {
+      ModuleKey: ModuleKey.ModuleGoods,
+      Error: {
+        Title: t('MSG_GET_ALL_DEVICES_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+  })
+  store.dispatch(GoodActionTypes.GetAllVendorLocations, {
+    Message: {
+      ModuleKey: ModuleKey.ModuleGoods,
+      Error: {
+        Title: t('MSG_GET_ALL_VENDOR_LOCATIONS_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+  })
+  store.dispatch(CoinActionTypes.GetCoins, {
+    Message: {
+      ModuleKey: ModuleKey.ModuleGoods,
+      Error: {
+        Title: t('MSG_GET_COINS_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+  })
+  store.dispatch(GoodActionTypes.GetAllFeeTypes, {
+    Message: {
+      ModuleKey: ModuleKey.ModuleGoods,
+      Error: {
+        Title: t('MSG_GET_ALL_FEE_TYPES_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+  })
+  store.dispatch(GoodActionTypes.GetAllFees, {
+    Message: {
+      ModuleKey: ModuleKey.ModuleGoods,
+      Error: {
+        Title: t('MSG_GET_ALL_FEES_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+  })
+  store.dispatch(GoodActionTypes.GetAllPriceCurrencys, {
+    Message: {
+      ModuleKey: ModuleKey.ModuleGoods,
+      Error: {
+        Title: t('MSG_GET_ALL_PRICE_CURRENCYS_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+  })
+})
 
 </script>
 

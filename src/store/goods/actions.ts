@@ -26,7 +26,9 @@ import {
   UpdateDeviceRequest,
   UpdateDeviceResponse,
   UpdateVendorLocationRequest,
-  UpdateVendorLocationResponse
+  UpdateVendorLocationResponse,
+  UpdateGoodRequest,
+  UpdateGoodResponse
 } from './types'
 import { GoodsState } from './state'
 import { ActionTree } from 'vuex'
@@ -139,6 +141,14 @@ interface GoodActions {
     RootState,
     GoodMutations<GoodsState>>,
     req: UpdateVendorLocationRequest): void
+
+  [ActionTypes.UpdateGood]({
+    commit
+  }: AugmentedActionContext<
+    GoodsState,
+    RootState,
+    GoodMutations<GoodsState>>,
+    req: UpdateGoodRequest): void
 }
 
 const actions: ActionTree<GoodsState, RootState> = {
@@ -282,6 +292,17 @@ const actions: ActionTree<GoodsState, RootState> = {
       req.Message,
       (resp: UpdateVendorLocationResponse): void => {
         commit(MutationTypes.AppendVendorLocation, resp.Info)
+      })
+  },
+
+  [ActionTypes.UpdateGood] ({ commit }, req: UpdateGoodRequest) {
+    doAction<UpdateGoodRequest, UpdateGoodResponse>(
+      commit,
+      API.UPDATE_GOOD,
+      req,
+      req.Message,
+      (resp: UpdateGoodResponse): void => {
+        commit(MutationTypes.AppendGood, resp.Info)
       })
   }
 }

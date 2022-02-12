@@ -10,6 +10,7 @@ enum API {
   GET_ALL_FEES = '/cloud-hashing-goods/v1/get/fees',
   CREATE_FEE_TYPE = '/cloud-hashing-goods/v1/create/fee/type',
   CREATE_GOOD = '/cloud-hashing-apis-v2/v1/create/good',
+  UPDATE_GOOD = '/cloud-hashing-goods/v1/update/good',
   GET_ALL_PRICE_CURRENCYS = '/cloud-hashing-goods/v1/get/price-currencys',
   CREATE_PRICE_CURRENCY = '/cloud-hashing-goods/v1/create/price-currency'
 }

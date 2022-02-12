@@ -148,13 +148,13 @@ interface GoodBase {
   Title: string
   Total: number
   Unit: string
+  InheritFromGoodID: string
 }
 
 interface Good extends GoodBase {
   PriceCurrency: string
   CoinInfoID: string
   DeviceInfoID: string,
-  InheritFromGoodID: string
   VendorLocationID: string
   SupportCoinTypeIDs: Array<string>
   FeeIDs: Array<string>
@@ -166,6 +166,15 @@ interface CreateGoodRequest {
 }
 
 interface CreateGoodResponse {
+  Info: Good
+}
+
+interface UpdateGoodRequest {
+  Info: Good
+  Message: ReqMessage
+}
+
+interface UpdateGoodResponse {
   Info: Good
 }
 
@@ -247,5 +256,7 @@ export {
   UpdateDeviceRequest,
   UpdateDeviceResponse,
   UpdateVendorLocationRequest,
-  UpdateVendorLocationResponse
+  UpdateVendorLocationResponse,
+  UpdateGoodRequest,
+  UpdateGoodResponse
 }

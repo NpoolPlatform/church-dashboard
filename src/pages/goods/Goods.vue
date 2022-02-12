@@ -7,6 +7,7 @@
       @create-vendor-location='onCreateVendorLocationClick'
       @create-fee-type='onCreateFeeTypeClick'
       @create-coininfo='onCreateCoinInfoClick'
+      @create-price-currency='onCreatePriceCurrencyClick'
     />
   </div>
   <q-table
@@ -21,9 +22,18 @@
     :title='$t("MSG_COIN")' flat dense :rows='filterCoins'
     @row-click='(evt, row, index) => onCoinClick(row as Coin)'
   />
-  <q-table :title='$t("MSG_FEE_TYPE")' flat dense :rows='filterFeeTypes' />
-  <q-table :title='$t("MSG_GOOD")' flat dense :rows='filterGoods' />
-  <q-table :title='$t("MSG_PRICE_CURRENCY")' flat dense :rows='filterPriceCurrencys' />
+  <q-table
+    :title='$t("MSG_FEE_TYPE")' flat dense :rows='filterFeeTypes'
+    @row-click='(evt, row, index) => onFeeTypeClick(row as FeeType)'
+  />
+  <q-table
+    :title='$t("MSG_PRICE_CURRENCY")' flat dense :rows='filterPriceCurrencys'
+    @row-click='(evt, row, index) => onPriceCurrencyClick(row as PriceCurrency)'
+  />
+  <q-table
+    :title='$t("MSG_GOOD")' flat dense :rows='filterGoods'
+    @row-click='(evt, row, index) => onGoodClick(row as Good)'
+  />
   <q-dialog
     v-model='adding'
     position='right'
@@ -33,22 +43,9 @@
   >
     <CreateGoodMenu
       v-if='addingType === AddingType.AddingGood'
-      v-model:devices='allDevices'
-      v-model:vendor-locations='allVendorLocations'
-      v-model:coins='allCoins'
-      v-model:fee-types='selectedFeeTypes'
-      v-model:price-currencys='allPriceCurrencys'
-      v-model:input-title='inputGoodTitle'
-      v-model:input-actuals='inputGoodActuals'
-      v-model:input-benefit-type='inputGoodBenefitType'
-      v-model:input-classic='inputGoodClassic'
-      v-model:input-total='inputGoodTotal'
-      v-model:input-duration-days='inputGoodDurationDays'
-      v-model:input-separate-fee='inputGoodSeparateFee'
-      v-model:input-price='inputGoodPrice'
-      v-model:input-coin-type='inputGoodCoinType'
-      v-model:input-unit-power='inputGoodUnitPower'
+      v-model:edit-good='selectedGood'
       class='add-menu'
+      @update='onUpdateGood'
       @submit='onCreateGoodSubmit'
     />
     <CreateDeviceMenu
@@ -67,10 +64,9 @@
     />
     <CreateFeeTypeMenu
       v-if='addingType === AddingType.AddingFeeType'
-      v-model:input-fee-type='inputFeeType'
-      v-model:input-fee-description='inputFeeDescription'
-      v-model:input-pay-type='inputPayType'
+      v-model:edit-fee-type='selectedFeeType'
       class='add-menu'
+      @update='onUpdateFeeType'
       @submit='onCreateFeeTypeSubmit'
     />
     <CreateCoinInfo
@@ -79,6 +75,13 @@
       class='add-menu'
       @update='onUpdateCoinInfo'
       @submit='onCreateCoinInfoSubmit'
+    />
+    <CreatePriceCurrency
+      v-if='addingType === AddingType.AddingPriceCurrency'
+      v-model:edit-coin='selectedCoin'
+      class='add-menu'
+      @update='onUpdatePriceCurrency'
+      @submit='onCreatePriceCurrencySubmit'
     />
   </q-dialog>
 </template>
@@ -93,15 +96,17 @@ import { MutationTypes as NotificationMutationTypes } from 'src/store/notificati
 import { ModuleKey, Type as NotificationType } from 'src/store/notifications/const'
 import { notify, notificationPop } from 'src/store/notifications/helper'
 import { useI18n } from 'vue-i18n'
-import { DeviceInfo, FeeType, Good, GoodBase, VendorLocation } from 'src/store/goods/types'
+import { DeviceInfo, FeeType, Good, GoodBase, PriceCurrency, VendorLocation } from 'src/store/goods/types'
 import { FunctionVoid } from 'src/types/types'
 import { Coin, CreateCoinRequest, UpdateCoinRequest } from 'src/store/coins/types'
+import { expandGoodToGood } from 'src/store/goods/utils'
 
 const CreateGoodMenu = defineAsyncComponent(() => import('src/components/good/CreateGoodMenu.vue'))
 const CreateDeviceMenu = defineAsyncComponent(() => import('src/components/good/CreateDeviceMenu.vue'))
 const CreateVendorLocationMenu = defineAsyncComponent(() => import('src/components/good/CreateVendorLocationMenu.vue'))
 const CreateFeeTypeMenu = defineAsyncComponent(() => import('src/components/good/CreateFeeTypeMenu.vue'))
 const CreateCoinInfo = defineAsyncComponent(() => import('src/components/good/CreateCoinInfo.vue'))
+const CreatePriceCurrency = defineAsyncComponent(() => import('src/components/good/CreatePriceCurrency.vue'))
 const GoodTools = defineAsyncComponent(() => import('src/components/good/GoodTools.vue'))
 
 enum AddingType {
@@ -111,50 +116,44 @@ enum AddingType {
   AddingGood = 'good',
   AddingFeeType = 'fee-type',
   AddingFee = 'fee',
-  AddingCoinInfo = 'coininfo'
+  AddingCoinInfo = 'coininfo',
+  AddingPriceCurrency = 'price-currency'
 }
 
 const addingType = ref(AddingType.AddingNone)
 const adding = ref(false)
-
-const inputFeeType = ref('')
-const inputFeeDescription = ref('')
-const inputPayType = ref('')
-
-const inputGoodTitle = ref('')
-const inputGoodActuals = ref(true)
-const inputGoodBenefitType = ref('')
-const inputGoodClassic = ref(true)
-const inputGoodTotal = ref(0)
-const inputGoodDurationDays = ref(360)
-const inputGoodSeparateFee = ref(true)
-const inputGoodPrice = ref(0)
-const inputGoodCoinType = ref('')
-const inputGoodUnitPower = ref(1)
 
 const store = useStore()
 
 const allGoods = computed(() => {
   const goods = [] as Array<GoodBase>
   store.getters.getAllGoods.forEach((good) => {
-    goods.push({
-      ID: good.Good.ID,
-      SeparateFee: good.Good.SeparateFee,
-      UnitPower: good.Good.UnitPower,
-      DurationDays: good.Good.DurationDays,
-      Actuals: good.Good.Actuals,
-      DeliveryAt: good.Good.DeliveryAt,
-      Price: good.Good.Price,
-      BenefitType: good.Good.BenefitType,
-      Classic: good.Good.Classic,
-      Title: good.Good.Title,
-      Total: good.Good.Total,
-      Unit: good.Good.Unit
-    })
+    goods.push(good.Good)
   })
   return goods
 })
-const filterGoods = computed(() => allGoods.value)
+const filterGoods = ref(allGoods.value)
+const selectedGood = ref(undefined as unknown as Good)
+
+const onGoodClick = (good: GoodBase) => {
+  selectedGood.value = expandGoodToGood(store.getters.getGoodByID(good.ID as string))
+  addingType.value = AddingType.AddingGood
+}
+const onUpdateGood = (good: Good) => {
+  selectedGood.value = good
+}
+
+const doFilterGood = () => {
+  return addingType.value !== AddingType.AddingNone && selectedGood.value ? allGoods.value.filter((good) => {
+    return good.Title.toLowerCase().includes(selectedGood.value.Title.toLowerCase())
+  }) : allGoods.value
+}
+watch(selectedGood, () => {
+  filterGoods.value = doFilterGood()
+})
+watch(allGoods, () => {
+  filterGoods.value = doFilterGood()
+})
 
 const allVendorLocations = computed(() => store.getters.getAllVendorLocations)
 const selectedVendorLocation = ref(undefined as unknown as VendorLocation)
@@ -231,14 +230,51 @@ watch(allCoins, () => {
 })
 
 const allFeeTypes = computed(() => store.getters.getAllFeeTypes)
-const filterFeeTypes = computed(() => {
-  return allFeeTypes.value
+const filterFeeTypes = ref(allFeeTypes.value)
+const selectedFeeType = ref(undefined as unknown as FeeType)
+
+const onFeeTypeClick = (feeType: FeeType) => {
+  selectedFeeType.value = feeType
+  addingType.value = AddingType.AddingFeeType
+}
+const onUpdateFeeType = (feeType: FeeType) => {
+  selectedFeeType.value = feeType
+}
+
+const doFilterFeeType = () => {
+  return addingType.value !== AddingType.AddingNone && selectedFeeType.value ? allFeeTypes.value.filter((feeType) => {
+    return feeType.FeeType.toLowerCase().includes(selectedFeeType.value.FeeType.toLowerCase())
+  }) : allFeeTypes.value
+}
+watch(selectedFeeType, () => {
+  filterFeeTypes.value = doFilterFeeType()
 })
-const selectedFeeTypes = ref(allFeeTypes.value)
+watch(allFeeTypes, () => {
+  filterFeeTypes.value = doFilterFeeType()
+})
 
 const allPriceCurrencys = computed(() => store.getters.getAllPriceCurrencys)
-const filterPriceCurrencys = computed(() => {
-  return allPriceCurrencys.value
+const filterPriceCurrencys = ref(allPriceCurrencys.value)
+const selectedPriceCurrency = ref(undefined as unknown as PriceCurrency)
+
+const onPriceCurrencyClick = (currency: PriceCurrency) => {
+  selectedPriceCurrency.value = currency
+  addingType.value = AddingType.AddingPriceCurrency
+}
+const onUpdatePriceCurrency = (currency: PriceCurrency) => {
+  selectedPriceCurrency.value = currency
+}
+
+const doFilterPriceCurrency = () => {
+  return addingType.value !== AddingType.AddingNone && selectedPriceCurrency.value ? allPriceCurrencys.value.filter((feeType) => {
+    return feeType.Name.toLowerCase().includes(selectedPriceCurrency.value.Name.toLowerCase())
+  }) : allPriceCurrencys.value
+}
+watch(selectedPriceCurrency, () => {
+  filterPriceCurrencys.value = doFilterPriceCurrency()
+})
+watch(allPriceCurrencys, () => {
+  filterPriceCurrencys.value = doFilterPriceCurrency()
 })
 
 // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -335,6 +371,7 @@ watch(addingType, (val) => {
     selectedDevice.value = undefined as unknown as DeviceInfo
     selectedVendorLocation.value = undefined as unknown as VendorLocation
     selectedCoin.value = undefined as unknown as Coin
+    selectedFeeType.value = undefined as unknown as FeeType
   }
 })
 
@@ -356,6 +393,10 @@ const onCreateFeeTypeClick = () => {
 
 const onCreateCoinInfoClick = () => {
   addingType.value = AddingType.AddingCoinInfo
+}
+
+const onCreatePriceCurrencyClick = () => {
+  addingType.value = AddingType.AddingPriceCurrency
 }
 
 const onCreateDeviceSubmit = (device: DeviceInfo) => {
@@ -411,10 +452,6 @@ const onCreateFeeTypeSubmit = (feeType: FeeType) => {
       }
     }
   })
-
-  inputFeeType.value = ''
-  inputFeeDescription.value = ''
-  inputPayType.value = ''
 }
 
 const onCreateCoinInfoSubmit = (coin: Coin) => {
@@ -450,9 +487,18 @@ const onCreateCoinInfoSubmit = (coin: Coin) => {
   }
 }
 
+const onCreatePriceCurrencySubmit = (currency: PriceCurrency) => {
+  console.log(currency)
+}
+
 const onCreateGoodSubmit = (good: Good) => {
   addingType.value = AddingType.AddingNone
-  store.dispatch(GoodActionTypes.CreateGood, {
+  let action = GoodActionTypes.CreateGood
+  if (good.ID && good.ID.length > 0) {
+    action = GoodActionTypes.UpdateGood
+  }
+
+  store.dispatch(action, {
     Info: good,
     Message: {
       ModuleKey: ModuleKey.ModuleGoods,
@@ -474,17 +520,6 @@ const onCreateGoodSubmit = (good: Good) => {
       }
     }
   })
-
-  inputGoodTitle.value = ''
-  inputGoodActuals.value = true
-  inputGoodBenefitType.value = ''
-  inputGoodClassic.value = true
-  inputGoodTotal.value = 0
-  inputGoodDurationDays.value = 360
-  inputGoodSeparateFee.value = true
-  inputGoodPrice.value = 0
-  inputGoodCoinType.value = ''
-  inputGoodUnitPower.value = 1
 }
 
 const onMenuHide = () => {
