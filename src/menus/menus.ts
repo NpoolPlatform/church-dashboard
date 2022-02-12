@@ -155,55 +155,43 @@ const MainDrawerMenus = [
   }, {
     menuId: uid(),
     label: '商品',
-    caption: '管理算力商品',
+    caption: '管理商品信息与收益地址',
+    icon: 'format_list_numbered',
+    target: '/goods',
+    level: 0,
+    children: [{
+      menuId: uid(),
+      label: '商品管理',
+      caption: '管理算力商品',
+      icon: 'format_list_numbered',
+      target: '/goods/goods',
+      level: 1,
+      children: []
+    }, {
+      menuId: uid(),
+      label: '商品收益地址管理',
+      caption: '管理算力商品收益地址',
+      icon: 'format_list_numbered',
+      target: '/goods/payments',
+      level: 1,
+      children: []
+    }, {
+      menuId: uid(),
+      label: '限额设置',
+      caption: '管理热钱包限额',
+      icon: 'format_list_numbered',
+      target: '/goods/limits',
+      level: 1,
+      children: []
+    }]
+  }, {
+    menuId: uid(),
+    label: '报表和账单',
+    caption: 'APP、商品、用户收支明细',
     icon: 'format_list_numbered',
     target: '/goods',
     level: 0,
     children: []
-  }, {
-    menuId: uid(),
-    label: '多层菜单',
-    caption: '多层菜单',
-    icon: 'menu',
-    target: '/internationalization',
-    level: 0,
-    children: [
-      {
-        menuId: uid(),
-        label: '多层菜单',
-        caption: '多层菜单',
-        icon: 'menu',
-        target: '/example',
-        level: 1,
-        children: [
-          {
-            menuId: uid(),
-            label: '多层菜单',
-            caption: '多层菜单',
-            icon: 'menu',
-            target: '/example',
-            level: 2,
-            children: []
-          }, {
-            menuId: uid(),
-            label: '多层菜单',
-            caption: '多层菜单',
-            icon: 'menu',
-            target: '/example',
-            level: 2,
-            children: []
-          }
-        ]
-      }, {
-        menuId: uid(),
-        label: '多层菜单',
-        caption: '多层菜单',
-        icon: 'menu',
-        target: '/example',
-        level: 1,
-        children: []
-      }
-    ]
   }
 ]
 

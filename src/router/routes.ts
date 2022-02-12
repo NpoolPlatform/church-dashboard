@@ -7,8 +7,12 @@ const routes: RouteRecordRaw[] = [
     children: [
       { path: '', component: () => import('pages/Index.vue') },
       { path: 'login', component: () => import('pages/Login.vue') },
-      { path: 'goods', component: () => import('pages/Goods.vue') },
       { path: 'internationalization', component: () => import('pages/Internationalization.vue') },
+
+      // Good pages
+      { path: 'goods/goods', component: () => import('src/pages/goods/Goods.vue') },
+      { path: 'goods/payments', component: () => import('src/pages/goods/Payments.vue') },
+      { path: 'goods/limits', component: () => import('src/pages/goods/Limits.vue') },
 
       // Review pages
       { path: 'review/kyc', component: () => import('pages/review/KYC.vue') },

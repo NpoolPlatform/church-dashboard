@@ -6,6 +6,8 @@ interface Coin {
   PreSale: boolean
   Unit: string
   Logo: string
+  ReservedAmount: number
+  ENV: string
 }
 
 interface GetCoinsResponse {

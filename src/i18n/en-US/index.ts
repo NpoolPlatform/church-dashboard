@@ -112,6 +112,7 @@ export default {
   MSG_UNIT: '单位',
   MSG_DEFAULT_TO_USERNAME: '默认抬头称呼',
   MSG_CREATE_COININFO: '创建币种',
+  MSG_RESERVED_AMOUNT: '保留额度',
   MSG_KYC_ENABLE: '启用身份认证',
   MSG_SIGNIN_VERIFY_ENABLE: '启用登录二次验证',
   MSG_INVITATION_CODE_MUST: '注册邀请码必填',
@@ -140,5 +141,7 @@ export default {
   MSG_DELETE: '删除',
   MSG_DELETE_APP_ROLE_USER_FAIL: '解除用户角色授权失败',
   MSG_DELETE_AUTH_FAIL: '解除资源授权失败',
-  MSG_INPUT_API: '输入API'
+  MSG_INPUT_API: '输入API',
+  MSG_COIN_PRESALE_WARN: '预售币种修改可能引起系统风险, 请明确知道你在做什么',
+  MSG_WARN_MUST_POSITIVE: '必须为正数'
 }
