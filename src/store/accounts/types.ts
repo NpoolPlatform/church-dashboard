@@ -34,11 +34,31 @@ interface GetGoodBenefitByGoodResponse {
   Info: GoodBenefit
 }
 
+interface GoodPayment {
+  ID: string
+  GoodID: string
+  PaymentCoinTypeID: string
+  AccountID: string
+  Idle: boolean
+}
+
+interface GetGoodPaymentsByGoodRequest {
+  GoodID: string
+  Message: ReqMessage
+}
+
+interface GetGoodPaymentsByGoodResponse {
+  Infos: Array<GoodPayment>
+}
+
 export {
   CoinAccount,
   GetCoinAccountsRequest,
   GetCoinAccountsResponse,
   GoodBenefit,
   GetGoodBenefitByGoodRequest,
-  GetGoodBenefitByGoodResponse
+  GetGoodBenefitByGoodResponse,
+  GoodPayment,
+  GetGoodPaymentsByGoodRequest,
+  GetGoodPaymentsByGoodResponse
 }

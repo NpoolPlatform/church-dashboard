@@ -5,13 +5,19 @@
     flat
     dense
     :loading='loading'
-    :rows='accounts'
+    :rows='fileterAccounts'
     selection='single'
     @row-click='(evt, row, index) => onRowClick(row as CoinAccount)'
   >
     <template #top-right>
       <div class='row'>
         <q-space />
+        <q-input
+          v-model='candidateAccountID'
+          flat
+          dense
+          :label='$t("MSG_ACCOUNT_ID")'
+        />
         <q-btn dense @click='onSetAsGoodBenefitAccountClick'>
           {{ $t('MSG_SET_AS_GOOD_BENEFIT_ACCOUNT') }}
         </q-btn>
@@ -55,6 +61,11 @@
       </div>
     </template>
   </q-table>
+  <q-table
+    flat
+    dense
+    :rows='goodPayments'
+  />
   <q-dialog
     v-model='modifying'
     position='right'
@@ -91,6 +102,13 @@ const updating = ref(false)
 const modifying = ref(false)
 
 const accounts = computed(() => store.getters.getCoinAccounts)
+const candidateAccountID = ref('')
+const fileterAccounts = computed(() => {
+  return accounts.value.filter((account) => {
+    return account.ID?.includes(candidateAccountID.value)
+  })
+})
+
 const selectedAccount = ref()
 const candidateAccount = ref([] as Array<CoinAccount>)
 
@@ -127,6 +145,18 @@ watch(selectedGood, () => {
         }
       }
     })
+
+    store.dispatch(AccountsActionTypes.GetGoodPaymentsByGood, {
+      GoodID: good.ID as string,
+      Message: {
+        ModuleKey: ModuleKey.ModuleGoods,
+        Error: {
+          Title: t('MSG_GET_GOOD_BENEFIT_FAIL'),
+          Popup: true,
+          Type: NotificationType.Error
+        }
+      }
+    })
   })
 })
 const goodBenefit = computed(() => {
@@ -138,6 +168,13 @@ const goodBenefit = computed(() => {
   } as GoodBenefit
 })
 const myGoodBenefit = ref(goodBenefit.value)
+
+const goodPayments = computed(() => {
+  if (selectedGood.value && selectedGood.value.length > 0) {
+    return store.getters.getGoodPaymentsByGood(selectedGood.value[0].ID as string)
+  }
+  return []
+})
 
 const onSetGoodBenefitIntervalHoursClick = () => {
   myGoodBenefit.value.BenefitIntervalHours = 24
