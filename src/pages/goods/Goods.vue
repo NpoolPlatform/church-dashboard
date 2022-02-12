@@ -18,7 +18,7 @@
     @row-click='(evt, row, index) => onVendorLocationClick(row as VendorLocation)'
   />
   <q-table
-    :title='$t("MSG_COIN")' flat dense :rows='allCoins'
+    :title='$t("MSG_COIN")' flat dense :rows='filterCoins'
     @row-click='(evt, row, index) => onCoinClick(row as Coin)'
   />
   <q-table :title='$t("MSG_FEE_TYPE")' flat dense :rows='filterFeeTypes' />
@@ -157,36 +157,64 @@ const allGoods = computed(() => {
 const filterGoods = computed(() => allGoods.value)
 
 const allVendorLocations = computed(() => store.getters.getAllVendorLocations)
-const selectedVendorLocation = ref()
-const filterVendorLocations = computed(() => {
-  return addingType.value !== AddingType.AddingNone && selectedVendorLocation.value ? allVendorLocations.value.filter((loc) => {
-    const vLoc = selectedVendorLocation.value as VendorLocation
-    return loc.Address.toLowerCase().includes(vLoc.Address.toLowerCase()) &&
-      loc.City.toLowerCase().includes(vLoc.City.toLowerCase()) &&
-      loc.Country.toLowerCase().includes(vLoc.Country.toLowerCase()) &&
-      loc.Province.toLowerCase().includes(vLoc.Province.toLowerCase())
-  }) : allVendorLocations.value
-})
+const selectedVendorLocation = ref(undefined as unknown as VendorLocation)
+const filterVendorLocations = ref(allVendorLocations.value)
+
 const onVendorLocationClick = (vendorLocation: VendorLocation) => {
   selectedVendorLocation.value = vendorLocation
   addingType.value = AddingType.AddingVendorLocation
 }
+const onUpdateVendorLocation = (vendorLication: VendorLocation) => {
+  selectedVendorLocation.value = vendorLication
+}
+
+const doFilterVendorLocation = () => {
+  return addingType.value !== AddingType.AddingNone && selectedVendorLocation.value ? allVendorLocations.value.filter((loc) => {
+    return loc.Address.toLowerCase().includes(selectedVendorLocation.value.Address.toLowerCase()) &&
+      loc.City.toLowerCase().includes(selectedVendorLocation.value.City.toLowerCase()) &&
+      loc.Country.toLowerCase().includes(selectedVendorLocation.value.Country.toLowerCase()) &&
+      loc.Province.toLowerCase().includes(selectedVendorLocation.value.Province.toLowerCase())
+  }) : allVendorLocations.value
+}
+watch(selectedVendorLocation, () => {
+  filterVendorLocations.value = doFilterVendorLocation()
+})
+watch(allVendorLocations, () => {
+  filterVendorLocations.value = doFilterVendorLocation()
+})
 
 const allDevices = computed(() => store.getters.getAllDevices)
-const selectedDevice = ref()
-const filterDevices = computed(() => {
-  return addingType.value !== AddingType.AddingNone && selectedDevice.value ? allDevices.value.filter((dev) => {
-    const device = selectedDevice.value as DeviceInfo
-    return dev.Type.toLowerCase().includes(device.Type.toLowerCase())
-  }) : allDevices.value
-})
+const selectedDevice = ref(undefined as unknown as DeviceInfo)
+const filterDevices = ref(allDevices.value)
+
 const onDeviceClick = (device: DeviceInfo) => {
   selectedDevice.value = device
   addingType.value = AddingType.AddingDevice
 }
+const onUpdateDevice = (device: DeviceInfo) => {
+  selectedDevice.value = device
+}
+
+const doFilterDevice = () => {
+  return addingType.value !== AddingType.AddingNone && selectedDevice.value ? allDevices.value.filter((dev) => {
+    return dev.Type.toLowerCase().includes(selectedDevice.value.Type.toLowerCase())
+  }) : allDevices.value
+}
+watch(selectedDevice, () => {
+  filterDevices.value = doFilterDevice()
+})
+watch(allDevices, () => {
+  filterDevices.value = doFilterDevice()
+})
 
 const allCoins = computed(() => store.getters.getCoins)
 const selectedCoin = ref()
+const filterCoins = computed(() => {
+  return addingType.value !== AddingType.AddingNone && selectedCoin.value ? allCoins.value.filter((coin) => {
+    const myCoin = selectedCoin.value as Coin
+    return coin.Name.toLowerCase().includes(myCoin.Name.toLowerCase())
+  }) : allCoins.value
+})
 const onCoinClick = (coin: Coin) => {
   selectedCoin.value = coin
   addingType.value = AddingType.AddingCoinInfo
@@ -293,6 +321,10 @@ onMounted(() => {
 
 watch(addingType, (val) => {
   adding.value = val !== AddingType.AddingNone
+  if (addingType.value === AddingType.AddingNone) {
+    selectedDevice.value = undefined
+    selectedVendorLocation.value = undefined as unknown as VendorLocation
+  }
 })
 
 const onCreateDeviceClick = () => {
@@ -315,10 +347,6 @@ const onCreateCoinInfoClick = () => {
   addingType.value = AddingType.AddingCoinInfo
 }
 
-const onUpdateDevice = (device: DeviceInfo) => {
-  selectedDevice.value = device
-}
-
 const onCreateDeviceSubmit = (device: DeviceInfo) => {
   addingType.value = AddingType.AddingNone
   let action = GoodActionTypes.CreateDevice
@@ -339,18 +367,19 @@ const onCreateDeviceSubmit = (device: DeviceInfo) => {
   })
 }
 
-const onUpdateVendorLocation = (vendorLication: VendorLocation) => {
-  selectedVendorLocation.value = vendorLication
-}
-
 const onCreateVendorLocationSubmit = (vendorLocation: VendorLocation) => {
   addingType.value = AddingType.AddingNone
-  store.dispatch(GoodActionTypes.CreateVendorLocation, {
+  let action = GoodActionTypes.CreateVendorLocation
+  if (vendorLocation.ID && vendorLocation.ID.length > 0) {
+    action = GoodActionTypes.UpdateVendorLocation
+  }
+
+  store.dispatch(action, {
     Info: vendorLocation,
     Message: {
       ModuleKey: ModuleKey.ModuleGoods,
       Error: {
-        Title: t('MSG_CREATE_DEVICE_FAIL'),
+        Title: t('MSG_CREATE_VENDOR_LOCATION_FAIL'),
         Popup: true,
         Type: NotificationType.Error
       }
@@ -378,7 +407,7 @@ const onCreateFeeTypeSubmit = (feeType: FeeType) => {
 }
 
 const onUpdateCoinInfo = (coin: Coin) => {
-  console.log('update', coin)
+  selectedCoin.value = coin
 }
 
 const onCreateCoinInfoSubmit = (coin: Coin) => {

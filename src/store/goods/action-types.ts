@@ -5,6 +5,7 @@ export enum ActionTypes {
   CreateDevice = 'CREATE_DEVICE',
   UpdateDevice = 'UPDATE_DEVICE',
   CreateVendorLocation = 'CREATE_VENDOR_LOCATION',
+  UpdateVendorLocation = 'UPDATE_VENDOR_LOCATION',
   GetAllFeeTypes = 'GET_ALL_FEE_TYPES',
   GetAllFees = 'GET_ALL_FEES',
   CreateFeeType = 'CREATE_FEE_TYPE',

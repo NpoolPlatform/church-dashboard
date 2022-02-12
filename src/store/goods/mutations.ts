@@ -46,7 +46,18 @@ const mutations: MutationTree<GoodsState> & GoodMutations = {
   },
 
   [MutationTypes.AppendVendorLocation] (state: GoodsState, payload: VendorLocation): void {
-    state.AllVendorLocations.splice(0, 0, payload)
+    let pos = -1
+    for (let i = 0; i < state.AllDevices.length; i++) {
+      if (state.AllVendorLocations[i].ID === payload.ID) {
+        pos = 0
+        break
+      }
+    }
+    if (pos < 0) {
+      state.AllVendorLocations.splice(0, 0, payload)
+    } else {
+      state.AllVendorLocations.splice(pos, 1, payload)
+    }
   },
 
   [MutationTypes.SetAllFeeTypes] (state: GoodsState, payload: Array<FeeType>): void {

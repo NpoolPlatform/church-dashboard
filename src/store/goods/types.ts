@@ -201,6 +201,15 @@ interface UpdateDeviceResponse {
   Info: DeviceInfo
 }
 
+interface UpdateVendorLocationRequest {
+  Info: VendorLocation
+  Message: ReqMessage
+}
+
+interface UpdateVendorLocationResponse {
+  Info: VendorLocation
+}
+
 export {
   Good,
   GoodDetail,
@@ -236,5 +245,7 @@ export {
   CreatePriceCurrencyRequest,
   CreatePriceCurrencyResponse,
   UpdateDeviceRequest,
-  UpdateDeviceResponse
+  UpdateDeviceResponse,
+  UpdateVendorLocationRequest,
+  UpdateVendorLocationResponse
 }

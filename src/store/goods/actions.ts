@@ -24,7 +24,9 @@ import {
   GetAllPriceCurrencysResponse,
   CreatePriceCurrencyResponse,
   UpdateDeviceRequest,
-  UpdateDeviceResponse
+  UpdateDeviceResponse,
+  UpdateVendorLocationRequest,
+  UpdateVendorLocationResponse
 } from './types'
 import { GoodsState } from './state'
 import { ActionTree } from 'vuex'
@@ -129,6 +131,14 @@ interface GoodActions {
     RootState,
     GoodMutations<GoodsState>>,
     req: UpdateDeviceRequest): void
+
+  [ActionTypes.UpdateVendorLocation]({
+    commit
+  }: AugmentedActionContext<
+    GoodsState,
+    RootState,
+    GoodMutations<GoodsState>>,
+    req: UpdateVendorLocationRequest): void
 }
 
 const actions: ActionTree<GoodsState, RootState> = {
@@ -256,11 +266,22 @@ const actions: ActionTree<GoodsState, RootState> = {
   [ActionTypes.UpdateDevice] ({ commit }, req: UpdateDeviceRequest) {
     doAction<UpdateDeviceRequest, UpdateDeviceResponse>(
       commit,
-      API.CREATE_PRICE_CURRENCY,
+      API.UPDATE_DEVICE,
       req,
       req.Message,
       (resp: UpdateDeviceResponse): void => {
         commit(MutationTypes.AppendDevice, resp.Info)
+      })
+  },
+
+  [ActionTypes.UpdateVendorLocation] ({ commit }, req: UpdateVendorLocationRequest) {
+    doAction<UpdateVendorLocationRequest, UpdateVendorLocationResponse>(
+      commit,
+      API.UPDATE_VENDOR_LOCATION,
+      req,
+      req.Message,
+      (resp: UpdateVendorLocationResponse): void => {
+        commit(MutationTypes.AppendVendorLocation, resp.Info)
       })
   }
 }

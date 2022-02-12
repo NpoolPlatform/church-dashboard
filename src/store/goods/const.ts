@@ -5,6 +5,7 @@ enum API {
   CREATE_DEVICE = '/cloud-hashing-goods/v1/create/device',
   UPDATE_DEVICE = '/cloud-hashing-goods/v1/update/device',
   CREATE_VENDOR_LOCATION = '/cloud-hashing-goods/v1/create/vendor-location',
+  UPDATE_VENDOR_LOCATION = '/cloud-hashing-goods/v1/update/vendor-location',
   GET_ALL_FEE_TYPES = '/cloud-hashing-goods/v1/get/fee/types',
   GET_ALL_FEES = '/cloud-hashing-goods/v1/get/fees',
   CREATE_FEE_TYPE = '/cloud-hashing-goods/v1/create/fee/type',
