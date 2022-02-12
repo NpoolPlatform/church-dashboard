@@ -151,7 +151,7 @@ watch(selectedGood, () => {
       Message: {
         ModuleKey: ModuleKey.ModuleGoods,
         Error: {
-          Title: t('MSG_GET_GOOD_BENEFIT_FAIL'),
+          Title: t('MSG_GET_GOOD_PAYMENT_FAIL'),
           Popup: true,
           Type: NotificationType.Error
         }

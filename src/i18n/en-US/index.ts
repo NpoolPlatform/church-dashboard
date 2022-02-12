@@ -147,6 +147,7 @@ export default {
   MSG_CREATE_COIN_ACCOUNT: '创建账户',
   MSG_GET_COIN_ACCOUNTS_FAIL: 'You failed to get accounts',
   MSG_GET_GOOD_BENEFIT_FAIL: 'You failed to get good benefit',
+  MSG_GET_GOOD_PAYMENT_FAIL: 'You failed to get good payment',
   MSG_SET_AS_GOOD_BENEFIT_ACCOUNT: '设置为商品收益地址',
   MSG_SET_AS_GOOD_PLATFORM_OFFLINE_ACCOUNT: '设置为商品平台收益离线地址',
   MSG_SET_AS_GOOD_USER_OFFLINE_ACCOUNT: '设置为商品用户收益离线地址',

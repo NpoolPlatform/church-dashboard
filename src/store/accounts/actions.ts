@@ -53,7 +53,9 @@ const actions: ActionTree<CoinAccountsState, RootState> = {
       req,
       req.Message,
       (resp: GetGoodBenefitByGoodResponse): void => {
-        commit(MutationTypes.SetGoodBenefit, resp.Info)
+        if (resp.Info) {
+          commit(MutationTypes.SetGoodBenefit, resp.Info)
+        }
       })
   },
 
