@@ -1,14 +1,29 @@
 <template>
   <q-table
+    v-model:selected='candidateAccount'
+    row-key='ID'
     flat
     dense
     :loading='loading'
     :rows='accounts'
+    selection='single'
     @row-click='(evt, row, index) => onRowClick(row as CoinAccount)'
   >
     <template #top-right>
       <div class='row'>
         <q-space />
+        <q-btn dense @click='onSetAsGoodBenefitAccountClick'>
+          {{ $t('MSG_SET_AS_GOOD_BENEFIT_ACCOUNT') }}
+        </q-btn>
+        <q-btn dense @click='onSetAsGoodPlatformOfflineAccountClick'>
+          {{ $t('MSG_SET_AS_GOOD_PLATFORM_OFFLINE_ACCOUNT') }}
+        </q-btn>
+        <q-btn dense @click='onSetAsGoodUserOfflineClick'>
+          {{ $t('MSG_SET_AS_GOOD_USER_OFFLINE_ACCOUNT') }}
+        </q-btn>
+        <q-btn dense @click='onSetAsGoodUserOnlineClick'>
+          {{ $t('MSG_SET_AS_GOOD_USER_ONLINE_ACCOUNT') }}
+        </q-btn>
         <q-btn dense @click='onCreateCoinAccountClick'>
           {{ $t('MSG_CREATE_COIN_ACCOUNT') }}
         </q-btn>
@@ -26,8 +41,20 @@
   <q-table
     flat
     dense
-    :rows='goodBenefit ? [goodBenefit] : []'
-  />
+    :rows='myGoodBenefit ? [myGoodBenefit] : []'
+  >
+    <template #top-right>
+      <div class='row'>
+        <q-space />
+        <q-btn dense @click='onSetGoodBenefitIntervalHoursClick'>
+          {{ $t('MSG_SET_GOOD_BENEFIT_INTERVAL_HOURS') }}
+        </q-btn>
+        <q-btn dense @click='onGoodPaymentSubmit'>
+          {{ $t('MSG_SUBMIT') }}
+        </q-btn>
+      </div>
+    </template>
+  </q-table>
   <q-dialog
     v-model='modifying'
     position='right'
@@ -49,9 +76,10 @@ import { notify, notificationPop } from 'src/store/notifications/helper'
 import { FunctionVoid } from 'src/types/types'
 import { MutationTypes as AccountsMutationTypes } from 'src/store/accounts/mutation-types'
 import { ActionTypes as AccountsActionTypes } from 'src/store/accounts/action-types'
-import { CoinAccount } from 'src/store/accounts/types'
+import { CoinAccount, GoodBenefit } from 'src/store/accounts/types'
 import { GoodBase } from 'src/store/goods/types'
 import { ActionTypes as GoodActionTypes } from 'src/store/goods/action-types'
+import { DefaultID } from 'src/const/const'
 
 const store = useStore()
 // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -64,6 +92,7 @@ const modifying = ref(false)
 
 const accounts = computed(() => store.getters.getCoinAccounts)
 const selectedAccount = ref()
+const candidateAccount = ref([] as Array<CoinAccount>)
 
 const onRowClick = (row: CoinAccount) => {
   selectedAccount.value = row
@@ -101,8 +130,41 @@ watch(selectedGood, () => {
   })
 })
 const goodBenefit = computed(() => {
-  return selectedGood.value && selectedGood.value.length > 0 ? store.getters.getGoodBenefitByGood(selectedGood.value[0].ID as string) : undefined
+  if (selectedGood.value && selectedGood.value.length > 0) {
+    return store.getters.getGoodBenefitByGood(selectedGood.value[0].ID as string)
+  }
+  return {
+    ID: DefaultID
+  } as GoodBenefit
 })
+const myGoodBenefit = ref(goodBenefit.value)
+
+const onSetGoodBenefitIntervalHoursClick = () => {
+  myGoodBenefit.value.BenefitIntervalHours = 24
+}
+
+const onSetAsGoodBenefitAccountClick = () => {
+  myGoodBenefit.value.BenefitAccountID = candidateAccount.value[0].ID as string
+}
+
+const onSetAsGoodPlatformOfflineAccountClick = () => {
+  myGoodBenefit.value.PlatformOfflineAccountID = candidateAccount.value[0].ID as string
+}
+
+const onSetAsGoodUserOfflineClick = () => {
+  myGoodBenefit.value.UserOfflineAccountID = candidateAccount.value[0].ID as string
+}
+
+const onSetAsGoodUserOnlineClick = () => {
+  myGoodBenefit.value.UserOnlineAccountID = candidateAccount.value[0].ID as string
+}
+
+const onGoodPaymentSubmit = () => {
+  if (!selectedGood.value || selectedGood.value.length === 0) {
+    return
+  }
+  console.log(myGoodBenefit.value)
+}
 
 const unsubscribe = ref<FunctionVoid>()
 

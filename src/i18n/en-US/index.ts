@@ -146,5 +146,10 @@ export default {
   MSG_WARN_MUST_POSITIVE: '必须为正数',
   MSG_CREATE_COIN_ACCOUNT: '创建账户',
   MSG_GET_COIN_ACCOUNTS_FAIL: 'You failed to get accounts',
-  MSG_GET_GOOD_BENEFIT_FAIL: 'You failed to get good benefit'
+  MSG_GET_GOOD_BENEFIT_FAIL: 'You failed to get good benefit',
+  MSG_SET_AS_GOOD_BENEFIT_ACCOUNT: '设置为商品收益地址',
+  MSG_SET_AS_GOOD_PLATFORM_OFFLINE_ACCOUNT: '设置为商品平台收益离线地址',
+  MSG_SET_AS_GOOD_USER_OFFLINE_ACCOUNT: '设置为商品用户收益离线地址',
+  MSG_SET_AS_GOOD_USER_ONLINE_ACCOUNT: '设置为商品用户收益在线地址',
+  MSG_SET_GOOD_BENEFIT_INTERVAL_HOURS: '设置商品收益间隔时间(小时)'
 }
