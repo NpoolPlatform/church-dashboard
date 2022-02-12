@@ -240,7 +240,7 @@ const priceCurrencyType = computed(() => priceCurrencys.value[selectedPriceCurre
 const priceCurrencyID = computed(() => priceCurrencys.value[selectedPriceCurrencyIndex.value].ID)
 
 const myDeliveryAt = ref(0)
-const myUnit = ref('TiB')
+const myUnit = ref(editGood.value?.Unit)
 
 interface MyFeeType {
   label: string
