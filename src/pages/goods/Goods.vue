@@ -208,17 +208,27 @@ watch(allDevices, () => {
 })
 
 const allCoins = computed(() => store.getters.getCoins)
-const selectedCoin = ref()
-const filterCoins = computed(() => {
-  return addingType.value !== AddingType.AddingNone && selectedCoin.value ? allCoins.value.filter((coin) => {
-    const myCoin = selectedCoin.value as Coin
-    return coin.Name.toLowerCase().includes(myCoin.Name.toLowerCase())
-  }) : allCoins.value
-})
+const selectedCoin = ref(undefined as unknown as Coin)
+const filterCoins = ref(allCoins.value)
 const onCoinClick = (coin: Coin) => {
   selectedCoin.value = coin
   addingType.value = AddingType.AddingCoinInfo
 }
+const onUpdateCoinInfo = (coin: Coin) => {
+  selectedCoin.value = coin
+}
+
+const doFilterCoin = () => {
+  return addingType.value !== AddingType.AddingNone && selectedCoin.value ? allCoins.value.filter((coin) => {
+    return coin.Name.toLowerCase().includes(selectedCoin.value.Name.toLowerCase())
+  }) : allCoins.value
+}
+watch(selectedCoin, () => {
+  filterCoins.value = doFilterCoin()
+})
+watch(allCoins, () => {
+  filterCoins.value = doFilterCoin()
+})
 
 const allFeeTypes = computed(() => store.getters.getAllFeeTypes)
 const filterFeeTypes = computed(() => {
@@ -322,8 +332,9 @@ onMounted(() => {
 watch(addingType, (val) => {
   adding.value = val !== AddingType.AddingNone
   if (addingType.value === AddingType.AddingNone) {
-    selectedDevice.value = undefined
+    selectedDevice.value = undefined as unknown as DeviceInfo
     selectedVendorLocation.value = undefined as unknown as VendorLocation
+    selectedCoin.value = undefined as unknown as Coin
   }
 })
 
@@ -404,10 +415,6 @@ const onCreateFeeTypeSubmit = (feeType: FeeType) => {
   inputFeeType.value = ''
   inputFeeDescription.value = ''
   inputPayType.value = ''
-}
-
-const onUpdateCoinInfo = (coin: Coin) => {
-  selectedCoin.value = coin
 }
 
 const onCreateCoinInfoSubmit = (coin: Coin) => {

@@ -89,7 +89,7 @@ const onSubmit = () => {
   emit('submit', coin.value)
 }
 
-watch(coin.value, function () {
+watch(coin, function () {
   emit('update', coin.value)
 })
 
