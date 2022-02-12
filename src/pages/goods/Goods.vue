@@ -9,8 +9,14 @@
       @create-coininfo='onCreateCoinInfoClick'
     />
   </div>
-  <q-table :title='$t("MSG_DEVICE")' flat dense :rows='filterDevices' />
-  <q-table :title='$t("MSG_VENDOR_LOCATION")' flat dense :rows='filterVendorLocations' />
+  <q-table
+    :title='$t("MSG_DEVICE")' flat dense :rows='filterDevices'
+    @row-click='(evt, row, index) => onDeviceClick(row as DeviceInfo)'
+  />
+  <q-table
+    :title='$t("MSG_VENDOR_LOCATION")' flat dense :rows='filterVendorLocations'
+    @row-click='(evt, row, index) => onVendorLocationClick(row as VendorLocation)'
+  />
   <q-table
     :title='$t("MSG_COIN")' flat dense :rows='allCoins'
     @row-click='(evt, row, index) => onCoinClick(row as Coin)'
@@ -47,17 +53,16 @@
     />
     <CreateDeviceMenu
       v-if='addingType === AddingType.AddingDevice'
-      v-model:input-device-type='inputDeviceType'
+      v-model:edit-device='selectedDevice'
       class='add-menu'
+      @update='onUpdateDevice'
       @submit='onCreateDeviceSubmit'
     />
     <CreateVendorLocationMenu
       v-if='addingType === AddingType.AddingVendorLocation'
-      v-model:input-country='inputCountry'
-      v-model:input-province='inputProvince'
-      v-model:input-city='inputCity'
-      v-model:input-address='inputAddress'
+      v-model:edit-vendor-location='selectedVendorLocation'
       class='add-menu'
+      @update='onUpdateVendorLocation'
       @submit='onCreateVendorLocationSubmit'
     />
     <CreateFeeTypeMenu
@@ -112,14 +117,6 @@ enum AddingType {
 const addingType = ref(AddingType.AddingNone)
 const adding = ref(false)
 
-const inputDeviceType = ref('')
-const inputPriceCurrencyName = ref('')
-
-const inputCountry = ref('')
-const inputProvince = ref('')
-const inputCity = ref('')
-const inputAddress = ref('')
-
 const inputFeeType = ref('')
 const inputFeeDescription = ref('')
 const inputPayType = ref('')
@@ -160,21 +157,33 @@ const allGoods = computed(() => {
 const filterGoods = computed(() => allGoods.value)
 
 const allVendorLocations = computed(() => store.getters.getAllVendorLocations)
+const selectedVendorLocation = ref()
 const filterVendorLocations = computed(() => {
-  return allVendorLocations.value.filter((vendorLocation) => {
-    return vendorLocation.Country.toLowerCase().includes(inputCountry.value.toLowerCase()) &&
-      vendorLocation.Province.toLowerCase().includes(inputProvince.value.toLowerCase()) &&
-      vendorLocation.City.toLowerCase().includes(inputCity.value.toLowerCase()) &&
-      vendorLocation.Address.toLowerCase().includes(inputAddress.value.toLowerCase())
-  })
+  return addingType.value !== AddingType.AddingNone && selectedVendorLocation.value ? allVendorLocations.value.filter((loc) => {
+    const vLoc = selectedVendorLocation.value as VendorLocation
+    return loc.Address.toLowerCase().includes(vLoc.Address.toLowerCase()) &&
+      loc.City.toLowerCase().includes(vLoc.City.toLowerCase()) &&
+      loc.Country.toLowerCase().includes(vLoc.Country.toLowerCase()) &&
+      loc.Province.toLowerCase().includes(vLoc.Province.toLowerCase())
+  }) : allVendorLocations.value
 })
+const onVendorLocationClick = (vendorLocation: VendorLocation) => {
+  selectedVendorLocation.value = vendorLocation
+  addingType.value = AddingType.AddingVendorLocation
+}
 
 const allDevices = computed(() => store.getters.getAllDevices)
+const selectedDevice = ref()
 const filterDevices = computed(() => {
-  return allDevices.value.filter((device) => {
-    return device.Type.toLowerCase().includes(inputDeviceType.value.toLowerCase())
-  })
+  return addingType.value !== AddingType.AddingNone && selectedDevice.value ? allDevices.value.filter((dev) => {
+    const device = selectedDevice.value as DeviceInfo
+    return dev.Type.toLowerCase().includes(device.Type.toLowerCase())
+  }) : allDevices.value
 })
+const onDeviceClick = (device: DeviceInfo) => {
+  selectedDevice.value = device
+  addingType.value = AddingType.AddingDevice
+}
 
 const allCoins = computed(() => store.getters.getCoins)
 const selectedCoin = ref()
@@ -185,17 +194,13 @@ const onCoinClick = (coin: Coin) => {
 
 const allFeeTypes = computed(() => store.getters.getAllFeeTypes)
 const filterFeeTypes = computed(() => {
-  return allFeeTypes.value.filter((feeType) => {
-    return feeType.FeeType.toLowerCase().includes(inputFeeType.value.toLowerCase())
-  })
+  return allFeeTypes.value
 })
 const selectedFeeTypes = ref(allFeeTypes.value)
 
 const allPriceCurrencys = computed(() => store.getters.getAllPriceCurrencys)
 const filterPriceCurrencys = computed(() => {
-  return allPriceCurrencys.value.filter((priceCurrency) => {
-    return priceCurrency.Name.toLowerCase().includes(inputPriceCurrencyName.value.toLowerCase())
-  })
+  return allPriceCurrencys.value
 })
 
 // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -310,9 +315,18 @@ const onCreateCoinInfoClick = () => {
   addingType.value = AddingType.AddingCoinInfo
 }
 
+const onUpdateDevice = (device: DeviceInfo) => {
+  selectedDevice.value = device
+}
+
 const onCreateDeviceSubmit = (device: DeviceInfo) => {
   addingType.value = AddingType.AddingNone
-  store.dispatch(GoodActionTypes.CreateDevice, {
+  let action = GoodActionTypes.CreateDevice
+  if (device.ID && device.ID.length > 0) {
+    action = GoodActionTypes.UpdateDevice
+  }
+
+  store.dispatch(action, {
     Info: device,
     Message: {
       ModuleKey: ModuleKey.ModuleGoods,
@@ -323,13 +337,16 @@ const onCreateDeviceSubmit = (device: DeviceInfo) => {
       }
     }
   })
-  inputDeviceType.value = ''
 }
 
-const onCreateVendorLocationSubmit = (vendorLication: VendorLocation) => {
+const onUpdateVendorLocation = (vendorLication: VendorLocation) => {
+  selectedVendorLocation.value = vendorLication
+}
+
+const onCreateVendorLocationSubmit = (vendorLocation: VendorLocation) => {
   addingType.value = AddingType.AddingNone
   store.dispatch(GoodActionTypes.CreateVendorLocation, {
-    Info: vendorLication,
+    Info: vendorLocation,
     Message: {
       ModuleKey: ModuleKey.ModuleGoods,
       Error: {
@@ -339,11 +356,6 @@ const onCreateVendorLocationSubmit = (vendorLication: VendorLocation) => {
       }
     }
   })
-
-  inputCountry.value = ''
-  inputProvince.value = ''
-  inputCity.value = ''
-  inputAddress.value = ''
 }
 
 const onCreateFeeTypeSubmit = (feeType: FeeType) => {

@@ -192,6 +192,15 @@ interface GetAllGoodsResponse {
   Infos: ReadonlyArray<ExpandGood>
 }
 
+interface UpdateDeviceRequest {
+  Info: DeviceInfo
+  Message: ReqMessage
+}
+
+interface UpdateDeviceResponse {
+  Info: DeviceInfo
+}
+
 export {
   Good,
   GoodDetail,
@@ -225,5 +234,7 @@ export {
   GetAllPriceCurrencysRequest,
   GetAllPriceCurrencysResponse,
   CreatePriceCurrencyRequest,
-  CreatePriceCurrencyResponse
+  CreatePriceCurrencyResponse,
+  UpdateDeviceRequest,
+  UpdateDeviceResponse
 }

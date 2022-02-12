@@ -48,39 +48,42 @@
 </template>
 
 <script setup lang='ts'>
-import { ref, defineEmits, watch, withDefaults, defineProps, toRef } from 'vue'
+import { ref, defineEmits, watch, defineProps, toRef, computed } from 'vue'
 import { DeviceInfo } from 'src/store/goods/types'
 
-const manufacturer = ref('')
-const consumption = ref(0)
-const shipmentAt = ref(0)
-
 interface Props {
-  inputDeviceType: string
+  editDevice?: DeviceInfo
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  inputDeviceType: ''
-})
+const props = defineProps<Props>()
 
-const inputDeviceType = toRef(props, 'inputDeviceType')
-const myDeviceType = ref(inputDeviceType.value)
+const editDevice = toRef(props, 'editDevice')
+const myDeviceType = ref(editDevice.value?.Type)
 
-const emit = defineEmits<{(e: 'submit', info: DeviceInfo): void,
-  (e: 'update:inputDeviceType', type: string): void
-}>()
+const manufacturer = ref(editDevice.value?.Manufacturer)
+const consumption = ref(editDevice.value?.Consumption)
+const shipmentAt = ref(editDevice.value?.ShipmentAt)
 
-const onSubmit = () => {
-  emit('submit', {
+const device = computed(() => {
+  return {
+    ID: editDevice.value?.ID,
     Manufacturer: manufacturer.value,
     Consumption: consumption.value,
     ShipmentAt: shipmentAt.value,
-    Type: inputDeviceType.value
-  })
+    Type: myDeviceType.value
+  } as DeviceInfo
+})
+
+const emit = defineEmits<{(e: 'submit', info: DeviceInfo): void,
+  (e: 'update', info: DeviceInfo): void
+}>()
+
+const onSubmit = () => {
+  emit('submit', device.value)
 }
 
-watch(myDeviceType, function (val) {
-  emit('update:inputDeviceType', val)
+watch(device, function () {
+  emit('update', device.value)
 })
 
 </script>

@@ -48,63 +48,41 @@
 </template>
 
 <script setup lang='ts'>
-import { ref, defineEmits, watch, withDefaults, defineProps, toRef } from 'vue'
+import { ref, defineEmits, watch, defineProps, toRef, computed } from 'vue'
 import { VendorLocation } from 'src/store/goods/types'
 
 interface Props {
-  inputCountry: string
-  inputProvince: string
-  inputCity: string
-  inputAddress: string
+  editVendorLocation?: VendorLocation
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  inputCountry: '',
-  inputProvince: '',
-  inputCity: '',
-  inputAddress: ''
-})
+const props = defineProps<Props>()
+const editVendorLocation = toRef(props, 'editVendorLocation')
 
-const inputCountry = toRef(props, 'inputCountry')
-const inputProvince = toRef(props, 'inputProvince')
-const inputCity = toRef(props, 'inputCity')
-const inputAddress = toRef(props, 'inputAddress')
+const myCountry = ref(editVendorLocation.value?.Country)
+const myProvince = ref(editVendorLocation.value?.Province)
+const myCity = ref(editVendorLocation.value?.City)
+const myAddress = ref(editVendorLocation.value?.Address)
 
-const myCountry = ref(inputCountry.value)
-const myProvince = ref(inputProvince.value)
-const myCity = ref(inputCity.value)
-const myAddress = ref(inputAddress.value)
-
-const emit = defineEmits<{(e: 'submit', info: VendorLocation): void,
-  (e: 'update:inputCountry', type: string): void
-  (e: 'update:inputProvince', type: string): void
-  (e: 'update:inputCity', type: string): void
-  (e: 'update:inputAddress', type: string): void
-}>()
-
-const onSubmit = () => {
-  emit('submit', {
+const location = computed(() => {
+  return {
+    ID: editVendorLocation.value?.ID,
     Country: myCountry.value,
     Province: myProvince.value,
     City: myCity.value,
     Address: myAddress.value
-  })
+  } as VendorLocation
+})
+
+const emit = defineEmits<{(e: 'submit', info: VendorLocation): void,
+  (e: 'update', info: VendorLocation): void
+}>()
+
+const onSubmit = () => {
+  emit('submit', location.value)
 }
 
-watch(myCountry, function (val) {
-  emit('update:inputCountry', val)
-})
-
-watch(myProvince, function (val) {
-  emit('update:inputProvince', val)
-})
-
-watch(myCity, function (val) {
-  emit('update:inputCity', val)
-})
-
-watch(myAddress, function (val) {
-  emit('update:inputAddress', val)
+watch(location, () => {
+  emit('update', location.value)
 })
 
 </script>

@@ -5,7 +5,7 @@
     </q-card-section>
     <q-item-section>
       <q-input
-        v-model='name'
+        v-model='coinName'
         :label='$t("MSG_DISPLAY_NAME")'
       >
         <template #prepend>
@@ -13,7 +13,7 @@
         </template>
       </q-input>
       <q-input
-        v-model='unit'
+        v-model='coinUnit'
         :label='$t("MSG_UNIT")'
       >
         <template #prepend>
@@ -21,7 +21,7 @@
         </template>
       </q-input>
       <q-input
-        v-model='logo'
+        v-model='coinLogo'
         :label='$t("MSG_LOGO")'
       >
         <template #prepend>
@@ -29,7 +29,7 @@
         </template>
       </q-input>
       <q-input
-        v-model='reservedAmount'
+        v-model='coinReservedAmount'
         type='number'
         :label='$t("MSG_RESERVED_AMOUNT")'
         :rules='[(val: number) => val > 0 || $t("MSG_WARN_MUST_POSITIVE")]'
@@ -39,7 +39,7 @@
         </template>
       </q-input>
       <q-toggle
-        v-model='presale'
+        v-model='coinPresale'
         :label='$t("MSG_COIN_PRESALE_WARN")'
       />
     </q-item-section>
@@ -63,30 +63,20 @@ interface Props {
 
 const props = defineProps<Props>()
 const editCoin = toRef(props, 'editCoin')
-
-const coinName = computed(() => editCoin.value?.Name)
-const name = ref(coinName.value)
-
-const coinUnit = computed(() => editCoin.value?.Unit)
-const unit = ref(coinUnit.value)
-
-const coinLogo = computed(() => editCoin.value?.Logo)
-const logo = ref(coinLogo.value)
-
-const coinPresale = computed(() => editCoin.value?.PreSale ? editCoin.value?.PreSale : true)
-const presale = ref(coinPresale.value)
-
-const coinReservedAmount = computed(() => editCoin.value?.ReservedAmount)
-const reservedAmount = ref(coinReservedAmount.value)
+const coinName = ref(editCoin.value?.Name)
+const coinUnit = ref(editCoin.value?.Unit)
+const coinLogo = ref(editCoin.value?.Logo)
+const coinPresale = ref(editCoin.value?.PreSale)
+const coinReservedAmount = ref(editCoin.value?.ReservedAmount)
 
 const coin = computed(() => {
   return {
     ID: editCoin.value?.ID,
-    Name: name.value,
-    Unit: unit.value,
-    Logo: logo.value,
-    PreSale: presale.value,
-    ReservedAmount: reservedAmount.value,
+    Name: coinName.value,
+    Unit: coinUnit.value,
+    Logo: coinLogo.value,
+    PreSale: coinPresale.value,
+    ReservedAmount: coinReservedAmount.value,
     ENV: editCoin.value?.ENV
   } as Coin
 })
