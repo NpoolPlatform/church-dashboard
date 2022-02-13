@@ -32,7 +32,7 @@ interface UpdatePlatformSettingResponse {
 }
 
 interface CoinSetting {
-  ID: string
+  ID?: string
   CoinTypeID: string
   WarmAccountCoinAmount: number
 }
@@ -65,7 +65,7 @@ interface UpdateCoinSettingResponse {
 }
 
 interface GoodSetting {
-  ID: string
+  ID?: string
   GoodID: string
   WarmAccountCoinAmount: number
   WarmAccountUSDAmount: number

@@ -131,7 +131,9 @@ const actions: ActionTree<SettingsState, RootState> = {
       req,
       req.Message,
       (resp: GetPlatformSettingResponse): void => {
-        commit(MutationTypes.SetPlatformSetting, resp.Info)
+        if (resp.Info) {
+          commit(MutationTypes.SetPlatformSetting, resp.Info)
+        }
       })
   },
 
@@ -164,7 +166,9 @@ const actions: ActionTree<SettingsState, RootState> = {
       req,
       req.Message,
       (resp: GetCoinSettingByCoinResponse): void => {
-        commit(MutationTypes.SetCoinSetting, resp.Info)
+        if (resp.Info) {
+          commit(MutationTypes.SetCoinSetting, resp.Info)
+        }
       })
   },
 
@@ -197,7 +201,9 @@ const actions: ActionTree<SettingsState, RootState> = {
       req,
       req.Message,
       (resp: GetGoodSettingByGoodResponse): void => {
-        commit(MutationTypes.SetGoodSetting, resp.Info)
+        if (resp.Info) {
+          commit(MutationTypes.SetGoodSetting, resp.Info)
+        }
       })
   }
 }
