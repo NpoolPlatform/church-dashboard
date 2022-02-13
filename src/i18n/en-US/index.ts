@@ -155,5 +155,6 @@ export default {
   MSG_SET_AS_GOOD_USER_ONLINE_ACCOUNT: '设置为商品用户收益在线地址',
   MSG_SET_GOOD_BENEFIT_INTERVAL_HOURS: '设置商品收益间隔时间(小时)',
   MSG_ACCOUNT_ID: '账号ID',
-  MSG_CREATE_GOOD_BENEFIT_FAIL: 'You failed to create good benefit'
+  MSG_CREATE_GOOD_BENEFIT_FAIL: 'You failed to create good benefit',
+  MSG_CREATE_PLATFORM_COIN_ACCOUNT_FAIL: 'You failed to create platform coin account'
 }

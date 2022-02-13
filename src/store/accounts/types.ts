@@ -4,7 +4,7 @@ interface CoinAccount {
   ID?: string
   CoinTypeID: string
   Address: string
-  PlatformHoldPrivateKey: boolean
+  PlatformHoldPrivateKey?: boolean
 }
 
 interface GetCoinAccountsRequest {

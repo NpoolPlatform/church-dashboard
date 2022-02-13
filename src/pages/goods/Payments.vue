@@ -76,11 +76,17 @@
     square
     no-shake
     @hide='onMenuHide'
-  />
+  >
+    <CreatPlatformCoinAccount
+      v-if='addingType === AddingType.AddingPlatformCoinAccount'
+      v-model:edit-account='selectedAccount'
+      @submit='onCreatePlatformCoinAccountSubmit'
+    />
+  </q-dialog>
 </template>
 
 <script setup lang='ts'>
-import { onMounted, ref, computed, onUnmounted, watch } from 'vue'
+import { onMounted, ref, computed, onUnmounted, watch, defineAsyncComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useStore } from 'src/store'
@@ -95,6 +101,8 @@ import { GoodBase } from 'src/store/goods/types'
 import { ActionTypes as GoodActionTypes } from 'src/store/goods/action-types'
 import { DefaultID } from 'src/const/const'
 
+const CreatPlatformCoinAccount = defineAsyncComponent(() => import('src/components/good/CreatePlatformCoinAccount.vue'))
+
 const store = useStore()
 // eslint-disable-next-line @typescript-eslint/unbound-method
 const { t } = useI18n({ useScope: 'global' })
@@ -103,6 +111,13 @@ const loading = ref(true)
 const adding = ref(false)
 const updating = ref(false)
 const modifying = ref(false)
+
+enum AddingType {
+  AddingPlatformCoinAccount = 1,
+  AddingPlatformUserAccount = 2
+}
+
+const addingType = ref(AddingType.AddingPlatformCoinAccount)
 
 const accounts = computed(() => store.getters.getCoinAccounts)
 const candidateAccountID = ref('')
@@ -123,14 +138,32 @@ const onRowClick = (row: CoinAccount) => {
 
 const onCreatePlatformCoinAccountClick = () => {
   selectedAccount.value = undefined
+  addingType.value = AddingType.AddingPlatformCoinAccount
   adding.value = true
   modifying.value = true
 }
 
 const onCreateUserCoinAccountClick = () => {
   selectedAccount.value = undefined
+  addingType.value = AddingType.AddingPlatformUserAccount
   adding.value = true
   modifying.value = true
+}
+
+const onCreatePlatformCoinAccountSubmit = (coinID: string) => {
+  onMenuHide()
+
+  store.dispatch(AccountsActionTypes.CreatePlatformCoinAccount, {
+    CoinTypeID: coinID,
+    Message: {
+      ModuleKey: ModuleKey.ModuleGoods,
+      Error: {
+        Title: t('MSG_CREATE_PLATFORM_COIN_ACCOUNT_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+  })
 }
 
 const allGoods = computed(() => {
