@@ -163,5 +163,6 @@ export default {
   MSG_GOOD_SETTING: '商品设置',
   MSG_CREATE: '创建',
   MSG_GET_GOOD_SETTING_FAIL: 'You failed to get good setting',
-  MSG_GET_COIN_SETTING_FAIL: 'You failed to get coin setting'
+  MSG_GET_COIN_SETTING_FAIL: 'You failed to get coin setting',
+  MSG_CREATE_PLATFORM_SETTING_FAIL: 'You failed to create platform setting'
 }

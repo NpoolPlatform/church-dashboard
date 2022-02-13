@@ -10,21 +10,43 @@
     selection='single'
   />
   <q-table :title='$t("MSG_PLATFORM_SETTING")' flat dense :rows='[platformSetting]'>
-    <template v-if='!platformSetting.ID' #top-right>
+    <template #top-right>
       <div class='row'>
         <q-space />
-        <q-btn dense @click='onCreatPlatformSettingClick'>
+        <q-btn v-if='!platformSetting.ID' dense @click='onCreatPlatformSettingClick'>
           {{ $t('MSG_CREATE') }}
+        </q-btn>
+        <q-btn v-else dense @click='onCreatPlatformSettingClick'>
+          {{ $t('MSG_SUBMIT') }}
         </q-btn>
       </div>
     </template>
+    <template #body='props'>
+      <q-tr :props='props'>
+        <q-td key='ID' :props='props'>
+          {{ props.row.ID }}
+        </q-td>
+        <q-td key='WarmAccountUSDAmount' :props='props'>
+          {{ props.row.WarmAccountUSDAmount }}
+          <q-popup-edit v-slot='scope' v-model='warmAccountUSDAmount' buttons persistent>
+            <q-input
+              v-model='scope.value' type='number'
+              dense autofocus counter
+            />
+          </q-popup-edit>
+        </q-td>
+      </q-tr>
+    </template>
   </q-table>
   <q-table :title='$t("MSG_COIN_SETTING")' flat dense :rows='coinSetting ? [coinSetting] : []'>
-    <template v-if='!coinSetting' #top-right>
+    <template #top-right>
       <div class='row'>
         <q-space />
-        <q-btn dense @click='onCreatCoinSettingClick'>
+        <q-btn v-if='!coinSetting' dense @click='onCreatCoinSettingClick'>
           {{ $t('MSG_CREATE') }}
+        </q-btn>
+        <q-btn v-else dense @click='onCreatCoinSettingClick'>
+          {{ $t('MSG_SUBMIT') }}
         </q-btn>
       </div>
     </template>
@@ -48,6 +70,7 @@ import { useStore } from 'src/store'
 import { ActionTypes as GoodActionTypes } from 'src/store/goods/action-types'
 import { ActionTypes as CoinActionTypes } from 'src/store/coins/action-types'
 import { ActionTypes as SettingActionTypes } from 'src/store/settings/action-types'
+import { MutationTypes as SettingMutationTypes } from 'src/store/settings/mutation-types'
 import { MutationTypes as NotificationMutationTypes } from 'src/store/notifications/mutation-types'
 import { ModuleKey, Type as NotificationType } from 'src/store/notifications/const'
 import { notify, notificationPop } from 'src/store/notifications/helper'
@@ -55,6 +78,7 @@ import { useI18n } from 'vue-i18n'
 import { GoodBase } from 'src/store/goods/types'
 import { FunctionVoid } from 'src/types/types'
 import { Coin } from 'src/store/coins/types'
+import { DefaultID } from 'src/const/const'
 
 const store = useStore()
 
@@ -127,12 +151,38 @@ watch(selectedCoin, () => {
 })
 
 const platformSetting = computed(() => store.getters.getPlatformSetting)
+const myWarmAccountUSDAmount = computed(() => platformSetting.value.WarmAccountUSDAmount)
+
+const warmAccountUSDAmount = ref(platformSetting.value.WarmAccountUSDAmount)
+watch(myWarmAccountUSDAmount, () => {
+  warmAccountUSDAmount.value = myWarmAccountUSDAmount.value
+})
+watch(warmAccountUSDAmount, () => {
+  store.commit(SettingMutationTypes.SetPlatformSetting, {
+    ID: platformSetting.value.ID,
+    WarmAccountUSDAmount: warmAccountUSDAmount.value
+  })
+})
 
 // eslint-disable-next-line @typescript-eslint/unbound-method
 const { t } = useI18n({ useScope: 'global' })
 
 const onCreatPlatformSettingClick = () => {
-  console.log('TODO')
+  let action = SettingActionTypes.CreatePlatformSetting
+  if (platformSetting.value.ID !== DefaultID) {
+    action = SettingActionTypes.UpdatePlatformSetting
+  }
+  store.dispatch(action, {
+    Info: platformSetting.value,
+    Message: {
+      ModuleKey: ModuleKey.ModuleGoods,
+      Error: {
+        Title: t('MSG_CREATE_PLATFORM_SETTING_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+  })
 }
 
 const onCreatCoinSettingClick = () => {
