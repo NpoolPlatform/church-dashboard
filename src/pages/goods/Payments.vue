@@ -79,8 +79,13 @@
   >
     <CreatPlatformCoinAccount
       v-if='addingType === AddingType.AddingPlatformCoinAccount'
-      v-model:edit-account='selectedAccount'
       @submit='onCreatePlatformCoinAccountSubmit'
+    />
+    <CreatUserCoinAccount
+      v-if='addingType === AddingType.AddingUserCoinAccount'
+      v-model:edit-account='selectedAccount'
+      @update='onUpdateUserCoinAccount'
+      @submit='onCreateUserCoinAccountSubmit'
     />
   </q-dialog>
 </template>
@@ -102,6 +107,7 @@ import { ActionTypes as GoodActionTypes } from 'src/store/goods/action-types'
 import { DefaultID } from 'src/const/const'
 
 const CreatPlatformCoinAccount = defineAsyncComponent(() => import('src/components/good/CreatePlatformCoinAccount.vue'))
+const CreatUserCoinAccount = defineAsyncComponent(() => import('src/components/good/CreateUserCoinAccount.vue'))
 
 const store = useStore()
 // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -114,7 +120,7 @@ const modifying = ref(false)
 
 enum AddingType {
   AddingPlatformCoinAccount = 1,
-  AddingPlatformUserAccount = 2
+  AddingUserCoinAccount = 2
 }
 
 const addingType = ref(AddingType.AddingPlatformCoinAccount)
@@ -132,6 +138,7 @@ const candidateAccount = ref([] as Array<CoinAccount>)
 
 const onRowClick = (row: CoinAccount) => {
   selectedAccount.value = row
+  addingType.value = AddingType.AddingUserCoinAccount
   updating.value = true
   modifying.value = true
 }
@@ -145,7 +152,7 @@ const onCreatePlatformCoinAccountClick = () => {
 
 const onCreateUserCoinAccountClick = () => {
   selectedAccount.value = undefined
-  addingType.value = AddingType.AddingPlatformUserAccount
+  addingType.value = AddingType.AddingUserCoinAccount
   adding.value = true
   modifying.value = true
 }
@@ -159,6 +166,26 @@ const onCreatePlatformCoinAccountSubmit = (coinID: string) => {
       ModuleKey: ModuleKey.ModuleGoods,
       Error: {
         Title: t('MSG_CREATE_PLATFORM_COIN_ACCOUNT_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+  })
+}
+
+const onUpdateUserCoinAccount = (account: CoinAccount) => {
+  console.log(account)
+}
+
+const onCreateUserCoinAccountSubmit = (account: CoinAccount) => {
+  onMenuHide()
+
+  store.dispatch(AccountsActionTypes.CreateUserCoinAccount, {
+    Info: account,
+    Message: {
+      ModuleKey: ModuleKey.ModuleGoods,
+      Error: {
+        Title: t('MSG_CREATE_USER_COIN_ACCOUNT_FAIL'),
         Popup: true,
         Type: NotificationType.Error
       }
@@ -199,6 +226,8 @@ watch(selectedGood, () => {
         }
       }
     })
+
+    myGoodBenefit.value.GoodID = good.ID as string
   })
 })
 const goodBenefit = computed(() => {
@@ -219,6 +248,9 @@ const goodBenefit = computed(() => {
   } as GoodBenefit
 })
 const myGoodBenefit = ref(goodBenefit.value)
+watch(goodBenefit, () => {
+  myGoodBenefit.value = goodBenefit.value
+})
 
 const goodPayments = computed(() => {
   if (selectedGood.value && selectedGood.value.length > 0) {

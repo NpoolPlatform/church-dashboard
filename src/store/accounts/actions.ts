@@ -138,7 +138,7 @@ const actions: ActionTree<CoinAccountsState, RootState> = {
   [ActionTypes.CreateUserCoinAccount] ({ commit }, req: CreateUserCoinAccountRequest) {
     doAction<CreateUserCoinAccountRequest, CreateUserCoinAccountResoponse>(
       commit,
-      API.CREATE_PLATFORM_COIN_ACCOUNT,
+      API.CREATE_USER_COIN_ACCOUNT,
       req,
       req.Message,
       (resp: CreateUserCoinAccountResoponse): void => {

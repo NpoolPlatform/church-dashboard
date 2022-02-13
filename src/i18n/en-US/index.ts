@@ -156,5 +156,6 @@ export default {
   MSG_SET_GOOD_BENEFIT_INTERVAL_HOURS: '设置商品收益间隔时间(小时)',
   MSG_ACCOUNT_ID: '账号ID',
   MSG_CREATE_GOOD_BENEFIT_FAIL: 'You failed to create good benefit',
-  MSG_CREATE_PLATFORM_COIN_ACCOUNT_FAIL: 'You failed to create platform coin account'
+  MSG_CREATE_PLATFORM_COIN_ACCOUNT_FAIL: 'You failed to create platform coin account',
+  MSG_CREATE_USER_COIN_ACCOUNT_FAIL: 'You failed to create user coin account'
 }
