@@ -181,19 +181,27 @@ const onSetGoodBenefitIntervalHoursClick = () => {
 }
 
 const onSetAsGoodBenefitAccountClick = () => {
-  myGoodBenefit.value.BenefitAccountID = candidateAccount.value[0].ID as string
+  if (candidateAccount.value[0].PlatformHoldPrivateKey) {
+    myGoodBenefit.value.BenefitAccountID = candidateAccount.value[0].ID as string
+  }
 }
 
 const onSetAsGoodPlatformOfflineAccountClick = () => {
-  myGoodBenefit.value.PlatformOfflineAccountID = candidateAccount.value[0].ID as string
+  if (candidateAccount.value[0].PlatformHoldPrivateKey) {
+    myGoodBenefit.value.PlatformOfflineAccountID = candidateAccount.value[0].ID as string
+  }
 }
 
 const onSetAsGoodUserOfflineClick = () => {
-  myGoodBenefit.value.UserOfflineAccountID = candidateAccount.value[0].ID as string
+  if (candidateAccount.value[0].PlatformHoldPrivateKey) {
+    myGoodBenefit.value.UserOfflineAccountID = candidateAccount.value[0].ID as string
+  }
 }
 
 const onSetAsGoodUserOnlineClick = () => {
-  myGoodBenefit.value.UserOnlineAccountID = candidateAccount.value[0].ID as string
+  if (candidateAccount.value[0].PlatformHoldPrivateKey) {
+    myGoodBenefit.value.UserOnlineAccountID = candidateAccount.value[0].ID as string
+  }
 }
 
 const onGoodPaymentSubmit = () => {
