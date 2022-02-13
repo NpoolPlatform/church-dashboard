@@ -73,7 +73,7 @@
     flat
     dense
     :rows='goodPayments'
-    :title='t("MSG_GOOD_PAYMENT_SETTING")'
+    :title='t("MSG_GOOD_PAYMENT_ADDRESS_LIST")'
   />
   <q-table
     flat

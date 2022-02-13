@@ -167,7 +167,7 @@ export default {
   MSG_GET_COIN_SETTING_FAIL: 'You failed to get coin setting',
   MSG_CREATE_PLATFORM_SETTING_FAIL: 'You failed to create platform setting',
   MSG_GOOD_BENEFIT_SETTING: '商品收益设置',
-  MSG_GOOD_PAYMENT_SETTING: '商品支付设置',
+  MSG_GOOD_PAYMENT_ADDRESS_LIST: '商品支付地址列表',
   MSG_GOOD_INCOMING_SETTING: '商品资金管理设置',
   MSG_GOOD_LIST: '商品列表',
   MSG_GET_GOOD_INCOMINGS_FAIL: 'You failed to get good incomings',
