@@ -76,11 +76,12 @@ const selectedCoinIndex = computed(() => {
   }
   return 0
 })
+const mySelectedCoinIndex = ref(selectedCoinIndex.value)
 const myCoinType = computed(() => {
-  return coins.value && coins.value.length > 0 ? coins.value[selectedCoinIndex.value].Name : undefined
+  return coins.value && coins.value.length > 0 ? coins.value[mySelectedCoinIndex.value].Name : undefined
 })
 const coinID = computed(() => {
-  return coins.value && coins.value.length > 0 ? coins.value[selectedCoinIndex.value].ID : undefined
+  return coins.value && coins.value.length > 0 ? coins.value[mySelectedCoinIndex.value].ID : undefined
 })
 const myAddress = ref(editAccount.value?.Address)
 
@@ -106,7 +107,7 @@ watch(account, () => {
 })
 
 const onCoinItemClick = (index: number) => {
-  selectedCoinIndex.value = index
+  mySelectedCoinIndex.value = index
 }
 
 onMounted(() => {

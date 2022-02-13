@@ -157,5 +157,7 @@ export default {
   MSG_ACCOUNT_ID: '账号ID',
   MSG_CREATE_GOOD_BENEFIT_FAIL: 'You failed to create good benefit',
   MSG_CREATE_PLATFORM_COIN_ACCOUNT_FAIL: 'You failed to create platform coin account',
-  MSG_CREATE_USER_COIN_ACCOUNT_FAIL: 'You failed to create user coin account'
+  MSG_CREATE_USER_COIN_ACCOUNT_FAIL: 'You failed to create user coin account',
+  MSG_PLATFORM_SETTING: '平台全局设置',
+  MSG_CREATE: '创建'
 }
