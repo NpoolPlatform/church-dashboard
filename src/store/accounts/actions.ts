@@ -6,7 +6,7 @@ import { AugmentedActionContext, RootState } from '../index'
 import { CoinAccountMutations } from './mutations'
 import { API } from './const'
 import { doAction } from '../action'
-import { GetCoinAccountsRequest, GetCoinAccountsResponse, GetGoodBenefitByGoodRequest, GetGoodBenefitByGoodResponse, GetGoodPaymentsByGoodRequest, GetGoodPaymentsByGoodResponse } from './types'
+import { CreateGoodBenefitRequest, CreateGoodBenefitResponse, CreatePlatformCoinAccountRequest, CreatePlatformCoinAccountResoponse, CreateUserCoinAccountRequest, CreateUserCoinAccountResoponse, GetCoinAccountsRequest, GetCoinAccountsResponse, GetGoodBenefitByGoodRequest, GetGoodBenefitByGoodResponse, GetGoodPaymentsByGoodRequest, GetGoodPaymentsByGoodResponse, UpdateGoodBenefitRequest, UpdateGoodBenefitResponse } from './types'
 
 interface CoinAccountActions {
   [ActionTypes.GetCoinAccounts]({
@@ -32,6 +32,38 @@ interface CoinAccountActions {
     RootState,
     CoinAccountMutations<CoinAccountsState>>,
     req: GetGoodPaymentsByGoodRequest): void
+
+  [ActionTypes.CreateGoodBenefit]({
+    commit
+  }: AugmentedActionContext<
+  CoinAccountsState,
+    RootState,
+    CoinAccountMutations<CoinAccountsState>>,
+    req: CreateGoodBenefitRequest): void
+
+  [ActionTypes.UpdateGoodBenefit]({
+    commit
+  }: AugmentedActionContext<
+  CoinAccountsState,
+    RootState,
+    CoinAccountMutations<CoinAccountsState>>,
+    req: UpdateGoodBenefitRequest): void
+
+  [ActionTypes.CreatePlatformCoinAccount]({
+    commit
+  }: AugmentedActionContext<
+  CoinAccountsState,
+    RootState,
+    CoinAccountMutations<CoinAccountsState>>,
+    req: CreatePlatformCoinAccountRequest): void
+
+  [ActionTypes.CreateUserCoinAccount]({
+    commit
+  }: AugmentedActionContext<
+  CoinAccountsState,
+    RootState,
+    CoinAccountMutations<CoinAccountsState>>,
+    req: CreateUserCoinAccountRequest): void
 }
 
 const actions: ActionTree<CoinAccountsState, RootState> = {
@@ -67,6 +99,50 @@ const actions: ActionTree<CoinAccountsState, RootState> = {
       req.Message,
       (resp: GetGoodPaymentsByGoodResponse): void => {
         commit(MutationTypes.SetGoodPayments, resp.Infos)
+      })
+  },
+
+  [ActionTypes.CreateGoodBenefit] ({ commit }, req: CreateGoodBenefitRequest) {
+    doAction<CreateGoodBenefitRequest, CreateGoodBenefitResponse>(
+      commit,
+      API.CREATE_GOOD_BENEFIT,
+      req,
+      req.Message,
+      (resp: CreateGoodBenefitResponse): void => {
+        commit(MutationTypes.SetGoodBenefit, resp.Info)
+      })
+  },
+
+  [ActionTypes.UpdateGoodBenefit] ({ commit }, req: UpdateGoodBenefitRequest) {
+    doAction<UpdateGoodBenefitRequest, UpdateGoodBenefitResponse>(
+      commit,
+      API.UPDATE_GOOD_BENEFIT,
+      req,
+      req.Message,
+      (resp: UpdateGoodBenefitResponse): void => {
+        commit(MutationTypes.SetGoodBenefit, resp.Info)
+      })
+  },
+
+  [ActionTypes.CreatePlatformCoinAccount] ({ commit }, req: CreatePlatformCoinAccountRequest) {
+    doAction<CreatePlatformCoinAccountRequest, CreatePlatformCoinAccountResoponse>(
+      commit,
+      API.CREATE_PLATFORM_COIN_ACCOUNT,
+      req,
+      req.Message,
+      (resp: CreatePlatformCoinAccountResoponse): void => {
+        commit(MutationTypes.SetCoinAccount, resp.Info)
+      })
+  },
+
+  [ActionTypes.CreateUserCoinAccount] ({ commit }, req: CreateUserCoinAccountRequest) {
+    doAction<CreateUserCoinAccountRequest, CreateUserCoinAccountResoponse>(
+      commit,
+      API.CREATE_PLATFORM_COIN_ACCOUNT,
+      req,
+      req.Message,
+      (resp: CreateUserCoinAccountResoponse): void => {
+        commit(MutationTypes.SetCoinAccount, resp.Info)
       })
   }
 }

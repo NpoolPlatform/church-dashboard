@@ -8,6 +8,7 @@ interface Coin {
   Logo: string
   ReservedAmount: number
   ENV: string
+  ForPay: boolean
 }
 
 interface GetCoinsResponse {

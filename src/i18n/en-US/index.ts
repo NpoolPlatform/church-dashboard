@@ -144,7 +144,8 @@ export default {
   MSG_INPUT_API: '输入API',
   MSG_COIN_PRESALE_WARN: '预售币种修改可能引起系统风险, 请明确知道你在做什么',
   MSG_WARN_MUST_POSITIVE: '必须为正数',
-  MSG_CREATE_COIN_ACCOUNT: '创建账户',
+  MSG_CREATE_PLATFORM_COIN_ACCOUNT: '创建平台托管账户',
+  MSG_CREATE_USER_HOLD_ACCOUNT: '创建用户持有账户',
   MSG_GET_COIN_ACCOUNTS_FAIL: 'You failed to get accounts',
   MSG_GET_GOOD_BENEFIT_FAIL: 'You failed to get good benefit',
   MSG_GET_GOOD_PAYMENT_FAIL: 'You failed to get good payment',
@@ -153,5 +154,6 @@ export default {
   MSG_SET_AS_GOOD_USER_OFFLINE_ACCOUNT: '设置为商品用户收益离线地址',
   MSG_SET_AS_GOOD_USER_ONLINE_ACCOUNT: '设置为商品用户收益在线地址',
   MSG_SET_GOOD_BENEFIT_INTERVAL_HOURS: '设置商品收益间隔时间(小时)',
-  MSG_ACCOUNT_ID: '账号ID'
+  MSG_ACCOUNT_ID: '账号ID',
+  MSG_CREATE_GOOD_BENEFIT_FAIL: 'You failed to create good benefit'
 }

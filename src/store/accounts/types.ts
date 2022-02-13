@@ -34,6 +34,24 @@ interface GetGoodBenefitByGoodResponse {
   Info: GoodBenefit
 }
 
+interface CreateGoodBenefitRequest {
+  Info: GoodBenefit
+  Message: ReqMessage
+}
+
+interface CreateGoodBenefitResponse {
+  Info: GoodBenefit
+}
+
+interface UpdateGoodBenefitRequest {
+  Info: GoodBenefit
+  Message: ReqMessage
+}
+
+interface UpdateGoodBenefitResponse {
+  Info: GoodBenefit
+}
+
 interface GoodPayment {
   ID: string
   GoodID: string
@@ -51,6 +69,24 @@ interface GetGoodPaymentsByGoodResponse {
   Infos: Array<GoodPayment>
 }
 
+interface CreatePlatformCoinAccountRequest {
+  CoinTypeID: string
+  Message: ReqMessage
+}
+
+interface CreatePlatformCoinAccountResoponse {
+  Info: CoinAccount
+}
+
+interface CreateUserCoinAccountRequest {
+  Info: CoinAccount
+  Message: ReqMessage
+}
+
+interface CreateUserCoinAccountResoponse {
+  Info: CoinAccount
+}
+
 export {
   CoinAccount,
   GetCoinAccountsRequest,
@@ -58,7 +94,15 @@ export {
   GoodBenefit,
   GetGoodBenefitByGoodRequest,
   GetGoodBenefitByGoodResponse,
+  CreateGoodBenefitRequest,
+  CreateGoodBenefitResponse,
+  UpdateGoodBenefitRequest,
+  UpdateGoodBenefitResponse,
   GoodPayment,
   GetGoodPaymentsByGoodRequest,
-  GetGoodPaymentsByGoodResponse
+  GetGoodPaymentsByGoodResponse,
+  CreatePlatformCoinAccountRequest,
+  CreatePlatformCoinAccountResoponse,
+  CreateUserCoinAccountRequest,
+  CreateUserCoinAccountResoponse
 }

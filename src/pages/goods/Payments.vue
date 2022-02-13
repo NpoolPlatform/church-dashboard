@@ -30,8 +30,11 @@
         <q-btn dense @click='onSetAsGoodUserOnlineClick'>
           {{ $t('MSG_SET_AS_GOOD_USER_ONLINE_ACCOUNT') }}
         </q-btn>
-        <q-btn dense @click='onCreateCoinAccountClick'>
-          {{ $t('MSG_CREATE_COIN_ACCOUNT') }}
+        <q-btn dense @click='onCreatePlatformCoinAccountClick'>
+          {{ $t('MSG_CREATE_PLATFORM_COIN_ACCOUNT') }}
+        </q-btn>
+        <q-btn dense @click='onCreateUserCoinAccountClick'>
+          {{ $t('MSG_CREATE_USER_HOLD_ACCOUNT') }}
         </q-btn>
       </div>
     </template>
@@ -118,7 +121,13 @@ const onRowClick = (row: CoinAccount) => {
   modifying.value = true
 }
 
-const onCreateCoinAccountClick = () => {
+const onCreatePlatformCoinAccountClick = () => {
+  selectedAccount.value = undefined
+  adding.value = true
+  modifying.value = true
+}
+
+const onCreateUserCoinAccountClick = () => {
   selectedAccount.value = undefined
   adding.value = true
   modifying.value = true
@@ -161,10 +170,19 @@ watch(selectedGood, () => {
 })
 const goodBenefit = computed(() => {
   if (selectedGood.value && selectedGood.value.length > 0) {
-    return store.getters.getGoodBenefitByGood(selectedGood.value[0].ID as string)
+    const benefit = store.getters.getGoodBenefitByGood(selectedGood.value[0].ID as string)
+    if (benefit) {
+      return benefit
+    }
   }
   return {
-    ID: DefaultID
+    ID: DefaultID,
+    GoodID: DefaultID,
+    BenefitAccountID: DefaultID,
+    PlatformOfflineAccountID: DefaultID,
+    UserOfflineAccountID: DefaultID,
+    UserOnlineAccountID: DefaultID,
+    BenefitIntervalHours: 24
   } as GoodBenefit
 })
 const myGoodBenefit = ref(goodBenefit.value)
@@ -187,13 +205,13 @@ const onSetAsGoodBenefitAccountClick = () => {
 }
 
 const onSetAsGoodPlatformOfflineAccountClick = () => {
-  if (candidateAccount.value[0].PlatformHoldPrivateKey) {
+  if (!candidateAccount.value[0].PlatformHoldPrivateKey) {
     myGoodBenefit.value.PlatformOfflineAccountID = candidateAccount.value[0].ID as string
   }
 }
 
 const onSetAsGoodUserOfflineClick = () => {
-  if (candidateAccount.value[0].PlatformHoldPrivateKey) {
+  if (!candidateAccount.value[0].PlatformHoldPrivateKey) {
     myGoodBenefit.value.UserOfflineAccountID = candidateAccount.value[0].ID as string
   }
 }
@@ -208,7 +226,23 @@ const onGoodPaymentSubmit = () => {
   if (!selectedGood.value || selectedGood.value.length === 0) {
     return
   }
-  console.log(myGoodBenefit.value)
+
+  let action = AccountsActionTypes.CreateGoodBenefit
+  if (myGoodBenefit.value.ID && myGoodBenefit.value.ID.length > 0 && myGoodBenefit.value.ID !== DefaultID) {
+    action = AccountsActionTypes.UpdateGoodBenefit
+  }
+
+  store.dispatch(action, {
+    Info: myGoodBenefit.value,
+    Message: {
+      ModuleKey: ModuleKey.ModuleGoods,
+      Error: {
+        Title: t('MSG_CREATE_GOOD_BENEFIT_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+  })
 }
 
 const unsubscribe = ref<FunctionVoid>()
