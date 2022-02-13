@@ -118,6 +118,7 @@ import { GoodBase } from 'src/store/goods/types'
 import { ActionTypes as GoodActionTypes } from 'src/store/goods/action-types'
 import { DefaultID } from 'src/const/const'
 import { ActionTypes as SettingActionTypes } from 'src/store/settings/action-types'
+import { GoodIncoming } from 'src/store/settings/types'
 
 const CreatPlatformCoinAccount = defineAsyncComponent(() => import('src/components/good/CreatePlatformCoinAccount.vue'))
 const CreatUserCoinAccount = defineAsyncComponent(() => import('src/components/good/CreateUserCoinAccount.vue'))
@@ -295,16 +296,15 @@ const onCreateGoodIncomingClick = () => {
   if (selectedGood.value && selectedGood.value.length > 0) {
     if (!candidateAccount.value[0].PlatformHoldPrivateKey) {
       let action = SettingActionTypes.CreateGoodIncoming
-      let incoming = {
+      const incoming = {
         GoodID: selectedGood.value[0].ID as string,
         CoinTypeID: candidateAccount.value[0].CoinTypeID,
         AccountID: candidateAccount.value[0].ID as string
-      }
+      } as GoodIncoming
       if (goodIncomings.value) {
         for (let i = 0; i < goodIncomings.value.length; i++) {
           if (goodIncomings.value[i].CoinTypeID === candidateAccount.value[0].CoinTypeID) {
-            incoming = goodIncomings.value[i]
-            incoming.AccountID = candidateAccount.value[0].ID as string
+            incoming.ID = goodIncomings.value[i].ID
             action = SettingActionTypes.UpdateGoodIncoming
             break
           }
