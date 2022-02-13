@@ -159,5 +159,9 @@ export default {
   MSG_CREATE_PLATFORM_COIN_ACCOUNT_FAIL: 'You failed to create platform coin account',
   MSG_CREATE_USER_COIN_ACCOUNT_FAIL: 'You failed to create user coin account',
   MSG_PLATFORM_SETTING: '平台全局设置',
-  MSG_CREATE: '创建'
+  MSG_COIN_SETTING: '币种全局设置',
+  MSG_GOOD_SETTING: '商品设置',
+  MSG_CREATE: '创建',
+  MSG_GET_GOOD_SETTING_FAIL: 'You failed to get good setting',
+  MSG_GET_COIN_SETTING_FAIL: 'You failed to get coin setting'
 }

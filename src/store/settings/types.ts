@@ -37,11 +37,65 @@ interface CoinSetting {
   WarmAccountCoinAmount: number
 }
 
+interface GetCoinSettingByCoinRequest {
+  CoinTypeID: string
+  Message: ReqMessage
+}
+
+interface GetCoinSettingByCoinResponse {
+  Info: CoinSetting
+}
+
+interface CreateCoinSettingRequest {
+  Info: CoinSetting
+  Message: ReqMessage
+}
+
+interface CreateCoinSettingResponse {
+  Info: CoinSetting
+}
+
+interface UpdateCoinSettingRequest {
+  Info: CoinSetting
+  Message: ReqMessage
+}
+
+interface UpdateCoinSettingResponse {
+  Info: CoinSetting
+}
+
 interface GoodSetting {
   ID: string
   GoodID: string
   WarmAccountCoinAmount: number
   WarmAccountUSDAmount: number
+}
+
+interface GetGoodSettingByGoodRequest {
+  GoodID: string
+  Message: ReqMessage
+}
+
+interface GetGoodSettingByGoodResponse {
+  Info: GoodSetting
+}
+
+interface CreateGoodSettingRequest {
+  Info: GoodSetting
+  Message: ReqMessage
+}
+
+interface CreateGoodSettingResponse {
+  Info: GoodSetting
+}
+
+interface UpdateGoodSettingRequest {
+  Info: GoodSetting
+  Message: ReqMessage
+}
+
+interface UpdateGoodSettingResponse {
+  Info: GoodSetting
 }
 
 export {
@@ -53,5 +107,17 @@ export {
   UpdatePlatformSettingRequest,
   UpdatePlatformSettingResponse,
   CoinSetting,
-  GoodSetting
+  GetCoinSettingByCoinRequest,
+  GetCoinSettingByCoinResponse,
+  CreateCoinSettingRequest,
+  CreateCoinSettingResponse,
+  UpdateCoinSettingRequest,
+  UpdateCoinSettingResponse,
+  GoodSetting,
+  GetGoodSettingByGoodRequest,
+  GetGoodSettingByGoodResponse,
+  CreateGoodSettingRequest,
+  CreateGoodSettingResponse,
+  UpdateGoodSettingRequest,
+  UpdateGoodSettingResponse
 }

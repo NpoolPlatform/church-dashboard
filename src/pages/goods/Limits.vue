@@ -1,6 +1,14 @@
 <template>
-  <q-table :title='$t("MSG_COIN")' flat dense :rows='allCoins' />
-  <q-table :title='$t("MSG_GOOD")' flat dense :rows='allGoods' />
+  <q-table
+    v-model:selected='selectedCoin'
+    :title='$t("MSG_COIN")' flat dense :rows='allCoins'
+    selection='single'
+  />
+  <q-table
+    v-model:selected='selectedGood'
+    :title='$t("MSG_GOOD")' flat dense :rows='allGoods'
+    selection='single'
+  />
   <q-table :title='$t("MSG_PLATFORM_SETTING")' flat dense :rows='[platformSetting]'>
     <template v-if='!platformSetting.ID' #top-right>
       <div class='row'>
@@ -11,10 +19,30 @@
       </div>
     </template>
   </q-table>
+  <q-table :title='$t("MSG_COIN_SETTING")' flat dense :rows='coinSetting ? [coinSetting] : []'>
+    <template v-if='!coinSetting' #top-right>
+      <div class='row'>
+        <q-space />
+        <q-btn dense @click='onCreatCoinSettingClick'>
+          {{ $t('MSG_CREATE') }}
+        </q-btn>
+      </div>
+    </template>
+  </q-table>
+  <q-table :title='$t("MSG_COIN_SETTING")' flat dense :rows='goodSetting ? [goodSetting] : []'>
+    <template v-if='!goodSetting' #top-right>
+      <div class='row'>
+        <q-space />
+        <q-btn dense @click='onCreatGoodSettingClick'>
+          {{ $t('MSG_CREATE') }}
+        </q-btn>
+      </div>
+    </template>
+  </q-table>
 </template>
 
 <script setup lang='ts'>
-import { onMounted, computed, ref } from 'vue'
+import { onMounted, computed, ref, watch } from 'vue'
 import { useStore } from 'src/store'
 
 import { ActionTypes as GoodActionTypes } from 'src/store/goods/action-types'
@@ -26,6 +54,7 @@ import { notify, notificationPop } from 'src/store/notifications/helper'
 import { useI18n } from 'vue-i18n'
 import { GoodBase } from 'src/store/goods/types'
 import { FunctionVoid } from 'src/types/types'
+import { Coin } from 'src/store/coins/types'
 
 const store = useStore()
 
@@ -50,14 +79,67 @@ const allGoods = computed(() => {
   })
   return goods
 })
+const selectedGood = ref([] as Array<GoodBase>)
+const goodSetting = computed(() => {
+  if (!selectedGood.value || selectedGood.value.length === 0) {
+    return undefined
+  }
+  return store.getters.getGoodSettingByGood(selectedGood.value[0].ID as string)
+})
+watch(selectedGood, () => {
+  selectedGood.value.forEach((good) => {
+    store.dispatch(SettingActionTypes.GetGoodSettingByGood, {
+      GoodID: good.ID as string,
+      Message: {
+        ModuleKey: ModuleKey.ModuleGoods,
+        Error: {
+          Title: t('MSG_GET_GOOD_SETTING_FAIL'),
+          Popup: true,
+          Type: NotificationType.Error
+        }
+      }
+    })
+  })
+})
 
 const allCoins = computed(() => store.getters.getCoins)
+const selectedCoin = ref([] as Array<Coin>)
+const coinSetting = computed(() => {
+  if (!selectedCoin.value || selectedCoin.value.length === 0) {
+    return undefined
+  }
+  return store.getters.getCoinSettingByCoin(selectedCoin.value[0].ID as string)
+})
+watch(selectedCoin, () => {
+  selectedCoin.value.forEach((coin) => {
+    store.dispatch(SettingActionTypes.GetCoinSettingByCoin, {
+      CoinTypeID: coin.ID as string,
+      Message: {
+        ModuleKey: ModuleKey.ModuleGoods,
+        Error: {
+          Title: t('MSG_GET_COIN_SETTING_FAIL'),
+          Popup: true,
+          Type: NotificationType.Error
+        }
+      }
+    })
+  })
+})
+
 const platformSetting = computed(() => store.getters.getPlatformSetting)
 
 // eslint-disable-next-line @typescript-eslint/unbound-method
 const { t } = useI18n({ useScope: 'global' })
 
 const onCreatPlatformSettingClick = () => {
+  console.log('TODO')
+}
+
+const onCreatCoinSettingClick = () => {
+  console.log('TODO')
+}
+
+const onCreatGoodSettingClick = () => {
   console.log('TODO')
 }
 
