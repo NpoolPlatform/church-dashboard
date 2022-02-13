@@ -36,6 +36,9 @@
         <q-btn dense @click='onCreateUserCoinAccountClick'>
           {{ $t('MSG_CREATE_USER_HOLD_ACCOUNT') }}
         </q-btn>
+        <q-btn dense @click='onCreateGoodIncomingClick'>
+          {{ $t('MSG_SET_GOOD_INCOMING_ACCOUNT') }}
+        </q-btn>
       </div>
     </template>
   </q-table>
@@ -46,11 +49,13 @@
     dense
     :rows='allGoods'
     selection='single'
+    :title='t("MSG_GOOD_LIST")'
   />
   <q-table
     flat
     dense
     :rows='myGoodBenefit ? [myGoodBenefit] : []'
+    :title='t("MSG_GOOD_BENEFIT_SETTING")'
   >
     <template #top-right>
       <div class='row'>
@@ -68,6 +73,13 @@
     flat
     dense
     :rows='goodPayments'
+    :title='t("MSG_GOOD_PAYMENT_SETTING")'
+  />
+  <q-table
+    flat
+    dense
+    :rows='goodIncomings'
+    :title='t("MSG_GOOD_INCOMING_SETTING")'
   />
   <q-dialog
     v-model='modifying'
@@ -105,6 +117,7 @@ import { CoinAccount, GoodBenefit } from 'src/store/accounts/types'
 import { GoodBase } from 'src/store/goods/types'
 import { ActionTypes as GoodActionTypes } from 'src/store/goods/action-types'
 import { DefaultID } from 'src/const/const'
+import { ActionTypes as SettingActionTypes } from 'src/store/settings/action-types'
 
 const CreatPlatformCoinAccount = defineAsyncComponent(() => import('src/components/good/CreatePlatformCoinAccount.vue'))
 const CreatUserCoinAccount = defineAsyncComponent(() => import('src/components/good/CreateUserCoinAccount.vue'))
@@ -227,6 +240,18 @@ watch(selectedGood, () => {
       }
     })
 
+    store.dispatch(SettingActionTypes.GetGoodIncomingsByGood, {
+      GoodID: good.ID as string,
+      Message: {
+        ModuleKey: ModuleKey.ModuleGoods,
+        Error: {
+          Title: t('MSG_GET_GOOD_INCOMINGS_FAIL'),
+          Popup: true,
+          Type: NotificationType.Error
+        }
+      }
+    })
+
     myGoodBenefit.value.GoodID = good.ID as string
   })
 })
@@ -258,6 +283,48 @@ const goodPayments = computed(() => {
   }
   return []
 })
+
+const goodIncomings = computed(() => {
+  if (selectedGood.value && selectedGood.value.length > 0) {
+    return store.getters.getGoodIncomingsByGood(selectedGood.value[0].ID as string)
+  }
+  return []
+})
+
+const onCreateGoodIncomingClick = () => {
+  if (selectedGood.value && selectedGood.value.length > 0) {
+    if (!candidateAccount.value[0].PlatformHoldPrivateKey) {
+      let action = SettingActionTypes.CreateGoodIncoming
+      let incoming = {
+        GoodID: selectedGood.value[0].ID as string,
+        CoinTypeID: candidateAccount.value[0].CoinTypeID,
+        AccountID: candidateAccount.value[0].ID as string
+      }
+      if (goodIncomings.value) {
+        for (let i = 0; i < goodIncomings.value.length; i++) {
+          if (goodIncomings.value[i].CoinTypeID === candidateAccount.value[0].CoinTypeID) {
+            incoming = goodIncomings.value[i]
+            incoming.AccountID = candidateAccount.value[0].ID as string
+            action = SettingActionTypes.UpdateGoodIncoming
+            break
+          }
+        }
+      }
+
+      store.dispatch(action, {
+        Info: incoming,
+        Message: {
+          ModuleKey: ModuleKey.ModuleGoods,
+          Error: {
+            Title: t('MSG_CREATE_GOOD_INCOMING_FAIL'),
+            Popup: true,
+            Type: NotificationType.Error
+          }
+        }
+      })
+    }
+  }
+}
 
 const onSetGoodBenefitIntervalHoursClick = () => {
   myGoodBenefit.value.BenefitIntervalHours = 24

@@ -9,5 +9,9 @@ export enum ActionTypes {
 
   CreateGoodSetting = 'CREATE_GOOD_SETTING',
   UpdateGoodSetting = 'UPDATE_GOOD_SETTING',
-  GetGoodSettingByGood = 'GET_GOOD_SETTING_BY_GOOD'
+  GetGoodSettingByGood = 'GET_GOOD_SETTING_BY_GOOD',
+
+  CreateGoodIncoming = 'CREATE_GOOD_INCOMING',
+  UpdateGoodIncoming = 'UPDATE_GOOD_INCOMING',
+  GetGoodIncomingsByGood = 'GET_GOOD_INCOMINGS_BY_GOOD'
 }

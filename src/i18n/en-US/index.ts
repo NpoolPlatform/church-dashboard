@@ -154,6 +154,7 @@ export default {
   MSG_SET_AS_GOOD_USER_OFFLINE_ACCOUNT: '设置为商品用户收益离线地址',
   MSG_SET_AS_GOOD_USER_ONLINE_ACCOUNT: '设置为商品用户收益在线地址',
   MSG_SET_GOOD_BENEFIT_INTERVAL_HOURS: '设置商品收益间隔时间(小时)',
+  MSG_SET_GOOD_INCOMING_ACCOUNT: '设置为商品购买资金地址',
   MSG_ACCOUNT_ID: '账号ID',
   MSG_CREATE_GOOD_BENEFIT_FAIL: 'You failed to create good benefit',
   MSG_CREATE_PLATFORM_COIN_ACCOUNT_FAIL: 'You failed to create platform coin account',
@@ -164,5 +165,11 @@ export default {
   MSG_CREATE: '创建',
   MSG_GET_GOOD_SETTING_FAIL: 'You failed to get good setting',
   MSG_GET_COIN_SETTING_FAIL: 'You failed to get coin setting',
-  MSG_CREATE_PLATFORM_SETTING_FAIL: 'You failed to create platform setting'
+  MSG_CREATE_PLATFORM_SETTING_FAIL: 'You failed to create platform setting',
+  MSG_GOOD_BENEFIT_SETTING: '商品收益设置',
+  MSG_GOOD_PAYMENT_SETTING: '商品支付设置',
+  MSG_GOOD_INCOMING_SETTING: '商品资金管理设置',
+  MSG_GOOD_LIST: '商品列表',
+  MSG_GET_GOOD_INCOMINGS_FAIL: 'You failed to get good incomings',
+  MSG_CREATE_GOOD_INCOMING_FAIL: 'You failed to create good incoming'
 }

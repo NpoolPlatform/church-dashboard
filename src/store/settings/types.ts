@@ -98,6 +98,40 @@ interface UpdateGoodSettingResponse {
   Info: GoodSetting
 }
 
+interface GoodIncoming {
+  ID?: string
+  GoodID: string
+  CoinTypeID: string
+  AccountID: string
+}
+
+interface CreateGoodIncomingRequest {
+  Info: GoodIncoming
+  Message: ReqMessage
+}
+
+interface CreateGoodIncomingResponse {
+  Info: GoodIncoming
+}
+
+interface UpdateGoodIncomingRequest {
+  Info: GoodIncoming
+  Message: ReqMessage
+}
+
+interface UpdateGoodIncomingResponse {
+  Info: GoodIncoming
+}
+
+interface GetGoodIncomingsByGoodRequest {
+  GoodID: string
+  Message: ReqMessage
+}
+
+interface GetGoodIncomingsByGoodResponse {
+  Infos: Array<GoodIncoming>
+}
+
 export {
   PlatformSetting,
   GetPlatformSettingRequest,
@@ -119,5 +153,12 @@ export {
   CreateGoodSettingRequest,
   CreateGoodSettingResponse,
   UpdateGoodSettingRequest,
-  UpdateGoodSettingResponse
+  UpdateGoodSettingResponse,
+  GoodIncoming,
+  CreateGoodIncomingRequest,
+  CreateGoodIncomingResponse,
+  UpdateGoodIncomingRequest,
+  UpdateGoodIncomingResponse,
+  GetGoodIncomingsByGoodRequest,
+  GetGoodIncomingsByGoodResponse
 }

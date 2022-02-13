@@ -9,7 +9,11 @@ enum API {
 
   CREATE_GOOD_SETTING = '/cloud-hashing-billing/v1/create/good/setting',
   UPDATE_GOOD_SETTING = '/cloud-hashing-billing/v1/update/good/setting',
-  GET_GOOD_SETTING_BY_GOOD = '/cloud-hashing-billing/v1/get/good/setting/by/good'
+  GET_GOOD_SETTING_BY_GOOD = '/cloud-hashing-billing/v1/get/good/setting/by/good',
+
+  CREATE_GOOD_INCOMING = '/cloud-hashing-billing/v1/create/good/incoming',
+  UPDATE_GOOD_INCOMING = '/cloud-hashing-billing/v1/update/good/incoming',
+  GET_GOOD_INCOMINGS_BY_GOOD = '/cloud-hashing-billing/v1/get/good/incomings/by/good'
 }
 
 export {
