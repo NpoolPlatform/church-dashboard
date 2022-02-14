@@ -1,12 +1,11 @@
 import { MutationTree } from 'vuex'
 import { MutationTypes } from './mutation-types'
 import { SettingsState } from './state'
-import { CoinSetting, GoodIncoming, GoodSetting, PlatformSetting } from './types'
+import { CoinSetting, GoodIncoming, PlatformSetting } from './types'
 
 type SettingMutations<S = SettingsState> = {
   [MutationTypes.SetPlatformSetting] (state: S, payload: PlatformSetting): void
   [MutationTypes.SetCoinSetting] (state: S, payload: CoinSetting): void
-  [MutationTypes.SetGoodSetting] (state: S, payload: GoodSetting): void
   [MutationTypes.SetGoodIncomings] (state: S, payload: Array<GoodIncoming>): void
   [MutationTypes.SetGoodIncoming] (state: S, payload: GoodIncoming): void
 }
@@ -17,9 +16,6 @@ const mutations: MutationTree<SettingsState> & SettingMutations = {
   },
   [MutationTypes.SetCoinSetting] (state: SettingsState, payload: CoinSetting) {
     state.CoinSettings.set(payload.CoinTypeID, payload)
-  },
-  [MutationTypes.SetGoodSetting] (state: SettingsState, payload: GoodSetting) {
-    state.GoodSettings.set(payload.GoodID, payload)
   },
   [MutationTypes.SetGoodIncomings] (state: SettingsState, payload: Array<GoodIncoming>) {
     if (payload.length > 0) {

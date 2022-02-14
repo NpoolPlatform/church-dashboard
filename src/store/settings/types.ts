@@ -64,40 +64,6 @@ interface UpdateCoinSettingResponse {
   Info: CoinSetting
 }
 
-interface GoodSetting {
-  ID?: string
-  GoodID: string
-  WarmAccountCoinAmount: number
-  WarmAccountUSDAmount: number
-}
-
-interface GetGoodSettingByGoodRequest {
-  GoodID: string
-  Message: ReqMessage
-}
-
-interface GetGoodSettingByGoodResponse {
-  Info: GoodSetting
-}
-
-interface CreateGoodSettingRequest {
-  Info: GoodSetting
-  Message: ReqMessage
-}
-
-interface CreateGoodSettingResponse {
-  Info: GoodSetting
-}
-
-interface UpdateGoodSettingRequest {
-  Info: GoodSetting
-  Message: ReqMessage
-}
-
-interface UpdateGoodSettingResponse {
-  Info: GoodSetting
-}
-
 interface GoodIncoming {
   ID?: string
   GoodID: string
@@ -147,13 +113,6 @@ export {
   CreateCoinSettingResponse,
   UpdateCoinSettingRequest,
   UpdateCoinSettingResponse,
-  GoodSetting,
-  GetGoodSettingByGoodRequest,
-  GetGoodSettingByGoodResponse,
-  CreateGoodSettingRequest,
-  CreateGoodSettingResponse,
-  UpdateGoodSettingRequest,
-  UpdateGoodSettingResponse,
   GoodIncoming,
   CreateGoodIncomingRequest,
   CreateGoodIncomingResponse,

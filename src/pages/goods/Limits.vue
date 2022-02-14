@@ -72,47 +72,6 @@
       </q-tr>
     </template>
   </q-table>
-  <q-table :title='$t("MSG_GOOD_SETTING")' flat dense :rows='goodSetting ? [goodSetting] : []'>
-    <template #top-right>
-      <div class='row'>
-        <q-space />
-        <q-btn v-if='!goodSetting' dense @click='onCreateGoodSettingClick'>
-          {{ $t('MSG_CREATE') }}
-        </q-btn>
-        <q-btn v-else dense @click='onGoodSettingSubmit'>
-          {{ $t('MSG_SUBMIT') }}
-        </q-btn>
-      </div>
-    </template>
-    <template #body='props'>
-      <q-tr :props='props'>
-        <q-td key='ID' :props='props'>
-          {{ props.row.ID }}
-        </q-td>
-        <q-td key='GoodID' :props='props'>
-          {{ props.row.GoodID }}
-        </q-td>
-        <q-td key='WarmAccountCoinAmount' :props='props'>
-          {{ props.row.WarmAccountCoinAmount }}
-          <q-popup-edit v-slot='scope' v-model='goodWarmAccountCoinAmount' buttons persistent>
-            <q-input
-              v-model='scope.value' type='number'
-              dense autofocus counter
-            />
-          </q-popup-edit>
-        </q-td>
-        <q-td key='WarmAccountUSDAmount' :props='props'>
-          {{ props.row.WarmAccountUSDAmount }}
-          <q-popup-edit v-slot='scope' v-model='goodWarmAccountUSDAmount' buttons persistent>
-            <q-input
-              v-model='scope.value' type='number'
-              dense autofocus counter
-            />
-          </q-popup-edit>
-        </q-td>
-      </q-tr>
-    </template>
-  </q-table>
 </template>
 
 <script setup lang='ts'>
@@ -131,7 +90,7 @@ import { GoodBase } from 'src/store/goods/types'
 import { FunctionVoid } from 'src/types/types'
 import { Coin } from 'src/store/coins/types'
 import { DefaultID } from 'src/const/const'
-import { CoinSetting, GoodSetting } from 'src/store/settings/types'
+import { CoinSetting } from 'src/store/settings/types'
 
 const store = useStore()
 
@@ -157,57 +116,6 @@ const allGoods = computed(() => {
   return goods
 })
 const selectedGood = ref([] as Array<GoodBase>)
-const goodSetting = computed(() => {
-  if (!selectedGood.value || selectedGood.value.length === 0) {
-    return undefined
-  }
-  return store.getters.getGoodSettingByGood(selectedGood.value[0].ID as string)
-})
-watch(selectedGood, () => {
-  selectedGood.value.forEach((good) => {
-    store.dispatch(SettingActionTypes.GetGoodSettingByGood, {
-      GoodID: good.ID as string,
-      Message: {
-        ModuleKey: ModuleKey.ModuleGoods,
-        Error: {
-          Title: t('MSG_GET_GOOD_SETTING_FAIL'),
-          Popup: true,
-          Type: NotificationType.Error
-        }
-      }
-    })
-  })
-})
-
-const myGoodWarmAccountCoinAmount = computed(() => goodSetting.value?.WarmAccountCoinAmount)
-const myGoodWarmAccountUSDAmount = computed(() => goodSetting.value?.WarmAccountUSDAmount)
-
-const goodWarmAccountCoinAmount = ref(myGoodWarmAccountCoinAmount.value)
-const goodWarmAccountUSDAmount = ref(myGoodWarmAccountUSDAmount.value)
-
-watch(myGoodWarmAccountCoinAmount, () => {
-  goodWarmAccountCoinAmount.value = myGoodWarmAccountCoinAmount.value
-})
-watch(goodWarmAccountCoinAmount, () => {
-  store.commit(SettingMutationTypes.SetGoodSetting, {
-    ID: goodSetting.value?.ID,
-    GoodID: goodSetting.value?.GoodID,
-    WarmAccountCoinAmount: goodWarmAccountCoinAmount.value as number,
-    WarmAccountUSDAmount: goodSetting.value?.WarmAccountUSDAmount
-  } as GoodSetting)
-})
-
-watch(myGoodWarmAccountUSDAmount, () => {
-  goodWarmAccountUSDAmount.value = myGoodWarmAccountUSDAmount.value
-})
-watch(goodWarmAccountUSDAmount, () => {
-  store.commit(SettingMutationTypes.SetGoodSetting, {
-    ID: goodSetting.value?.ID,
-    GoodID: goodSetting.value?.GoodID,
-    WarmAccountCoinAmount: goodSetting.value?.WarmAccountCoinAmount,
-    WarmAccountUSDAmount: goodWarmAccountUSDAmount.value
-  } as GoodSetting)
-})
 
 const allCoins = computed(() => store.getters.getCoins)
 const selectedCoin = ref([] as Array<Coin>)
@@ -309,36 +217,6 @@ const onCoinSettingSubmit = () => {
       ModuleKey: ModuleKey.ModuleGoods,
       Error: {
         Title: t('MSG_CREATE_COIN_SETTING_FAIL'),
-        Popup: true,
-        Type: NotificationType.Error
-      }
-    }
-  })
-}
-
-const onCreateGoodSettingClick = () => {
-  if (!selectedGood.value || selectedGood.value.length === 0) {
-    return
-  }
-  store.commit(SettingMutationTypes.SetGoodSetting, {
-    ID: goodSetting.value ? goodSetting.value.ID : undefined,
-    GoodID: selectedGood.value[0].ID as string,
-    WarmAccountUSDAmount: goodSetting.value ? goodSetting.value.WarmAccountUSDAmount : 0,
-    WarmAccountCoinAmount: goodSetting.value ? goodSetting.value.WarmAccountCoinAmount : 0
-  })
-}
-
-const onGoodSettingSubmit = () => {
-  let action = SettingActionTypes.CreateGoodSetting
-  if (goodSetting.value && goodSetting.value.ID && goodSetting.value.ID !== DefaultID) {
-    action = SettingActionTypes.UpdateGoodSetting
-  }
-  store.dispatch(action, {
-    Info: goodSetting.value as GoodSetting,
-    Message: {
-      ModuleKey: ModuleKey.ModuleGoods,
-      Error: {
-        Title: t('MSG_CREATE_GOOD_SETTING_FAIL'),
         Popup: true,
         Type: NotificationType.Error
       }
