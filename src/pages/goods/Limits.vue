@@ -5,12 +5,6 @@
     :title='$t("MSG_COIN")' flat dense :rows='allCoins'
     selection='single'
   />
-  <q-table
-    v-model:selected='selectedGood'
-    row-key='ID'
-    :title='$t("MSG_GOOD")' flat dense :rows='allGoods'
-    selection='single'
-  />
   <q-table :title='$t("MSG_PLATFORM_SETTING")' flat dense :rows='[platformSetting]'>
     <template #top-right>
       <div class='row'>
@@ -78,7 +72,6 @@
 import { onMounted, computed, ref, watch } from 'vue'
 import { useStore } from 'src/store'
 
-import { ActionTypes as GoodActionTypes } from 'src/store/goods/action-types'
 import { ActionTypes as CoinActionTypes } from 'src/store/coins/action-types'
 import { ActionTypes as SettingActionTypes } from 'src/store/settings/action-types'
 import { MutationTypes as SettingMutationTypes } from 'src/store/settings/mutation-types'
@@ -86,36 +79,12 @@ import { MutationTypes as NotificationMutationTypes } from 'src/store/notificati
 import { ModuleKey, Type as NotificationType } from 'src/store/notifications/const'
 import { notify, notificationPop } from 'src/store/notifications/helper'
 import { useI18n } from 'vue-i18n'
-import { GoodBase } from 'src/store/goods/types'
 import { FunctionVoid } from 'src/types/types'
 import { Coin } from 'src/store/coins/types'
 import { DefaultID } from 'src/const/const'
 import { CoinSetting } from 'src/store/settings/types'
 
 const store = useStore()
-
-const allGoods = computed(() => {
-  const goods = [] as Array<GoodBase>
-  store.getters.getAllGoods.forEach((good) => {
-    goods.push({
-      ID: good.Good.ID,
-      SeparateFee: good.Good.SeparateFee,
-      UnitPower: good.Good.UnitPower,
-      DurationDays: good.Good.DurationDays,
-      Actuals: good.Good.Actuals,
-      DeliveryAt: good.Good.DeliveryAt,
-      Price: good.Good.Price,
-      BenefitType: good.Good.BenefitType,
-      Classic: good.Good.Classic,
-      Title: good.Good.Title,
-      Total: good.Good.Total,
-      Unit: good.Good.Unit,
-      InheritFromGoodID: good.Good.InheritFromGoodID
-    })
-  })
-  return goods
-})
-const selectedGood = ref([] as Array<GoodBase>)
 
 const allCoins = computed(() => store.getters.getCoins)
 const selectedCoin = ref([] as Array<Coin>)
@@ -227,16 +196,6 @@ const onCoinSettingSubmit = () => {
 const unsubscribe = ref<FunctionVoid>()
 
 onMounted(() => {
-  store.dispatch(GoodActionTypes.GetAllGoods, {
-    Message: {
-      ModuleKey: ModuleKey.ModuleGoods,
-      Error: {
-        Title: t('MSG_GET_ALL_GOODS_FAIL'),
-        Popup: true,
-        Type: NotificationType.Error
-      }
-    }
-  })
   store.dispatch(CoinActionTypes.GetCoins, {
     Message: {
       ModuleKey: ModuleKey.ModuleGoods,
