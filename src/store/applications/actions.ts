@@ -9,12 +9,16 @@ import {
   CreateApplicationResponse,
   CreateAppRoleForOtherAppRequest,
   CreateAppRoleForOtherAppResponse,
+  CreateRecommendForOtherAppRequest,
+  CreateRecommendForOtherAppResponse,
   GetAppGoodsByOtherAppRequest,
   GetAppGoodsByOtherAppResponse,
   GetApplicationsRequest,
   GetApplicationsResponse,
   GetAppRolesByOtherAppRequest,
   GetAppRolesByOtherAppResponse,
+  GetRecommendsByOtherAppRequest,
+  GetRecommendsByOtherAppResponse,
   UnauthorizeAppGoodRequest,
   UnauthorizeAppGoodResponse,
   UpdateAppControlRequest,
@@ -109,6 +113,22 @@ interface ApplicationActions {
     RootState,
     ApplicationMutations<ApplicationsState>>,
     req: UnauthorizeAppGoodRequest): void
+
+  [ActionTypes.GetRecommendsByOtherApp]({
+    commit
+  }: AugmentedActionContext<
+    ApplicationsState,
+    RootState,
+    ApplicationMutations<ApplicationsState>>,
+    req: GetRecommendsByOtherAppRequest): void
+
+  [ActionTypes.CreateRecommendForOtherApp]({
+    commit
+  }: AugmentedActionContext<
+    ApplicationsState,
+    RootState,
+    ApplicationMutations<ApplicationsState>>,
+    req: CreateRecommendForOtherAppRequest): void
 }
 
 const actions: ActionTree<ApplicationsState, RootState> = {
@@ -224,6 +244,28 @@ const actions: ActionTree<ApplicationsState, RootState> = {
       req.Message,
       (resp: UnauthorizeAppGoodResponse): void => {
         commit(MutationTypes.DeleteAppGood, resp.Info)
+      })
+  },
+
+  [ActionTypes.GetRecommendsByOtherApp] ({ commit }, req: GetRecommendsByOtherAppRequest) {
+    doAction<GetRecommendsByOtherAppRequest, GetRecommendsByOtherAppResponse>(
+      commit,
+      API.GET_RECOMMENDS_BY_OTHER_APP,
+      req,
+      req.Message,
+      (resp: GetRecommendsByOtherAppResponse): void => {
+        commit(MutationTypes.SetRecommends, resp.Infos)
+      })
+  },
+
+  [ActionTypes.CreateRecommendForOtherApp] ({ commit }, req: CreateRecommendForOtherAppRequest) {
+    doAction<CreateRecommendForOtherAppRequest, CreateRecommendForOtherAppResponse>(
+      commit,
+      API.CREATE_RECOMMEND_FOR_OTHER_APP,
+      req,
+      req.Message,
+      (resp: CreateRecommendForOtherAppResponse): void => {
+        commit(MutationTypes.SetRecommends, [resp.Info])
       })
   }
 }

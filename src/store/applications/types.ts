@@ -134,6 +134,33 @@ interface UnauthorizeAppGoodResponse {
   Info: AppGood
 }
 
+interface Recommend {
+  ID: string
+  AppID: string
+  GoodID: string
+  RecommenderID: string
+  Message: string
+}
+
+interface GetRecommendsByOtherAppRequest {
+  TargetAppID: string
+  Message: ReqMessage
+}
+
+interface GetRecommendsByOtherAppResponse {
+  Infos: Array<Recommend>
+}
+
+interface CreateRecommendForOtherAppRequest {
+  TargetAppID: string
+  Info: Recommend
+  Message: ReqMessage
+}
+
+interface CreateRecommendForOtherAppResponse {
+  Info: Recommend
+}
+
 export {
   App,
   AppControl,
@@ -159,5 +186,10 @@ export {
   AuthorizeAppGoodForOtherAppRequest,
   AuthorizeAppGoodForOtherAppResponse,
   UnauthorizeAppGoodRequest,
-  UnauthorizeAppGoodResponse
+  UnauthorizeAppGoodResponse,
+  Recommend,
+  GetRecommendsByOtherAppRequest,
+  GetRecommendsByOtherAppResponse,
+  CreateRecommendForOtherAppRequest,
+  CreateRecommendForOtherAppResponse
 }

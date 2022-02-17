@@ -28,6 +28,30 @@
       </div>
     </template>
   </q-table>
+  <q-table
+    flat
+    dense
+    :loading='loading'
+    :rows='recommends'
+  >
+    <template #top-right>
+      <div class='row'>
+        <q-space />
+        <q-btn dense @click='onAddRecommend'>
+          {{ $t('MSG_ADD') }}
+        </q-btn>
+      </div>
+    </template>
+  </q-table>
+  <q-dialog
+    v-model='modifying'
+    position='right'
+    full-width
+    square
+    no-shake
+  >
+    <CreateAppRecommendGood v-model:selected-app='selectedApp' @update='onUpdate' @submit='onSubmit' />
+  </q-dialog>
 </template>
 
 <script setup lang='ts'>
@@ -43,9 +67,10 @@ import { notify, notificationPop } from 'src/store/notifications/helper'
 import { FunctionVoid } from 'src/types/types'
 import { MutationTypes as ApplicationMutationTypes } from 'src/store/applications/mutation-types'
 import { GoodBase } from 'src/store/goods/types'
-import { AppGood } from 'src/store/applications/types'
+import { AppGood, Recommend } from 'src/store/applications/types'
 
 const ApplicationSelector = defineAsyncComponent(() => import('src/components/dropdown/ApplicationSelector.vue'))
+const CreateAppRecommendGood = defineAsyncComponent(() => import('src/components/application/CreateAppRecommendGood.vue'))
 
 const store = useStore()
 // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -59,6 +84,7 @@ const selectedAppID = computed({
     store.commit(ApplicationMutationTypes.SetSelectedAppID, val)
   }
 })
+const selectedApp = computed(() => store.getters.getApplicationByID(selectedAppID.value))
 
 const allGoods = computed(() => {
   const goods = [] as Array<GoodBase>
@@ -70,6 +96,7 @@ const allGoods = computed(() => {
 const appGoods = computed(() => store.getters.getAppGoodsByAppID(selectedAppID.value))
 const selectedGoods = ref([] as Array<GoodBase>)
 const selectedAppGoods = ref([] as Array<AppGood>)
+const recommends = computed(() => store.getters.getRecommendsByAppID(selectedAppID.value))
 
 const onAuthorizeGoods = () => {
   selectedGoods.value.forEach((good) => {
@@ -103,6 +130,33 @@ const onUnauthorizeGoods = () => {
         }
       }
     })
+  })
+}
+
+const modifying = ref(false)
+
+const onAddRecommend = () => {
+  modifying.value = true
+}
+
+const onUpdate = (recommend: Recommend) => {
+  // TODO: fileter the list
+  console.log('update', recommend)
+}
+
+const onSubmit = (recommend: Recommend) => {
+  modifying.value = false
+  store.dispatch(ApplicationActionTypes.CreateRecommendForOtherApp, {
+    TargetAppID: selectedApp.value.App.ID,
+    Info: recommend,
+    Message: {
+      ModuleKey: ModuleKey.ModuleApplications,
+      Error: {
+        Title: t('MSG_CREATE_RECOMMEND_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
   })
 }
 
@@ -140,6 +194,18 @@ onMounted(() => {
           ModuleKey: ModuleKey.ModuleApplications,
           Error: {
             Title: t('MSG_GET_APP_GOODS_FAIL'),
+            Popup: true,
+            Type: NotificationType.Error
+          }
+        }
+      })
+
+      store.dispatch(ApplicationActionTypes.GetRecommendsByOtherApp, {
+        TargetAppID: selectedAppID.value,
+        Message: {
+          ModuleKey: ModuleKey.ModuleApplications,
+          Error: {
+            Title: t('MSG_GET_RECOMMENDS_FAIL'),
             Popup: true,
             Type: NotificationType.Error
           }

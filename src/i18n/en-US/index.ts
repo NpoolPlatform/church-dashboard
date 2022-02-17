@@ -179,5 +179,9 @@ export default {
   MSG_AUTHORIZE_GOOD: '给应用授权商品',
   MSG_UNAUTHORIZE_GOOD: '解除应用商品授权',
   MSG_AUTHORIZE_APP_GOOD_FAIL: 'Cannot authorize app good',
-  MSG_UNAUTHORIZE_APP_GOOD_FAIL: 'Cannot unauthorize app good'
+  MSG_UNAUTHORIZE_APP_GOOD_FAIL: 'Cannot unauthorize app good',
+  MSG_CREATE_RECOMMEND_FAIL: 'Cannot create recommend good',
+  MSG_GET_RECOMMENDS_FAIL: 'Cannot get recommend goods',
+  MSG_ADD_RECOMMEND: '推荐商品',
+  MSG_RECOMMEND_MESSAGE: '推荐理由'
 }

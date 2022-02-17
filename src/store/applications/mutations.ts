@@ -2,7 +2,7 @@ import { MutationTree } from 'vuex'
 import { AppRole } from '../user-helper/types'
 import { MutationTypes } from './mutation-types'
 import { ApplicationsState } from './state'
-import { App, AppControl, AppGood, Application, BanApp } from './types'
+import { App, AppControl, AppGood, Application, BanApp, Recommend } from './types'
 
 type ApplicationMutations<S = ApplicationsState> = {
   [MutationTypes.SetApplications] (state: S, payload: Array<Application>): void
@@ -10,6 +10,7 @@ type ApplicationMutations<S = ApplicationsState> = {
   [MutationTypes.SetAppControl] (state: S, payload: AppControl): void
   [MutationTypes.SetAppRoles] (state: S, payload: Array<AppRole>): void
   [MutationTypes.SetAppGoods] (state: S, payload: Array<AppGood>): void
+  [MutationTypes.SetRecommends] (state: S, payload: Array<Recommend>): void
   [MutationTypes.DeleteAppGood] (state: S, payload: AppGood): void
   [MutationTypes.SetSelectedAppID] (state: S, payload: string): void
 }
@@ -73,6 +74,24 @@ const mutations: MutationTree<ApplicationsState> & ApplicationMutations = {
         goods.push(good)
       })
       state.AppGoods.set(payload[0].AppID as string, goods)
+    }
+  },
+
+  [MutationTypes.SetRecommends] (state: ApplicationsState, payload: Array<Recommend>): void {
+    if (payload.length > 0) {
+      let recommends = state.Recommends.get(payload[0].AppID) as Array<Recommend>
+      if (!recommends) {
+        recommends = [] as Array<Recommend>
+      }
+      payload.forEach((recommend) => {
+        for (let i = 0; i < recommends.length; i++) {
+          if (recommend.ID === recommends[i].ID) {
+            return
+          }
+        }
+        recommends.push(recommend)
+      })
+      state.Recommends.set(payload[0].AppID, recommends)
     }
   },
 
