@@ -10,6 +10,7 @@ type ApplicationMutations<S = ApplicationsState> = {
   [MutationTypes.SetAppControl] (state: S, payload: AppControl): void
   [MutationTypes.SetAppRoles] (state: S, payload: Array<AppRole>): void
   [MutationTypes.SetAppGoods] (state: S, payload: Array<AppGood>): void
+  [MutationTypes.DeleteAppGood] (state: S, payload: AppGood): void
   [MutationTypes.SetSelectedAppID] (state: S, payload: string): void
 }
 
@@ -73,6 +74,19 @@ const mutations: MutationTree<ApplicationsState> & ApplicationMutations = {
       })
       state.AppGoods.set(payload[0].AppID as string, goods)
     }
+  },
+
+  [MutationTypes.DeleteAppGood] (state: ApplicationsState, payload: AppGood): void {
+    const appGoods = state.AppGoods.get(payload.AppID as string)
+    if (appGoods) {
+      for (let i = 0; i < appGoods.length; i++) {
+        if (appGoods[i].ID === payload.ID) {
+          appGoods.splice(i, 1)
+          break
+        }
+      }
+    }
+    state.AppGoods.set(payload.AppID as string, appGoods as Array<AppGood>)
   },
 
   [MutationTypes.SetSelectedAppID] (state: ApplicationsState, payload: string): void {

@@ -8,16 +8,21 @@
     selection='multiple'
   />
   <q-table
+    v-model:selected='selectedAppGoods'
     flat
     dense
     :loading='loading'
     :rows='appGoods'
+    selection='multiple'
   >
     <template #top-right>
       <div class='row'>
         <q-space />
         <q-btn dense @click='onAuthorizeGoods'>
           {{ $t('MSG_AUTHORIZE_GOOD') }}
+        </q-btn>
+        <q-btn dense @click='onUnauthorizeGoods'>
+          {{ $t('MSG_UNAUTHORIZE_GOOD') }}
         </q-btn>
         <ApplicationSelector v-model:selected-app-id='selectedAppID' />
       </div>
@@ -38,6 +43,7 @@ import { notify, notificationPop } from 'src/store/notifications/helper'
 import { FunctionVoid } from 'src/types/types'
 import { MutationTypes as ApplicationMutationTypes } from 'src/store/applications/mutation-types'
 import { GoodBase } from 'src/store/goods/types'
+import { AppGood } from 'src/store/applications/types'
 
 const ApplicationSelector = defineAsyncComponent(() => import('src/components/dropdown/ApplicationSelector.vue'))
 
@@ -63,6 +69,7 @@ const allGoods = computed(() => {
 })
 const appGoods = computed(() => store.getters.getAppGoodsByAppID(selectedAppID.value))
 const selectedGoods = ref([] as Array<GoodBase>)
+const selectedAppGoods = ref([] as Array<AppGood>)
 
 const onAuthorizeGoods = () => {
   selectedGoods.value.forEach((good) => {
@@ -75,6 +82,22 @@ const onAuthorizeGoods = () => {
         ModuleKey: ModuleKey.ModuleApplications,
         Error: {
           Title: t('MSG_AUTHORIZE_APP_GOOD_FAIL'),
+          Popup: true,
+          Type: NotificationType.Error
+        }
+      }
+    })
+  })
+}
+
+const onUnauthorizeGoods = () => {
+  selectedAppGoods.value.forEach((appGood) => {
+    store.dispatch(ApplicationActionTypes.UnauthorizeAppGood, {
+      ID: appGood.ID as string,
+      Message: {
+        ModuleKey: ModuleKey.ModuleApplications,
+        Error: {
+          Title: t('MSG_UNAUTHORIZE_APP_GOOD_FAIL'),
           Popup: true,
           Type: NotificationType.Error
         }

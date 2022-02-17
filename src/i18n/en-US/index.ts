@@ -177,5 +177,7 @@ export default {
   MSG_CREATE_GOOD_INCOMING_FAIL: 'You failed to create good incoming',
   MSG_COIN_TYPE: '币种',
   MSG_AUTHORIZE_GOOD: '给应用授权商品',
-  MSG_AUTHORIZE_APP_GOOD_FAIL: 'Cannot authorize app good'
+  MSG_UNAUTHORIZE_GOOD: '解除应用商品授权',
+  MSG_AUTHORIZE_APP_GOOD_FAIL: 'Cannot authorize app good',
+  MSG_UNAUTHORIZE_APP_GOOD_FAIL: 'Cannot unauthorize app good'
 }

@@ -125,6 +125,15 @@ interface AuthorizeAppGoodForOtherAppResponse {
   Info: AppGood
 }
 
+interface UnauthorizeAppGoodRequest {
+  ID: string
+  Message: ReqMessage
+}
+
+interface UnauthorizeAppGoodResponse {
+  Info: AppGood
+}
+
 export {
   App,
   AppControl,
@@ -148,5 +157,7 @@ export {
   GetAppGoodsByOtherAppRequest,
   GetAppGoodsByOtherAppResponse,
   AuthorizeAppGoodForOtherAppRequest,
-  AuthorizeAppGoodForOtherAppResponse
+  AuthorizeAppGoodForOtherAppResponse,
+  UnauthorizeAppGoodRequest,
+  UnauthorizeAppGoodResponse
 }

@@ -15,6 +15,8 @@ import {
   GetApplicationsResponse,
   GetAppRolesByOtherAppRequest,
   GetAppRolesByOtherAppResponse,
+  UnauthorizeAppGoodRequest,
+  UnauthorizeAppGoodResponse,
   UpdateAppControlRequest,
   UpdateAppControlResponse,
   UpdateApplicationRequest,
@@ -99,6 +101,14 @@ interface ApplicationActions {
     RootState,
     ApplicationMutations<ApplicationsState>>,
     req: AuthorizeAppGoodForOtherAppRequest): void
+
+  [ActionTypes.UnauthorizeAppGood]({
+    commit
+  }: AugmentedActionContext<
+    ApplicationsState,
+    RootState,
+    ApplicationMutations<ApplicationsState>>,
+    req: UnauthorizeAppGoodRequest): void
 }
 
 const actions: ActionTree<ApplicationsState, RootState> = {
@@ -203,6 +213,17 @@ const actions: ActionTree<ApplicationsState, RootState> = {
       req.Message,
       (resp: AuthorizeAppGoodForOtherAppResponse): void => {
         commit(MutationTypes.SetAppGoods, [resp.Info])
+      })
+  },
+
+  [ActionTypes.UnauthorizeAppGood] ({ commit }, req: UnauthorizeAppGoodRequest) {
+    doAction<UnauthorizeAppGoodRequest, UnauthorizeAppGoodResponse>(
+      commit,
+      API.UNAUTHORIZE_APP_GOOD,
+      req,
+      req.Message,
+      (resp: UnauthorizeAppGoodResponse): void => {
+        commit(MutationTypes.DeleteAppGood, resp.Info)
       })
   }
 }
