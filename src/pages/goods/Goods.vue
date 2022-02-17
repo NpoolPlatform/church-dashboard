@@ -128,7 +128,7 @@ const store = useStore()
 const allGoods = computed(() => {
   const goods = [] as Array<GoodBase>
   store.getters.getAllGoods.forEach((good) => {
-    goods.push(good.Good)
+    goods.push(good.Good.Good)
   })
   return goods
 })
