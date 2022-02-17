@@ -58,6 +58,14 @@ const MainDrawerMenus = [
         target: '/applications/languages',
         level: 1,
         children: []
+      }, {
+        menuId: uid(),
+        label: '商品授权',
+        caption: '管理应用商品授权',
+        icon: 'perm_identity',
+        target: '/applications/goods',
+        level: 1,
+        children: []
       }
     ]
   }, {

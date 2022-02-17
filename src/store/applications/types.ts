@@ -97,6 +97,34 @@ interface CreateAppRoleForOtherAppResponse {
   Info: AppRole
 }
 
+interface AppGood {
+  ID?: string
+  AppID?: string
+  GoodID: string
+  Price?: number
+  Online?: boolean
+  InitAreaStrategy?: string
+}
+
+interface GetAppGoodsByOtherAppRequest {
+  TargetAppID: string
+  Message: ReqMessage
+}
+
+interface GetAppGoodsByOtherAppResponse {
+  Infos: Array<AppGood>
+}
+
+interface AuthorizeAppGoodForOtherAppRequest {
+  TargetAppID: string
+  Info: AppGood
+  Message: ReqMessage
+}
+
+interface AuthorizeAppGoodForOtherAppResponse {
+  Info: AppGood
+}
+
 export {
   App,
   AppControl,
@@ -115,5 +143,10 @@ export {
   GetAppRolesByOtherAppRequest,
   GetAppRolesByOtherAppResponse,
   CreateAppRoleForOtherAppRequest,
-  CreateAppRoleForOtherAppResponse
+  CreateAppRoleForOtherAppResponse,
+  AppGood,
+  GetAppGoodsByOtherAppRequest,
+  GetAppGoodsByOtherAppResponse,
+  AuthorizeAppGoodForOtherAppRequest,
+  AuthorizeAppGoodForOtherAppResponse
 }

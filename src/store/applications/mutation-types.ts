@@ -3,5 +3,6 @@ export enum MutationTypes {
   SetApplication = 'SET_APPLICATION',
   SetAppControl = 'SET_APP_CONTROL',
   SetAppRoles = 'SET_APP_ROLES',
-  SetSelectedAppID = 'SET_SELECTED_APP_ID'
+  SetSelectedAppID = 'SET_SELECTED_APP_ID',
+  SetAppGoods = 'SET_APP_GOODS'
 }

@@ -1,12 +1,16 @@
 import { ActionTypes } from './action-types'
 import { MutationTypes } from './mutation-types'
 import {
+  AuthorizeAppGoodForOtherAppRequest,
+  AuthorizeAppGoodForOtherAppResponse,
   CreateAppControlRequest,
   CreateAppControlResponse,
   CreateApplicationRequest,
   CreateApplicationResponse,
   CreateAppRoleForOtherAppRequest,
   CreateAppRoleForOtherAppResponse,
+  GetAppGoodsByOtherAppRequest,
+  GetAppGoodsByOtherAppResponse,
   GetApplicationsRequest,
   GetApplicationsResponse,
   GetAppRolesByOtherAppRequest,
@@ -79,6 +83,22 @@ interface ApplicationActions {
     RootState,
     ApplicationMutations<ApplicationsState>>,
     req: CreateAppRoleForOtherAppRequest): void
+
+  [ActionTypes.GetAppGoodsByOtherApp]({
+    commit
+  }: AugmentedActionContext<
+    ApplicationsState,
+    RootState,
+    ApplicationMutations<ApplicationsState>>,
+    req: GetAppGoodsByOtherAppRequest): void
+
+  [ActionTypes.AuthorizeAppGoodForOtherApp]({
+    commit
+  }: AugmentedActionContext<
+    ApplicationsState,
+    RootState,
+    ApplicationMutations<ApplicationsState>>,
+    req: AuthorizeAppGoodForOtherAppRequest): void
 }
 
 const actions: ActionTree<ApplicationsState, RootState> = {
@@ -161,6 +181,28 @@ const actions: ActionTree<ApplicationsState, RootState> = {
       req.Message,
       (resp: CreateAppRoleForOtherAppResponse): void => {
         commit(MutationTypes.SetAppRoles, [resp.Info])
+      })
+  },
+
+  [ActionTypes.GetAppGoodsByOtherApp] ({ commit }, req: GetAppGoodsByOtherAppRequest) {
+    doAction<GetAppGoodsByOtherAppRequest, GetAppGoodsByOtherAppResponse>(
+      commit,
+      API.GET_APP_GOODS_BY_OTHER_APP,
+      req,
+      req.Message,
+      (resp: GetAppGoodsByOtherAppResponse): void => {
+        commit(MutationTypes.SetAppGoods, resp.Infos)
+      })
+  },
+
+  [ActionTypes.AuthorizeAppGoodForOtherApp] ({ commit }, req: AuthorizeAppGoodForOtherAppRequest) {
+    doAction<AuthorizeAppGoodForOtherAppRequest, AuthorizeAppGoodForOtherAppResponse>(
+      commit,
+      API.AUTHORIZE_APP_GOOD_FOR_OTHER_APP,
+      req,
+      req.Message,
+      (resp: AuthorizeAppGoodForOtherAppResponse): void => {
+        commit(MutationTypes.SetAppGoods, [resp.Info])
       })
   }
 }

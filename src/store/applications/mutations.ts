@@ -2,13 +2,14 @@ import { MutationTree } from 'vuex'
 import { AppRole } from '../user-helper/types'
 import { MutationTypes } from './mutation-types'
 import { ApplicationsState } from './state'
-import { App, AppControl, Application, BanApp } from './types'
+import { App, AppControl, AppGood, Application, BanApp } from './types'
 
 type ApplicationMutations<S = ApplicationsState> = {
   [MutationTypes.SetApplications] (state: S, payload: Array<Application>): void
   [MutationTypes.SetApplication] (state: S, payload: App): void
   [MutationTypes.SetAppControl] (state: S, payload: AppControl): void
   [MutationTypes.SetAppRoles] (state: S, payload: Array<AppRole>): void
+  [MutationTypes.SetAppGoods] (state: S, payload: Array<AppGood>): void
   [MutationTypes.SetSelectedAppID] (state: S, payload: string): void
 }
 
@@ -53,6 +54,24 @@ const mutations: MutationTree<ApplicationsState> & ApplicationMutations = {
         roles.push(role)
       })
       state.AppRoles.set(payload[0].AppID, roles)
+    }
+  },
+
+  [MutationTypes.SetAppGoods] (state: ApplicationsState, payload: Array<AppGood>): void {
+    if (payload.length > 0) {
+      let goods = state.AppGoods.get(payload[0].AppID as string) as Array<AppGood>
+      if (!goods) {
+        goods = [] as Array<AppGood>
+      }
+      payload.forEach((good) => {
+        for (let i = 0; i < goods.length; i++) {
+          if (good.ID === goods[i].ID) {
+            return
+          }
+        }
+        goods.push(good)
+      })
+      state.AppGoods.set(payload[0].AppID as string, goods)
     }
   },
 

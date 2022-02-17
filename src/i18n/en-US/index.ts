@@ -61,6 +61,7 @@ export default {
   MSG_GET_APP_EMAIL_TEMPLATES_FAIL: 'Cannot get app email templates',
   MSG_CREATE_APP_EMAIL_TEMPLATE_FAIL: 'Cannot create app email template',
   MSG_GET_APP_LANG_INFOS_FAIL: 'Cannot get app lang infos',
+  MSG_GET_APP_GOODS_FAIL: 'Cannot get app goods',
   MSG_GET_APP_USER_INFOS_FAIL: 'Cannot get app user infos',
   MSG_GET_APP_AUTH_HISTORIES_FAIL: 'Cannot get app auth histories',
   MSG_GET_APP_ROLES_FAIL: 'Cannot get app roles',
@@ -174,5 +175,7 @@ export default {
   MSG_GOOD_LIST: '商品列表',
   MSG_GET_GOOD_INCOMINGS_FAIL: 'You failed to get good incomings',
   MSG_CREATE_GOOD_INCOMING_FAIL: 'You failed to create good incoming',
-  MSG_COIN_TYPE: '币种'
+  MSG_COIN_TYPE: '币种',
+  MSG_AUTHORIZE_GOOD: '给应用授权商品',
+  MSG_AUTHORIZE_APP_GOOD_FAIL: 'Cannot authorize app good'
 }

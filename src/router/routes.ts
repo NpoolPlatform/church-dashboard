@@ -26,6 +26,7 @@ const routes: RouteRecordRaw[] = [
       { path: 'applications/sms/template', component: () => import('pages/applications/ApplicationSMSTemplate.vue') },
       { path: 'applications/contacts', component: () => import('pages/applications/ApplicationContact.vue') },
       { path: 'applications/languages', component: () => import('pages/applications/ApplicationLanguages.vue') },
+      { path: 'applications/goods', component: () => import('pages/applications/ApplicationGoods.vue') },
 
       // API list
       { path: 'apis', component: () => import('pages/API.vue') },
