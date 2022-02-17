@@ -1,18 +1,18 @@
-import { CoinSetting, GoodIncoming, PlatformSetting } from './types'
+import { CoinSetting, PlatformSetting } from './types'
 
 interface SettingsState {
   PlatformSetting: PlatformSetting,
   CoinSettings: Map<string, CoinSetting>
-  GoodIncomings: Map<string, Array<GoodIncoming>>
 }
 
 function state (): SettingsState {
   return {
     PlatformSetting: {
-      WarmAccountUSDAmount: 0
+      WarmAccountUSDAmount: 0,
+      PaymentAccountUSDAmount: 0,
+      WithdrawAutoReviewUSDAmount: 0
     },
-    CoinSettings: new Map<string, CoinSetting>(),
-    GoodIncomings: new Map<string, Array<GoodIncoming>>()
+    CoinSettings: new Map<string, CoinSetting>()
   }
 }
 

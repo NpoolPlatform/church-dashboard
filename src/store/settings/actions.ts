@@ -9,20 +9,14 @@ import { doAction } from '../action'
 import {
   CreateCoinSettingRequest,
   CreateCoinSettingResponse,
-  CreateGoodIncomingRequest,
-  CreateGoodIncomingResponse,
   CreatePlatformSettingRequest,
   CreatePlatformSettingResponse,
   GetCoinSettingByCoinRequest,
   GetCoinSettingByCoinResponse,
-  GetGoodIncomingsByGoodRequest,
-  GetGoodIncomingsByGoodResponse,
   GetPlatformSettingRequest,
   GetPlatformSettingResponse,
   UpdateCoinSettingRequest,
   UpdateCoinSettingResponse,
-  UpdateGoodIncomingRequest,
-  UpdateGoodIncomingResponse,
   UpdatePlatformSettingRequest,
   UpdatePlatformSettingResponse
 } from './types'
@@ -75,30 +69,6 @@ interface SettingActions {
     RootState,
     SettingMutations<SettingsState>>,
     req: GetCoinSettingByCoinRequest): void
-
-  [ActionTypes.CreateGoodIncoming]({
-    commit
-  }: AugmentedActionContext<
-  SettingsState,
-    RootState,
-    SettingMutations<SettingsState>>,
-    req: CreateGoodIncomingRequest): void
-
-  [ActionTypes.UpdateGoodIncoming]({
-    commit
-  }: AugmentedActionContext<
-  SettingsState,
-    RootState,
-    SettingMutations<SettingsState>>,
-    req: UpdateGoodIncomingRequest): void
-
-  [ActionTypes.GetGoodIncomingsByGood]({
-    commit
-  }: AugmentedActionContext<
-  SettingsState,
-    RootState,
-    SettingMutations<SettingsState>>,
-    req: GetGoodIncomingsByGoodRequest): void
 }
 
 const actions: ActionTree<SettingsState, RootState> = {
@@ -169,39 +139,6 @@ const actions: ActionTree<SettingsState, RootState> = {
         if (resp.Info) {
           commit(MutationTypes.SetCoinSetting, resp.Info)
         }
-      })
-  },
-
-  [ActionTypes.CreateGoodIncoming] ({ commit }, req: CreateGoodIncomingRequest) {
-    doAction<CreateGoodIncomingRequest, CreateGoodIncomingResponse>(
-      commit,
-      API.CREATE_GOOD_INCOMING,
-      req,
-      req.Message,
-      (resp: CreateGoodIncomingResponse): void => {
-        commit(MutationTypes.SetGoodIncoming, resp.Info)
-      })
-  },
-
-  [ActionTypes.UpdateGoodIncoming] ({ commit }, req: UpdateGoodIncomingRequest) {
-    doAction<UpdateGoodIncomingRequest, UpdateGoodIncomingResponse>(
-      commit,
-      API.UPDATE_GOOD_INCOMING,
-      req,
-      req.Message,
-      (resp: UpdateGoodIncomingResponse): void => {
-        commit(MutationTypes.SetGoodIncoming, resp.Info)
-      })
-  },
-
-  [ActionTypes.GetGoodIncomingsByGood] ({ commit }, req: GetGoodIncomingsByGoodRequest) {
-    doAction<GetGoodIncomingsByGoodRequest, GetGoodIncomingsByGoodResponse>(
-      commit,
-      API.GET_GOOD_INCOMINGS_BY_GOOD,
-      req,
-      req.Message,
-      (resp: GetGoodIncomingsByGoodResponse): void => {
-        commit(MutationTypes.SetGoodIncomings, resp.Infos)
       })
   }
 }

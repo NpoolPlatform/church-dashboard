@@ -3,6 +3,8 @@ import { ReqMessage } from '../notifications/types'
 interface PlatformSetting {
   ID?: string
   WarmAccountUSDAmount: number
+  PaymentAccountUSDAmount: number
+  WithdrawAutoReviewUSDAmount: number
 }
 
 interface GetPlatformSettingRequest {
@@ -35,6 +37,11 @@ interface CoinSetting {
   ID?: string
   CoinTypeID: string
   WarmAccountCoinAmount: number
+  PaymentAccountCoinAmount: number
+  GoodIncomingAccountID?: string
+  PlatformOfflineAccountID?: string
+  UserOfflineAccountID?: string
+  UserOnlineAccountID?: string
 }
 
 interface GetCoinSettingByCoinRequest {
@@ -64,40 +71,6 @@ interface UpdateCoinSettingResponse {
   Info: CoinSetting
 }
 
-interface GoodIncoming {
-  ID?: string
-  GoodID: string
-  CoinTypeID: string
-  AccountID: string
-}
-
-interface CreateGoodIncomingRequest {
-  Info: GoodIncoming
-  Message: ReqMessage
-}
-
-interface CreateGoodIncomingResponse {
-  Info: GoodIncoming
-}
-
-interface UpdateGoodIncomingRequest {
-  Info: GoodIncoming
-  Message: ReqMessage
-}
-
-interface UpdateGoodIncomingResponse {
-  Info: GoodIncoming
-}
-
-interface GetGoodIncomingsByGoodRequest {
-  GoodID: string
-  Message: ReqMessage
-}
-
-interface GetGoodIncomingsByGoodResponse {
-  Infos: Array<GoodIncoming>
-}
-
 export {
   PlatformSetting,
   GetPlatformSettingRequest,
@@ -112,12 +85,5 @@ export {
   CreateCoinSettingRequest,
   CreateCoinSettingResponse,
   UpdateCoinSettingRequest,
-  UpdateCoinSettingResponse,
-  GoodIncoming,
-  CreateGoodIncomingRequest,
-  CreateGoodIncomingResponse,
-  UpdateGoodIncomingRequest,
-  UpdateGoodIncomingResponse,
-  GetGoodIncomingsByGoodRequest,
-  GetGoodIncomingsByGoodResponse
+  UpdateCoinSettingResponse
 }

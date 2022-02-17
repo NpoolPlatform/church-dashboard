@@ -19,9 +19,6 @@ interface GoodBenefit {
   ID: string
   GoodID: string
   BenefitAccountID: string
-  PlatformOfflineAccountID: string
-  UserOfflineAccountID: string
-  UserOnlineAccountID: string
   BenefitIntervalHours: number
 }
 

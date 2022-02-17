@@ -21,23 +21,11 @@
         <q-btn dense @click='onSetAsGoodBenefitAccountClick'>
           {{ $t('MSG_SET_AS_GOOD_BENEFIT_ACCOUNT') }}
         </q-btn>
-        <q-btn dense @click='onSetAsGoodPlatformOfflineAccountClick'>
-          {{ $t('MSG_SET_AS_GOOD_PLATFORM_OFFLINE_ACCOUNT') }}
-        </q-btn>
-        <q-btn dense @click='onSetAsGoodUserOfflineClick'>
-          {{ $t('MSG_SET_AS_GOOD_USER_OFFLINE_ACCOUNT') }}
-        </q-btn>
-        <q-btn dense @click='onSetAsGoodUserOnlineClick'>
-          {{ $t('MSG_SET_AS_GOOD_USER_ONLINE_ACCOUNT') }}
-        </q-btn>
         <q-btn dense @click='onCreatePlatformCoinAccountClick'>
           {{ $t('MSG_CREATE_PLATFORM_COIN_ACCOUNT') }}
         </q-btn>
         <q-btn dense @click='onCreateUserCoinAccountClick'>
           {{ $t('MSG_CREATE_USER_HOLD_ACCOUNT') }}
-        </q-btn>
-        <q-btn dense @click='onCreateGoodIncomingClick'>
-          {{ $t('MSG_SET_GOOD_INCOMING_ACCOUNT') }}
         </q-btn>
       </div>
     </template>
@@ -75,12 +63,6 @@
     :rows='goodPayments'
     :title='t("MSG_GOOD_PAYMENT_ADDRESS_LIST")'
   />
-  <q-table
-    flat
-    dense
-    :rows='goodIncomings'
-    :title='t("MSG_GOOD_INCOMING_SETTING")'
-  />
   <q-dialog
     v-model='modifying'
     position='right'
@@ -117,8 +99,6 @@ import { CoinAccount, GoodBenefit } from 'src/store/accounts/types'
 import { GoodBase } from 'src/store/goods/types'
 import { ActionTypes as GoodActionTypes } from 'src/store/goods/action-types'
 import { DefaultID } from 'src/const/const'
-import { ActionTypes as SettingActionTypes } from 'src/store/settings/action-types'
-import { GoodIncoming } from 'src/store/settings/types'
 
 const CreatPlatformCoinAccount = defineAsyncComponent(() => import('src/components/good/CreatePlatformCoinAccount.vue'))
 const CreatUserCoinAccount = defineAsyncComponent(() => import('src/components/good/CreateUserCoinAccount.vue'))
@@ -210,7 +190,7 @@ const onCreateUserCoinAccountSubmit = (account: CoinAccount) => {
 const allGoods = computed(() => {
   const goods = [] as Array<GoodBase>
   store.getters.getAllGoods.forEach((good) => {
-    goods.push(good.Good)
+    goods.push(good.Good.Good)
   })
   return goods
 })
@@ -235,18 +215,6 @@ watch(selectedGood, () => {
         ModuleKey: ModuleKey.ModuleGoods,
         Error: {
           Title: t('MSG_GET_GOOD_PAYMENT_FAIL'),
-          Popup: true,
-          Type: NotificationType.Error
-        }
-      }
-    })
-
-    store.dispatch(SettingActionTypes.GetGoodIncomingsByGood, {
-      GoodID: good.ID as string,
-      Message: {
-        ModuleKey: ModuleKey.ModuleGoods,
-        Error: {
-          Title: t('MSG_GET_GOOD_INCOMINGS_FAIL'),
           Popup: true,
           Type: NotificationType.Error
         }
@@ -285,47 +253,6 @@ const goodPayments = computed(() => {
   return []
 })
 
-const goodIncomings = computed(() => {
-  if (selectedGood.value && selectedGood.value.length > 0) {
-    return store.getters.getGoodIncomingsByGood(selectedGood.value[0].ID as string)
-  }
-  return []
-})
-
-const onCreateGoodIncomingClick = () => {
-  if (selectedGood.value && selectedGood.value.length > 0) {
-    if (!candidateAccount.value[0].PlatformHoldPrivateKey) {
-      let action = SettingActionTypes.CreateGoodIncoming
-      const incoming = {
-        GoodID: selectedGood.value[0].ID as string,
-        CoinTypeID: candidateAccount.value[0].CoinTypeID,
-        AccountID: candidateAccount.value[0].ID as string
-      } as GoodIncoming
-      if (goodIncomings.value) {
-        for (let i = 0; i < goodIncomings.value.length; i++) {
-          if (goodIncomings.value[i].CoinTypeID === candidateAccount.value[0].CoinTypeID) {
-            incoming.ID = goodIncomings.value[i].ID
-            action = SettingActionTypes.UpdateGoodIncoming
-            break
-          }
-        }
-      }
-
-      store.dispatch(action, {
-        Info: incoming,
-        Message: {
-          ModuleKey: ModuleKey.ModuleGoods,
-          Error: {
-            Title: t('MSG_CREATE_GOOD_INCOMING_FAIL'),
-            Popup: true,
-            Type: NotificationType.Error
-          }
-        }
-      })
-    }
-  }
-}
-
 const onSetGoodBenefitIntervalHoursClick = () => {
   myGoodBenefit.value.BenefitIntervalHours = 24
 }
@@ -333,24 +260,6 @@ const onSetGoodBenefitIntervalHoursClick = () => {
 const onSetAsGoodBenefitAccountClick = () => {
   if (candidateAccount.value[0].PlatformHoldPrivateKey) {
     myGoodBenefit.value.BenefitAccountID = candidateAccount.value[0].ID as string
-  }
-}
-
-const onSetAsGoodPlatformOfflineAccountClick = () => {
-  if (!candidateAccount.value[0].PlatformHoldPrivateKey) {
-    myGoodBenefit.value.PlatformOfflineAccountID = candidateAccount.value[0].ID as string
-  }
-}
-
-const onSetAsGoodUserOfflineClick = () => {
-  if (!candidateAccount.value[0].PlatformHoldPrivateKey) {
-    myGoodBenefit.value.UserOfflineAccountID = candidateAccount.value[0].ID as string
-  }
-}
-
-const onSetAsGoodUserOnlineClick = () => {
-  if (candidateAccount.value[0].PlatformHoldPrivateKey) {
-    myGoodBenefit.value.UserOnlineAccountID = candidateAccount.value[0].ID as string
   }
 }
 
