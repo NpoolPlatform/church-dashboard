@@ -24,6 +24,15 @@
         <q-btn dense @click='onUnauthorizeGoods'>
           {{ $t('MSG_UNAUTHORIZE_GOOD') }}
         </q-btn>
+        <q-btn dense @click='onSetGoodOnline'>
+          {{ $t('MSG_SET_ONLINE') }}
+        </q-btn>
+        <q-btn dense @click='onSetGoodOffline'>
+          {{ $t('MSG_SET_OFFLINE') }}
+        </q-btn>
+        <q-btn dense @click='onModifyPrice'>
+          {{ $t('MSG_MODIFY_PRICE') }}
+        </q-btn>
         <ApplicationSelector v-model:selected-app-id='selectedAppID' />
       </div>
     </template>
@@ -103,7 +112,9 @@ const onAuthorizeGoods = () => {
     store.dispatch(ApplicationActionTypes.AuthorizeAppGoodForOtherApp, {
       TargetAppID: selectedAppID.value,
       Info: {
-        GoodID: good.ID as string
+        GoodID: good.ID as string,
+        Price: 0,
+        Online: false
       },
       Message: {
         ModuleKey: ModuleKey.ModuleApplications,
@@ -125,6 +136,75 @@ const onUnauthorizeGoods = () => {
         ModuleKey: ModuleKey.ModuleApplications,
         Error: {
           Title: t('MSG_UNAUTHORIZE_APP_GOOD_FAIL'),
+          Popup: true,
+          Type: NotificationType.Error
+        }
+      }
+    })
+  })
+}
+
+const onSetGoodOnline = () => {
+  selectedAppGoods.value.forEach((appGood) => {
+    store.dispatch(ApplicationActionTypes.OnsaleAppGoodForOtherApp, {
+      TargetAppID: selectedApp.value.App.ID,
+      Info: {
+        ID: appGood.ID,
+        AppID: appGood.AppID,
+        GoodID: appGood.GoodID,
+        Price: appGood.Price,
+        Online: true
+      },
+      Message: {
+        ModuleKey: ModuleKey.ModuleApplications,
+        Error: {
+          Title: t('MSG_UPDATE_APP_GOOD_FAIL'),
+          Popup: true,
+          Type: NotificationType.Error
+        }
+      }
+    })
+  })
+}
+
+const onSetGoodOffline = () => {
+  selectedAppGoods.value.forEach((appGood) => {
+    store.dispatch(ApplicationActionTypes.OnsaleAppGoodForOtherApp, {
+      TargetAppID: selectedApp.value.App.ID,
+      Info: {
+        ID: appGood.ID,
+        AppID: appGood.AppID,
+        GoodID: appGood.GoodID,
+        Price: appGood.Price,
+        Online: false
+      },
+      Message: {
+        ModuleKey: ModuleKey.ModuleApplications,
+        Error: {
+          Title: t('MSG_UPDATE_APP_GOOD_FAIL'),
+          Popup: true,
+          Type: NotificationType.Error
+        }
+      }
+    })
+  })
+}
+
+const onModifyPrice = () => {
+  selectedAppGoods.value.forEach((appGood) => {
+    store.dispatch(ApplicationActionTypes.SetAppGoodPriceForOtherApp, {
+      TargetAppID: selectedApp.value.App.ID,
+      Info: {
+        ID: appGood.ID,
+        AppID: appGood.AppID,
+        GoodID: appGood.GoodID,
+        Price: 1000,
+        Online: false
+      },
+      Message: {
+        ModuleKey: ModuleKey.ModuleApplications,
+        Error: {
+          Title: t('MSG_UPDATE_APP_GOOD_FAIL'),
           Popup: true,
           Type: NotificationType.Error
         }

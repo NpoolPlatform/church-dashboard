@@ -68,6 +68,7 @@ const mutations: MutationTree<ApplicationsState> & ApplicationMutations = {
       payload.forEach((good) => {
         for (let i = 0; i < goods.length; i++) {
           if (good.ID === goods[i].ID) {
+            goods.splice(i, 1, good)
             return
           }
         }

@@ -101,8 +101,8 @@ interface AppGood {
   ID?: string
   AppID?: string
   GoodID: string
-  Price?: number
-  Online?: boolean
+  Price: number
+  Online: boolean
   InitAreaStrategy?: string
 }
 
@@ -161,6 +161,36 @@ interface CreateRecommendForOtherAppResponse {
   Info: Recommend
 }
 
+interface SetAppGoodPriceForOtherAppRequest {
+  TargetAppID: string
+  Info: AppGood
+  Message: ReqMessage
+}
+
+interface SetAppGoodPriceForOtherAppResponse {
+  Info: AppGood
+}
+
+interface SetAppGoodOnlineForOtherAppRequest {
+  TargetAppID: string
+  Info: AppGood
+  Message: ReqMessage
+}
+
+interface SetAppGoodOnlineForOtherAppResponse {
+  Info: AppGood
+}
+
+interface SetAppGoodOfflineForOtherAppRequest {
+  TargetAppID: string
+  Info: AppGood
+  Message: ReqMessage
+}
+
+interface SetAppGoodOfflineForOtherAppResponse {
+  Info: AppGood
+}
+
 export {
   App,
   AppControl,
@@ -191,5 +221,11 @@ export {
   GetRecommendsByOtherAppRequest,
   GetRecommendsByOtherAppResponse,
   CreateRecommendForOtherAppRequest,
-  CreateRecommendForOtherAppResponse
+  CreateRecommendForOtherAppResponse,
+  SetAppGoodPriceForOtherAppRequest,
+  SetAppGoodPriceForOtherAppResponse,
+  SetAppGoodOnlineForOtherAppRequest,
+  SetAppGoodOnlineForOtherAppResponse,
+  SetAppGoodOfflineForOtherAppRequest,
+  SetAppGoodOfflineForOtherAppResponse
 }

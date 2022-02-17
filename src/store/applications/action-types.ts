@@ -10,5 +10,8 @@ export enum ActionTypes {
   AuthorizeAppGoodForOtherApp = 'AUTHORIZE_APP_GOOD_FOR_OTHER_APP',
   UnauthorizeAppGood = 'UNAUTHORIZE_APP_GOOD',
   GetRecommendsByOtherApp = 'GET_RECOMMENDS_BY_OTHER_APP',
-  CreateRecommendForOtherApp = 'CREATE_RECOMMEND_FOR_OTHER_APP'
+  CreateRecommendForOtherApp = 'CREATE_RECOMMEND_FOR_OTHER_APP',
+  SetAppGoodPriceForOtherApp = 'SET_APP_GOOD_PRICE_FOR_OTHER_APP',
+  OnsaleAppGoodForOtherApp = 'ONSALE_APP_GOOD_FOR_OTHER_APP',
+  OffsaleAppGoodForOtherApp = 'OFFSALE_APP_GOOD_FOR_OTHER_APP'
 }

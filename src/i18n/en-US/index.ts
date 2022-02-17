@@ -183,5 +183,9 @@ export default {
   MSG_CREATE_RECOMMEND_FAIL: 'Cannot create recommend good',
   MSG_GET_RECOMMENDS_FAIL: 'Cannot get recommend goods',
   MSG_ADD_RECOMMEND: '推荐商品',
-  MSG_RECOMMEND_MESSAGE: '推荐理由'
+  MSG_RECOMMEND_MESSAGE: '推荐理由',
+  MSG_SET_ONLINE: '上架商品',
+  MSG_SET_OFFLINE: '下架商品',
+  MSG_MODIFY_PRICE: '修改价格',
+  MSG_UPDATE_APP_GOOD_FAIL: 'Cannot update app good'
 }

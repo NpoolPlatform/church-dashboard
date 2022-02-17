@@ -19,6 +19,12 @@ import {
   GetAppRolesByOtherAppResponse,
   GetRecommendsByOtherAppRequest,
   GetRecommendsByOtherAppResponse,
+  SetAppGoodOfflineForOtherAppRequest,
+  SetAppGoodOfflineForOtherAppResponse,
+  SetAppGoodOnlineForOtherAppRequest,
+  SetAppGoodOnlineForOtherAppResponse,
+  SetAppGoodPriceForOtherAppRequest,
+  SetAppGoodPriceForOtherAppResponse,
   UnauthorizeAppGoodRequest,
   UnauthorizeAppGoodResponse,
   UpdateAppControlRequest,
@@ -129,6 +135,30 @@ interface ApplicationActions {
     RootState,
     ApplicationMutations<ApplicationsState>>,
     req: CreateRecommendForOtherAppRequest): void
+
+  [ActionTypes.SetAppGoodPriceForOtherApp]({
+    commit
+  }: AugmentedActionContext<
+    ApplicationsState,
+    RootState,
+    ApplicationMutations<ApplicationsState>>,
+    req: SetAppGoodPriceForOtherAppRequest): void
+
+  [ActionTypes.OnsaleAppGoodForOtherApp]({
+    commit
+  }: AugmentedActionContext<
+    ApplicationsState,
+    RootState,
+    ApplicationMutations<ApplicationsState>>,
+    req: SetAppGoodOnlineForOtherAppRequest): void
+
+  [ActionTypes.OffsaleAppGoodForOtherApp]({
+    commit
+  }: AugmentedActionContext<
+    ApplicationsState,
+    RootState,
+    ApplicationMutations<ApplicationsState>>,
+    req: SetAppGoodOfflineForOtherAppRequest): void
 }
 
 const actions: ActionTree<ApplicationsState, RootState> = {
@@ -266,6 +296,39 @@ const actions: ActionTree<ApplicationsState, RootState> = {
       req.Message,
       (resp: CreateRecommendForOtherAppResponse): void => {
         commit(MutationTypes.SetRecommends, [resp.Info])
+      })
+  },
+
+  [ActionTypes.SetAppGoodPriceForOtherApp] ({ commit }, req: SetAppGoodPriceForOtherAppRequest) {
+    doAction<SetAppGoodPriceForOtherAppRequest, SetAppGoodPriceForOtherAppResponse>(
+      commit,
+      API.SET_APP_GOOD_PRICE_FOR_OTHER_APP,
+      req,
+      req.Message,
+      (resp: SetAppGoodPriceForOtherAppResponse): void => {
+        commit(MutationTypes.SetAppGoods, [resp.Info])
+      })
+  },
+
+  [ActionTypes.OnsaleAppGoodForOtherApp] ({ commit }, req: SetAppGoodOnlineForOtherAppRequest) {
+    doAction<SetAppGoodOnlineForOtherAppRequest, SetAppGoodOnlineForOtherAppResponse>(
+      commit,
+      API.ONSALE_APP_GOOD_FOR_OTHER_APP,
+      req,
+      req.Message,
+      (resp: SetAppGoodOnlineForOtherAppResponse): void => {
+        commit(MutationTypes.SetAppGoods, [resp.Info])
+      })
+  },
+
+  [ActionTypes.OffsaleAppGoodForOtherApp] ({ commit }, req: SetAppGoodOfflineForOtherAppRequest) {
+    doAction<SetAppGoodOfflineForOtherAppRequest, SetAppGoodOfflineForOtherAppResponse>(
+      commit,
+      API.CREATE_RECOMMEND_FOR_OTHER_APP,
+      req,
+      req.Message,
+      (resp: SetAppGoodOfflineForOtherAppResponse): void => {
+        commit(MutationTypes.SetAppGoods, [resp.Info])
       })
   }
 }
