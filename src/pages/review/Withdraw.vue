@@ -21,7 +21,7 @@
     no-shake
   >
     <KYC
-      v-model:kyc-review='kycReview'
+      v-model:kyc-review='(kycReview)'
       @approve='onReviewApprove'
       @reject='onReviewReject'
     />
@@ -38,7 +38,7 @@ import { ModuleKey, Type as NotificationType } from '../../store/notifications/c
 import { MutationTypes as ReviewMutationTypes } from '../../store/reviews/mutation-types'
 import { MutationTypes as ApplicationMutationTypes } from '../../store/applications/mutation-types'
 import { ActionTypes as ReviewActionTypes } from '../../store/reviews/action-types'
-import { Review } from '../../store/reviews/types'
+import { KYCReview, Review } from '../../store/reviews/types'
 import { FunctionVoid } from '../../types/types'
 import { MutationTypes as NotificationMutationTypes } from '../../store/notifications/mutation-types'
 import { notify, notificationPop } from '../../store/notifications/helper'
@@ -128,7 +128,7 @@ const kycReview = computed(() => {
   if (myReviews.value) {
     return myReviews.value[selectedIndex.value]
   }
-  return undefined
+  return undefined as unknown as KYCReview
 })
 
 const onRowClick = (index: number) => {

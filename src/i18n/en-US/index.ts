@@ -27,6 +27,7 @@ export default {
   MSG_GET_APPLICATIONS_FAIL: 'Cannot get applications list',
   MSG_GET_KYC_REVIEWS_FAIL: 'Cannot get kyc reviews',
   MSG_GET_ALL_GOODS_FAIL: 'Cannot get goods list',
+  MSG_GET_PLATFORM_SETTING_FAIL: 'Cannot get platform setting',
   MSG_GET_GOOD_REVIEWS_FAIL: 'Cannot get good reviews',
   MSG_GET_COINS_FAIL: 'Cannot get coin list',
   MSG_GET_ALL_FEE_TYPES_FAIL: 'Cannot get fee types list',

@@ -123,7 +123,7 @@ import {
 } from './auths'
 
 import {
-  coinAccounts,
+  accounts,
   CoinAccountsState,
   CoinAccountMutations,
   CoinAccountGetters,
@@ -154,7 +154,7 @@ export interface RootState {
   appSMSTemplates: AppSMSTemplatesState
   appContacts: AppContactsState
   auths: AuthsState
-  coinAccounts: CoinAccountsState
+  accounts: CoinAccountsState
   settings: SettingsState
 }
 
@@ -228,7 +228,7 @@ export default store(function (/* { ssrContext } */) {
       appSMSTemplates,
       appContacts,
       auths,
-      coinAccounts,
+      accounts,
       settings
     },
 

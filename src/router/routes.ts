@@ -17,6 +17,8 @@ const routes: RouteRecordRaw[] = [
       // Review pages
       { path: 'review/kyc', component: () => import('pages/review/KYC.vue') },
       { path: 'review/good', component: () => import('pages/review/Good.vue') },
+      { path: 'review/withdraw', component: () => import('pages/review/Withdraw.vue') },
+      { path: 'review/withdraw/address', component: () => import('pages/review/WithdrawAddress.vue') },
 
       // Applications page
       { path: 'applications/applications', component: () => import('pages/applications/Applications.vue') },

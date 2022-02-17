@@ -210,7 +210,7 @@ onMounted(() => {
     Message: {
       ModuleKey: ModuleKey.ModuleGoods,
       Error: {
-        Title: t('MSG_GET_ALL_GOODS_FAIL'),
+        Title: t('MSG_GET_PLATFORM_SETTING_FAIL'),
         Popup: true,
         Type: NotificationType.Error
       }

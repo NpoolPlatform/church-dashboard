@@ -5,7 +5,7 @@ import { CoinAccountGetters, getters } from './getters'
 import { CoinAccountMutations, mutations } from './mutations'
 import { CoinAccountActions, actions } from './actions'
 
-const coinAccounts: Module<CoinAccountsState, RootState> = {
+const accounts: Module<CoinAccountsState, RootState> = {
   // namespaced: true,
   actions,
   getters,
@@ -14,7 +14,7 @@ const coinAccounts: Module<CoinAccountsState, RootState> = {
 }
 
 export {
-  coinAccounts, CoinAccountsState,
+  accounts, CoinAccountsState,
   mutations, CoinAccountMutations,
   getters, CoinAccountGetters,
   actions, CoinAccountActions
