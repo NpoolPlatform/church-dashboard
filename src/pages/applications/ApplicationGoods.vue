@@ -18,6 +18,7 @@
     <template #top-right>
       <div class='row'>
         <q-space />
+        <q-input v-model='goodPrice' dense flat :label='t("MSG_GOOD_PRICE")' />
         <q-btn dense @click='onAuthorizeGoods'>
           {{ $t('MSG_AUTHORIZE_GOOD') }}
         </q-btn>
@@ -169,7 +170,7 @@ const onSetGoodOnline = () => {
 
 const onSetGoodOffline = () => {
   selectedAppGoods.value.forEach((appGood) => {
-    store.dispatch(ApplicationActionTypes.OnsaleAppGoodForOtherApp, {
+    store.dispatch(ApplicationActionTypes.OffsaleAppGoodForOtherApp, {
       TargetAppID: selectedApp.value.App.ID,
       Info: {
         ID: appGood.ID,
@@ -190,6 +191,8 @@ const onSetGoodOffline = () => {
   })
 }
 
+const goodPrice = ref(1000)
+
 const onModifyPrice = () => {
   selectedAppGoods.value.forEach((appGood) => {
     store.dispatch(ApplicationActionTypes.SetAppGoodPriceForOtherApp, {
@@ -198,7 +201,7 @@ const onModifyPrice = () => {
         ID: appGood.ID,
         AppID: appGood.AppID,
         GoodID: appGood.GoodID,
-        Price: 1000,
+        Price: goodPrice.value,
         Online: false
       },
       Message: {

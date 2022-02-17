@@ -225,7 +225,9 @@ watch(selectedGood, () => {
   })
 })
 const goodBenefit = computed(() => {
+  let appID = DefaultID
   if (selectedGood.value && selectedGood.value.length > 0) {
+    appID = selectedGood.value[0].ID as string
     const benefit = store.getters.getGoodBenefitByGood(selectedGood.value[0].ID as string)
     if (benefit) {
       return benefit
@@ -233,11 +235,8 @@ const goodBenefit = computed(() => {
   }
   return {
     ID: DefaultID,
-    GoodID: DefaultID,
+    GoodID: appID,
     BenefitAccountID: DefaultID,
-    PlatformOfflineAccountID: DefaultID,
-    UserOfflineAccountID: DefaultID,
-    UserOnlineAccountID: DefaultID,
     BenefitIntervalHours: 24
   } as GoodBenefit
 })

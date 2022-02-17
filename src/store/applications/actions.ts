@@ -324,7 +324,7 @@ const actions: ActionTree<ApplicationsState, RootState> = {
   [ActionTypes.OffsaleAppGoodForOtherApp] ({ commit }, req: SetAppGoodOfflineForOtherAppRequest) {
     doAction<SetAppGoodOfflineForOtherAppRequest, SetAppGoodOfflineForOtherAppResponse>(
       commit,
-      API.CREATE_RECOMMEND_FOR_OTHER_APP,
+      API.OFFSALE_APP_GOOD_FOR_OTHER_APP,
       req,
       req.Message,
       (resp: SetAppGoodOfflineForOtherAppResponse): void => {
