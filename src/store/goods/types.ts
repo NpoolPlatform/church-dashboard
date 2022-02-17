@@ -178,7 +178,8 @@ interface UpdateGoodResponse {
   Info: Good
 }
 
-interface GoodDetail extends GoodBase {
+interface GoodDetail {
+  Good: Good
   DeviceInfo: DeviceInfo
   VendorLocation: VendorLocation
   Fees: Array<Fee>
