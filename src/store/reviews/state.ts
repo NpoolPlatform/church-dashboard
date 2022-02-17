@@ -1,17 +1,21 @@
 import { AppID } from 'src/const/const'
-import { KYCReview, GoodReview } from './types'
+import { KYCReview, GoodReview, WithdrawAddressReview } from './types'
 
 interface ReviewsState {
   KYCReviews: Array<KYCReview>
   GoodReviews: Array<GoodReview>
   SelectedKYCAppID: string
+  WithdrawAddressReviews: Array<WithdrawAddressReview>
+  SelectedWithdrawAddressAppID: string
 }
 
 function state (): ReviewsState {
   return {
-    KYCReviews: [] as Array<KYCReview>,
-    GoodReviews: [] as Array<GoodReview>,
-    SelectedKYCAppID: AppID
+    KYCReviews: [],
+    GoodReviews: [],
+    SelectedKYCAppID: AppID,
+    WithdrawAddressReviews: [],
+    SelectedWithdrawAddressAppID: AppID
   }
 }
 

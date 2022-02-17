@@ -6,7 +6,9 @@ import {
   GetGoodReviewsRequest,
   GetGoodReviewsResponse,
   UpdateReviewRequest,
-  UpdateReviewResponse
+  UpdateReviewResponse,
+  GetWithdrawAddressReviewsByOtherAppRequest,
+  GetWithdrawAddressReviewsByOtherAppResponse
 } from './types'
 import { ReviewsState } from './state'
 import { ActionTree } from 'vuex'
@@ -39,6 +41,14 @@ interface ReviewActions {
     RootState,
     ReviewMutations<ReviewsState>>,
     req: UpdateReviewRequest): void
+
+  [ActionTypes.GetWithdrawAddressReviewsByOtherApp]({
+    commit
+  }: AugmentedActionContext<
+  ReviewsState,
+    RootState,
+    ReviewMutations<ReviewsState>>,
+    req: GetWithdrawAddressReviewsByOtherAppRequest): void
 }
 
 const actions: ActionTree<ReviewsState, RootState> = {
@@ -72,6 +82,17 @@ const actions: ActionTree<ReviewsState, RootState> = {
       req.Message,
       (resp: UpdateReviewResponse): void => {
         commit(MutationTypes.UpdateReview, resp.Info)
+      })
+  },
+
+  [ActionTypes.GetWithdrawAddressReviewsByOtherApp] ({ commit }, req: GetWithdrawAddressReviewsByOtherAppRequest) {
+    doAction<GetWithdrawAddressReviewsByOtherAppRequest, GetWithdrawAddressReviewsByOtherAppResponse>(
+      commit,
+      API.GET_WITHDRAW_ADDRESS_REVIEWS_BY_OTHER_APP,
+      req,
+      req.Message,
+      (resp: GetWithdrawAddressReviewsByOtherAppResponse): void => {
+        commit(MutationTypes.SetWithdrawAddressReviews, resp.Infos)
       })
   }
 }

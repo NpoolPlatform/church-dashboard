@@ -2,8 +2,8 @@
   <q-table
     flat
     dense
-    :loading='kycReviewsLoading'
-    :rows='kycReviews'
+    :loading='loading'
+    :rows='reviews'
     @row-click='(evt, row, index) => onRowClick(index)'
   >
     <template #top-right>
@@ -20,8 +20,8 @@
     square
     no-shake
   >
-    <KYC
-      v-model:kyc-review='kycReview'
+    <WithdrawAddress
+      v-model:withdraw-address-review='addressReview'
       @approve='onReviewApprove'
       @reject='onReviewReject'
     />
@@ -38,40 +38,40 @@ import { ModuleKey, Type as NotificationType } from '../../store/notifications/c
 import { MutationTypes as ReviewMutationTypes } from '../../store/reviews/mutation-types'
 import { MutationTypes as ApplicationMutationTypes } from '../../store/applications/mutation-types'
 import { ActionTypes as ReviewActionTypes } from '../../store/reviews/action-types'
-import { KYCReview, Review } from '../../store/reviews/types'
+import { Review, WithdrawAddressReview } from '../../store/reviews/types'
 import { FunctionVoid } from '../../types/types'
 import { MutationTypes as NotificationMutationTypes } from '../../store/notifications/mutation-types'
 import { notify, notificationPop } from '../../store/notifications/helper'
 import { State } from '../../store/reviews/const'
+import { ActionTypes as CoinActionTypes } from 'src/store/coins/action-types'
 
 const store = useStore()
 // eslint-disable-next-line @typescript-eslint/unbound-method
 const { t } = useI18n({ useScope: 'global' })
 
 const ApplicationSelector = defineAsyncComponent(() => import('src/components/dropdown/ApplicationSelector.vue'))
-const KYC = defineAsyncComponent(() => import('src/components/kyc/KYC.vue'))
+const WithdrawAddress = defineAsyncComponent(() => import('src/components/withdraw/Address.vue'))
 
 const selectedAppID = computed({
-  get: () => store.getters.getKYCSelectedAppID,
+  get: () => store.getters.getWithdrawAddressSelectedAppID,
   set: (val) => {
-    store.commit(ReviewMutationTypes.SetKYCSelectedAppID, val)
+    store.commit(ReviewMutationTypes.SetWithdrawAddressSelectedAppID, val)
   }
 })
 
-const myReviews = computed(() => store.getters.getKYCReviews)
-const kycReviews = computed(() => {
+const addresseReviews = computed(() => store.getters.getWithdrawAddressReviews)
+const reviews = computed(() => {
   const reviews = [] as Array<Review>
-  myReviews.value.forEach((review) => {
+  addresseReviews.value.forEach((review) => {
     reviews.push(review.Review)
   })
   return reviews
 })
-const kycReviewsLoading = ref(false)
-
+const loading = ref(false)
 const unsubscribe = ref<FunctionVoid>()
 
 onMounted(() => {
-  kycReviewsLoading.value = true
+  loading.value = true
   store.dispatch(ApplicationActionTypes.GetApplications, {
     Message: {
       ModuleKey: ModuleKey.ModuleReviews,
@@ -83,15 +83,26 @@ onMounted(() => {
     }
   })
 
+  store.dispatch(CoinActionTypes.GetCoins, {
+    Message: {
+      ModuleKey: ModuleKey.ModuleGoods,
+      Error: {
+        Title: t('MSG_GET_COINS_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+  })
+
   unsubscribe.value = store.subscribe((mutation) => {
-    if (mutation.type === ReviewMutationTypes.SetKYCSelectedAppID) {
-      kycReviewsLoading.value = true
-      store.dispatch(ReviewActionTypes.GetKYCReviewsByOtherApp, {
+    if (mutation.type === ReviewMutationTypes.SetWithdrawAddressSelectedAppID) {
+      loading.value = true
+      store.dispatch(ReviewActionTypes.GetWithdrawAddressReviewsByOtherApp, {
         TargetAppID: selectedAppID.value,
         Message: {
           ModuleKey: ModuleKey.ModuleReviews,
           Error: {
-            Title: t('MSG_GET_KYC_REVIEWS_FAIL'),
+            Title: t('MSG_GET_WITHDRAW_ADDRESS_REVIEWS_FAIL'),
             Popup: true,
             Type: NotificationType.Error
           }
@@ -100,7 +111,7 @@ onMounted(() => {
     }
 
     if (mutation.type === NotificationMutationTypes.Push) {
-      kycReviewsLoading.value = false
+      loading.value = false
       const notification = store.getters.peekNotification(ModuleKey.ModuleReviews)
       if (notification) {
         notify(notification)
@@ -109,11 +120,11 @@ onMounted(() => {
     }
 
     if (mutation.type === ApplicationMutationTypes.SetApplications) {
-      kycReviewsLoading.value = false
+      loading.value = false
     }
 
-    if (mutation.type === ReviewMutationTypes.SetKYCReviews) {
-      kycReviewsLoading.value = false
+    if (mutation.type === ReviewMutationTypes.SetWithdrawAddressReviews) {
+      loading.value = false
     }
   })
 })
@@ -124,11 +135,11 @@ onUnmounted(() => {
 
 const reviewing = ref(false)
 const selectedIndex = ref(0)
-const kycReview = computed(() => {
-  if (myReviews.value) {
-    return myReviews.value[selectedIndex.value]
+const addressReview = computed(() => {
+  if (addresseReviews.value) {
+    return addresseReviews.value[selectedIndex.value]
   }
-  return undefined as unknown as KYCReview
+  return undefined as unknown as WithdrawAddressReview
 })
 
 const onRowClick = (index: number) => {
@@ -140,7 +151,7 @@ const onReviewApprove = () => {
   reviewing.value = false
   store.dispatch(ReviewActionTypes.UpdateReview, {
     Info: {
-      ID: kycReview.value?.Review.ID as string,
+      ID: addressReview.value?.Review.ID as string,
       ReviewerID: store.getters.getLoginedUser.User?.ID,
       State: State.Approved
     },
@@ -159,7 +170,7 @@ const onReviewReject = (message: string) => {
   reviewing.value = false
   store.dispatch(ReviewActionTypes.UpdateReview, {
     Info: {
-      ID: kycReview.value?.Review.ID as string,
+      ID: addressReview.value?.Review.ID as string,
       ReviewerID: store.getters.getLoginedUser.User?.ID,
       State: State.Rejected,
       Message: message

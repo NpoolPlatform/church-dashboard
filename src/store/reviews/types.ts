@@ -2,6 +2,7 @@ import { ReqMessage } from '../notifications/types'
 import { KYC } from '../kycs/types'
 import { Good } from '../goods/types'
 import { UserInfo } from '../user-helper/types'
+import { CoinAccount } from '../accounts/types'
 
 interface Review {
   ID?: string
@@ -43,6 +44,31 @@ interface GetGoodReviewsResponse {
   Infos: ReadonlyArray<GoodReview>
 }
 
+interface WithdrawAddress {
+  ID: string
+  CoinTypeID: string
+  AccountID: string
+  Name: string
+  Message: string
+  CreateAt: number
+}
+
+interface WithdrawAddressReview {
+  Address: WithdrawAddress
+  Account: CoinAccount
+  Review: Review
+  User: UserInfo
+}
+
+interface GetWithdrawAddressReviewsByOtherAppRequest {
+  TargetAppID: string
+  Message: ReqMessage
+}
+
+interface GetWithdrawAddressReviewsByOtherAppResponse {
+  Infos: Array<WithdrawAddressReview>
+}
+
 interface UpdateReviewRequest {
   Info: Review
   Message: ReqMessage
@@ -61,5 +87,8 @@ export {
   GetGoodReviewsRequest,
   GetGoodReviewsResponse,
   UpdateReviewRequest,
-  UpdateReviewResponse
+  UpdateReviewResponse,
+  WithdrawAddressReview,
+  GetWithdrawAddressReviewsByOtherAppRequest,
+  GetWithdrawAddressReviewsByOtherAppResponse
 }

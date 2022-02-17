@@ -4,6 +4,9 @@ export enum MutationTypes {
   SetKYCSelectedAppID = 'SET_KYC_SELECTED_APP_ID',
   // Good review
   SetGoodReviews = 'SET_GOOD_REVIEWS',
+  // Withdraw address review
+  SetWithdrawAddressReviews = 'SET_WITHDRAW_ADDRESS_REVIEWS',
+  SetWithdrawAddressSelectedAppID = 'SET_WITHDRAW_ADDRESS_SELECTED_APP_ID',
   // Common
   UpdateReview = 'UPDATE_REVIEW'
 }

@@ -26,6 +26,7 @@ export default {
   MSG_LOGIN_FAIL: 'You failed to login',
   MSG_GET_APPLICATIONS_FAIL: 'Cannot get applications list',
   MSG_GET_KYC_REVIEWS_FAIL: 'Cannot get kyc reviews',
+  MSG_GET_WITHDRAW_ADDRESS_REVIEWS_FAIL: 'Cannot get withdraw address reviews',
   MSG_GET_ALL_GOODS_FAIL: 'Cannot get goods list',
   MSG_GET_PLATFORM_SETTING_FAIL: 'Cannot get platform setting',
   MSG_GET_GOOD_REVIEWS_FAIL: 'Cannot get good reviews',
@@ -172,5 +173,6 @@ export default {
   MSG_GOOD_INCOMING_SETTING: '商品资金管理设置',
   MSG_GOOD_LIST: '商品列表',
   MSG_GET_GOOD_INCOMINGS_FAIL: 'You failed to get good incomings',
-  MSG_CREATE_GOOD_INCOMING_FAIL: 'You failed to create good incoming'
+  MSG_CREATE_GOOD_INCOMING_FAIL: 'You failed to create good incoming',
+  MSG_COIN_TYPE: '币种'
 }

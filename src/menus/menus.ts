@@ -89,7 +89,7 @@ const MainDrawerMenus = [
         label: '提现地址',
         caption: '审核体现地址设置',
         icon: 'format_list_numbered',
-        target: '/review/withdraw',
+        target: '/review/withdraw/address',
         level: 1,
         children: []
       }, {
@@ -97,7 +97,7 @@ const MainDrawerMenus = [
         label: '提现请求',
         caption: '审核提现请求',
         icon: 'format_list_numbered',
-        target: '/review/withdraw/address',
+        target: '/review/withdraw',
         level: 1,
         children: []
       }
