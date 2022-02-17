@@ -354,7 +354,7 @@ const onCreateCoinSettingClick = () => {
   }
   store.commit(SettingMutationTypes.SetCoinSetting, {
     ID: coinSetting.value?.ID,
-    CoinTypeID: coinSetting.value?.CoinTypeID as string,
+    CoinTypeID: selectedCoin.value[0].ID as string,
     WarmAccountCoinAmount: coinSetting.value?.WarmAccountCoinAmount as number,
     PaymentAccountCoinAmount: coinSetting.value?.PaymentAccountCoinAmount as number,
     PlatformOfflineAccountID: coinSetting.value?.PlatformOfflineAccountID,
