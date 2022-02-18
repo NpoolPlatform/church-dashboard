@@ -221,7 +221,12 @@ watch(selectedGood, () => {
       }
     })
 
-    myGoodBenefit.value.GoodID = good.ID as string
+    myGoodBenefit.value = {
+      ID: goodBenefit.value.ID,
+      GoodID: good.ID as string,
+      BenefitAccountID: goodBenefit.value.BenefitAccountID,
+      BenefitIntervalHours: goodBenefit.value.BenefitIntervalHours
+    } as GoodBenefit
   })
 })
 const goodBenefit = computed(() => {
