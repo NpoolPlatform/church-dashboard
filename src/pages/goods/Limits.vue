@@ -263,6 +263,13 @@ const userOfflineAccountID = ref(coinSetting.value?.UserOfflineAccountID)
 const userOnlineAccountID = ref(coinSetting.value?.UserOnlineAccountID)
 const goodIncomingAccountID = ref(coinSetting.value?.GoodIncomingAccountID)
 
+watch(coinSetting, () => {
+  platformOfflineAccountID.value = coinSetting.value?.PlatformOfflineAccountID
+  userOfflineAccountID.value = coinSetting.value?.UserOfflineAccountID
+  userOnlineAccountID.value = coinSetting.value?.UserOnlineAccountID
+  goodIncomingAccountID.value = coinSetting.value?.GoodIncomingAccountID
+})
+
 const myCoinSetting = computed(() => {
   return {
     ID: coinSetting.value?.ID,
