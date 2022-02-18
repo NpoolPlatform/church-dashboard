@@ -145,7 +145,7 @@ const onUpdateGood = (good: Good) => {
 
 const doFilterGood = () => {
   return addingType.value !== AddingType.AddingNone && selectedGood.value ? allGoods.value.filter((good) => {
-    return good.Title.toLowerCase().includes(selectedGood.value.Title.toLowerCase())
+    return good.Title.toLowerCase().includes(selectedGood.value.Title?.toLowerCase())
   }) : allGoods.value
 }
 watch(selectedGood, () => {
@@ -380,6 +380,7 @@ const onCreateDeviceClick = () => {
 }
 
 const onCreateGoodClick = () => {
+  selectedGood.value = undefined as unknown as Good
   addingType.value = AddingType.AddingGood
 }
 

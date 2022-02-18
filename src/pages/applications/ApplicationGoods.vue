@@ -9,6 +9,7 @@
   />
   <q-table
     v-model:selected='selectedAppGoods'
+    row-key='ID'
     flat
     dense
     :loading='loading'
