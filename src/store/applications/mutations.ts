@@ -88,6 +88,7 @@ const mutations: MutationTree<ApplicationsState> & ApplicationMutations = {
       payload.forEach((recommend) => {
         for (let i = 0; i < recommends.length; i++) {
           if (recommend.ID === recommends[i].ID) {
+            recommends.splice(i, 1, recommend)
             return
           }
         }
@@ -99,19 +100,20 @@ const mutations: MutationTree<ApplicationsState> & ApplicationMutations = {
 
   [MutationTypes.SetAppWithdrawSettings] (state: ApplicationsState, payload: Array<AppWithdrawSetting>): void {
     if (payload.length > 0) {
-      let settings = state.AppWithdrawSettings.get(payload[0].AppID) as Array<AppWithdrawSetting>
+      let settings = state.AppWithdrawSettings.get(payload[0].AppID as string) as Array<AppWithdrawSetting>
       if (!settings) {
         settings = [] as Array<AppWithdrawSetting>
       }
       payload.forEach((setting) => {
         for (let i = 0; i < settings.length; i++) {
           if (setting.ID === settings[i].ID) {
+            settings.splice(i, 1, setting)
             return
           }
         }
         settings.push(setting)
       })
-      state.AppWithdrawSettings.set(payload[0].AppID, settings)
+      state.AppWithdrawSettings.set(payload[0].AppID as string, settings)
     }
   },
 

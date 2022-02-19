@@ -192,8 +192,8 @@ interface SetAppGoodOfflineForOtherAppResponse {
 }
 
 interface AppWithdrawSetting {
-  ID: string
-  AppID: string
+  ID?: string
+  AppID?: string
   CoinTypeID: string
   WithdrawAutoReviewCoinAmount: number
 }
@@ -205,6 +205,25 @@ interface GetAppWithdrawSettingsByOtherAppRequest {
 
 interface GetAppWithdrawSettingsByOtherAppResponse {
   Infos: Array<AppWithdrawSetting>
+}
+
+interface CreateAppWithdrawSettingForOtherAppRequest {
+  TargetAppID: string
+  Info: AppWithdrawSetting
+  Message: ReqMessage
+}
+
+interface CreateAppWithdrawSettingForOtherAppResponse {
+  Info: AppWithdrawSetting
+}
+
+interface UpdateAppWithdrawSettingRequest {
+  Info: AppWithdrawSetting
+  Message: ReqMessage
+}
+
+interface UpdateAppWithdrawSettingResponse {
+  Info: AppWithdrawSetting
 }
 
 export {
@@ -246,5 +265,9 @@ export {
   SetAppGoodOfflineForOtherAppResponse,
   AppWithdrawSetting,
   GetAppWithdrawSettingsByOtherAppRequest,
-  GetAppWithdrawSettingsByOtherAppResponse
+  GetAppWithdrawSettingsByOtherAppResponse,
+  CreateAppWithdrawSettingForOtherAppRequest,
+  CreateAppWithdrawSettingForOtherAppResponse,
+  UpdateAppWithdrawSettingRequest,
+  UpdateAppWithdrawSettingResponse
 }

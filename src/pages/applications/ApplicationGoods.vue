@@ -73,9 +73,31 @@
       <div class='row'>
         <q-space />
         <q-btn dense @click='onCreateAppWithdrawSetting'>
-          {{ $t('MSG_CREATE') }}
+          {{ mySetting ? $t('MSG_SUBMIT') : $t('MSG_CREATE') }}
         </q-btn>
       </div>
+    </template>
+    <template #body='props'>
+      <q-tr :props='props'>
+        <q-td key='ID' :props='props'>
+          {{ props.row.ID }}
+        </q-td>
+        <q-td key='AppID' :props='props'>
+          {{ props.row.AppID }}
+        </q-td>
+        <q-td key='CoinTypeID' :props='props'>
+          {{ props.row.CoinTypeID }}
+        </q-td>
+        <q-td key='WithdrawAutoReviewCoinAmount' :props='props'>
+          {{ withdrawAutoReviewCoinAmount }}
+          <q-popup-edit v-slot='scope' v-model='withdrawAutoReviewCoinAmount' buttons persistent>
+            <q-input
+              v-model='scope.value' type='number'
+              dense autofocus counter
+            />
+          </q-popup-edit>
+        </q-td>
+      </q-tr>
     </template>
   </q-table>
   <q-dialog
@@ -90,7 +112,7 @@
 </template>
 
 <script setup lang='ts'>
-import { onMounted, ref, computed, defineAsyncComponent, onUnmounted } from 'vue'
+import { onMounted, ref, computed, defineAsyncComponent, onUnmounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useStore } from 'src/store'
@@ -102,8 +124,9 @@ import { notify, notificationPop } from 'src/store/notifications/helper'
 import { FunctionVoid } from 'src/types/types'
 import { MutationTypes as ApplicationMutationTypes } from 'src/store/applications/mutation-types'
 import { GoodBase } from 'src/store/goods/types'
-import { AppGood, Recommend } from 'src/store/applications/types'
+import { AppGood, AppWithdrawSetting, Recommend } from 'src/store/applications/types'
 import { ActionTypes as CoinActionTypes } from 'src/store/coins/action-types'
+import { Coin } from 'src/store/coins/types'
 
 const ApplicationSelector = defineAsyncComponent(() => import('src/components/dropdown/ApplicationSelector.vue'))
 const CreateAppRecommendGood = defineAsyncComponent(() => import('src/components/application/CreateAppRecommendGood.vue'))
@@ -136,7 +159,7 @@ const recommends = computed(() => store.getters.getRecommendsByAppID(selectedApp
 const settings = computed(() => store.getters.getAppWithdrawSettingsByAppID(selectedAppID.value))
 const coins = computed(() => store.getters.getCoins)
 
-const selectedCoin = ref([])
+const selectedCoin = ref([] as Array<Coin>)
 
 const onAuthorizeGoods = () => {
   selectedGoods.value.forEach((good) => {
@@ -252,8 +275,82 @@ const onAddRecommend = () => {
   modifying.value = true
 }
 
+const setting = computed(() => {
+  if (selectedApp.value && selectedCoin.value.length > 0) {
+    return store.getters.getAppWithdrawSettingsByAppCoin(selectedApp.value.App.ID, selectedCoin.value[0].ID as string)
+  }
+  return undefined as unknown as AppWithdrawSetting
+})
+const mySetting = ref(setting.value)
+
+const withdrawAutoReviewCoinAmount = ref(0)
+watch(selectedApp, () => {
+  if (selectedCoin.value.length > 0) {
+    mySetting.value = store.getters.getAppWithdrawSettingsByAppCoin(selectedApp.value.App.ID, selectedCoin.value[0].ID as string)
+    if (mySetting.value) {
+      withdrawAutoReviewCoinAmount.value = mySetting.value.WithdrawAutoReviewCoinAmount
+    }
+  }
+
+  store.dispatch(ApplicationActionTypes.GetAppWithdrawSettingsByOtherApp, {
+    TargetAppID: selectedApp.value.App.ID,
+    Message: {
+      ModuleKey: ModuleKey.ModuleApplications,
+      Error: {
+        Title: t('MSG_GET_APP_WITHDRAW_SETTINGS_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+  })
+})
+watch(selectedCoin, () => {
+  if (selectedApp.value) {
+    mySetting.value = store.getters.getAppWithdrawSettingsByAppCoin(selectedApp.value.App.ID, selectedCoin.value[0].ID as string)
+    if (mySetting.value) {
+      withdrawAutoReviewCoinAmount.value = mySetting.value.WithdrawAutoReviewCoinAmount
+    }
+  }
+})
+
 const onCreateAppWithdrawSetting = () => {
-  // TODO
+  if (selectedCoin.value.length > 0) {
+    const setting = store.getters.getAppWithdrawSettingsByAppCoin(selectedApp.value.App.ID, selectedCoin.value[0].ID as string)
+    if (!setting) {
+      store.dispatch(ApplicationActionTypes.CreateAppWithdrawSettingForOtherApp, {
+        TargetAppID: selectedApp.value.App.ID,
+        Info: {
+          CoinTypeID: selectedCoin.value[0].ID as string,
+          WithdrawAutoReviewCoinAmount: withdrawAutoReviewCoinAmount.value
+        },
+        Message: {
+          ModuleKey: ModuleKey.ModuleApplications,
+          Error: {
+            Title: t('MSG_CREATE_APP_WITHDRAW_SETTING_FAIL'),
+            Popup: true,
+            Type: NotificationType.Error
+          }
+        }
+      })
+    } else {
+      store.dispatch(ApplicationActionTypes.UpdateAppWithdrawSetting, {
+        Info: {
+          ID: setting.ID,
+          AppID: setting.AppID,
+          CoinTypeID: selectedCoin.value[0].ID as string,
+          WithdrawAutoReviewCoinAmount: withdrawAutoReviewCoinAmount.value
+        },
+        Message: {
+          ModuleKey: ModuleKey.ModuleApplications,
+          Error: {
+            Title: t('MSG_CREATE_APP_WITHDRAW_SETTING_FAIL'),
+            Popup: true,
+            Type: NotificationType.Error
+          }
+        }
+      })
+    }
+  }
 }
 
 const onUpdate = (recommend: Recommend) => {

@@ -189,5 +189,7 @@ export default {
   MSG_MODIFY_PRICE: '修改价格',
   MSG_UPDATE_APP_GOOD_FAIL: 'Cannot update app good',
   MSG_GET_WITHDRAW_REVIEWS_FAIL: 'Cannot get withdraw reviews',
-  MSG_AMOUNT: '总数'
+  MSG_AMOUNT: '总数',
+  MSG_CREATE_APP_WITHDRAW_SETTING_FAIL: 'You failed to create app withdraw setting',
+  MSG_GET_APP_WITHDRAW_SETTINGS_FAIL: 'You failed to get app withdraw settings'
 }

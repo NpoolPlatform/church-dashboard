@@ -9,6 +9,8 @@ import {
   CreateApplicationResponse,
   CreateAppRoleForOtherAppRequest,
   CreateAppRoleForOtherAppResponse,
+  CreateAppWithdrawSettingForOtherAppRequest,
+  CreateAppWithdrawSettingForOtherAppResponse,
   CreateRecommendForOtherAppRequest,
   CreateRecommendForOtherAppResponse,
   GetAppGoodsByOtherAppRequest,
@@ -32,7 +34,9 @@ import {
   UpdateAppControlRequest,
   UpdateAppControlResponse,
   UpdateApplicationRequest,
-  UpdateApplicationResponse
+  UpdateApplicationResponse,
+  UpdateAppWithdrawSettingRequest,
+  UpdateAppWithdrawSettingResponse
 } from './types'
 import { ApplicationsState } from './state'
 import { ActionTree } from 'vuex'
@@ -162,13 +166,29 @@ interface ApplicationActions {
     ApplicationMutations<ApplicationsState>>,
     req: SetAppGoodOfflineForOtherAppRequest): void
 
-  [ActionTypes.GetAppWithdrawSettingByOtherApp]({
+  [ActionTypes.GetAppWithdrawSettingsByOtherApp]({
     commit
   }: AugmentedActionContext<
     ApplicationsState,
     RootState,
     ApplicationMutations<ApplicationsState>>,
     req: GetAppWithdrawSettingsByOtherAppRequest): void
+
+  [ActionTypes.CreateAppWithdrawSettingForOtherApp]({
+    commit
+  }: AugmentedActionContext<
+    ApplicationsState,
+    RootState,
+    ApplicationMutations<ApplicationsState>>,
+    req: CreateAppWithdrawSettingForOtherAppRequest): void
+
+  [ActionTypes.UpdateAppWithdrawSetting]({
+    commit
+  }: AugmentedActionContext<
+    ApplicationsState,
+    RootState,
+    ApplicationMutations<ApplicationsState>>,
+    req: UpdateAppWithdrawSettingRequest): void
 }
 
 const actions: ActionTree<ApplicationsState, RootState> = {
@@ -342,7 +362,7 @@ const actions: ActionTree<ApplicationsState, RootState> = {
       })
   },
 
-  [ActionTypes.GetAppWithdrawSettingByOtherApp] ({ commit }, req: GetAppWithdrawSettingsByOtherAppRequest) {
+  [ActionTypes.GetAppWithdrawSettingsByOtherApp] ({ commit }, req: GetAppWithdrawSettingsByOtherAppRequest) {
     doAction<GetAppWithdrawSettingsByOtherAppRequest, GetAppWithdrawSettingsByOtherAppResponse>(
       commit,
       API.GET_APP_WITHDRAW_SETTINGS_BY_OTHER_APP,
@@ -350,6 +370,28 @@ const actions: ActionTree<ApplicationsState, RootState> = {
       req.Message,
       (resp: GetAppWithdrawSettingsByOtherAppResponse): void => {
         commit(MutationTypes.SetAppWithdrawSettings, resp.Infos)
+      })
+  },
+
+  [ActionTypes.CreateAppWithdrawSettingForOtherApp] ({ commit }, req: CreateAppWithdrawSettingForOtherAppRequest) {
+    doAction<CreateAppWithdrawSettingForOtherAppRequest, CreateAppWithdrawSettingForOtherAppResponse>(
+      commit,
+      API.CREATE_APP_WITHDRAW_SETTING_FOR_OTHER_APP,
+      req,
+      req.Message,
+      (resp: CreateAppWithdrawSettingForOtherAppResponse): void => {
+        commit(MutationTypes.SetAppWithdrawSettings, [resp.Info])
+      })
+  },
+
+  [ActionTypes.UpdateAppWithdrawSetting] ({ commit }, req: UpdateAppWithdrawSettingRequest) {
+    doAction<UpdateAppWithdrawSettingRequest, UpdateAppWithdrawSettingResponse>(
+      commit,
+      API.UPDATE_APP_WITHDRAW_SETTING,
+      req,
+      req.Message,
+      (resp: UpdateAppWithdrawSettingResponse): void => {
+        commit(MutationTypes.SetAppWithdrawSettings, [resp.Info])
       })
   }
 }

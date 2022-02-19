@@ -14,5 +14,7 @@ export enum ActionTypes {
   SetAppGoodPriceForOtherApp = 'SET_APP_GOOD_PRICE_FOR_OTHER_APP',
   OnsaleAppGoodForOtherApp = 'ONSALE_APP_GOOD_FOR_OTHER_APP',
   OffsaleAppGoodForOtherApp = 'OFFSALE_APP_GOOD_FOR_OTHER_APP',
-  GetAppWithdrawSettingByOtherApp = 'GET_APP_WITHDRAW_SETTINGS_BY_OTHER_APP'
+  GetAppWithdrawSettingsByOtherApp = 'GET_APP_WITHDRAW_SETTINGS_BY_OTHER_APP',
+  CreateAppWithdrawSettingForOtherApp = 'CREATE_APP_WITHDRAW_SETTING_FOR_OTHER_APP',
+  UpdateAppWithdrawSetting = 'UPDATE_APP_WITHDRAW_SETTING'
 }
