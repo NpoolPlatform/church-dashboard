@@ -78,6 +78,41 @@ interface UpdateReviewResponse {
   Info: Review
 }
 
+interface Withdraw {
+  ID: string
+  AppID: string
+  UserID: string
+  CoinTypeID: string
+  WithdrawToAccountID: string
+  Amount: number
+  PlatformTransactionID: string
+}
+
+interface WithdrawReview {
+  Withdraw: Withdraw
+  Review: Review
+  User: UserInfo
+}
+
+interface GetWithdrawReviewsByOtherAppRequest {
+  TargetAppID: string
+  Message: ReqMessage
+}
+
+interface GetWithdrawReviewsByOtherAppResponse {
+  Infos: Array<WithdrawReview>
+}
+
+interface UpdateUserWithdrawReviewForOtherAppRequest {
+  TargetAppID: string
+  Info: Review
+  Message: ReqMessage
+}
+
+interface UpdateUserWithdrawReviewForOtherAppResponse {
+  Info: WithdrawReview
+}
+
 export {
   Review,
   KYCReview,
@@ -90,5 +125,10 @@ export {
   UpdateReviewResponse,
   WithdrawAddressReview,
   GetWithdrawAddressReviewsByOtherAppRequest,
-  GetWithdrawAddressReviewsByOtherAppResponse
+  GetWithdrawAddressReviewsByOtherAppResponse,
+  WithdrawReview,
+  GetWithdrawReviewsByOtherAppRequest,
+  GetWithdrawReviewsByOtherAppResponse,
+  UpdateUserWithdrawReviewForOtherAppRequest,
+  UpdateUserWithdrawReviewForOtherAppResponse
 }

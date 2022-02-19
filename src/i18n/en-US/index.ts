@@ -187,5 +187,7 @@ export default {
   MSG_SET_ONLINE: '上架商品',
   MSG_SET_OFFLINE: '下架商品',
   MSG_MODIFY_PRICE: '修改价格',
-  MSG_UPDATE_APP_GOOD_FAIL: 'Cannot update app good'
+  MSG_UPDATE_APP_GOOD_FAIL: 'Cannot update app good',
+  MSG_GET_WITHDRAW_REVIEWS_FAIL: 'Cannot get withdraw reviews',
+  MSG_AMOUNT: '总数'
 }

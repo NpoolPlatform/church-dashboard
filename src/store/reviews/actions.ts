@@ -8,7 +8,11 @@ import {
   UpdateReviewRequest,
   UpdateReviewResponse,
   GetWithdrawAddressReviewsByOtherAppRequest,
-  GetWithdrawAddressReviewsByOtherAppResponse
+  GetWithdrawAddressReviewsByOtherAppResponse,
+  GetWithdrawReviewsByOtherAppRequest,
+  GetWithdrawReviewsByOtherAppResponse,
+  UpdateUserWithdrawReviewForOtherAppRequest,
+  UpdateUserWithdrawReviewForOtherAppResponse
 } from './types'
 import { ReviewsState } from './state'
 import { ActionTree } from 'vuex'
@@ -49,6 +53,22 @@ interface ReviewActions {
     RootState,
     ReviewMutations<ReviewsState>>,
     req: GetWithdrawAddressReviewsByOtherAppRequest): void
+
+  [ActionTypes.GetWithdrawReviewsByOtherApp]({
+    commit
+  }: AugmentedActionContext<
+  ReviewsState,
+    RootState,
+    ReviewMutations<ReviewsState>>,
+    req: GetWithdrawReviewsByOtherAppRequest): void
+
+  [ActionTypes.UpdateUserWithdrawReviewForOtherApp]({
+    commit
+  }: AugmentedActionContext<
+  ReviewsState,
+    RootState,
+    ReviewMutations<ReviewsState>>,
+    req: UpdateUserWithdrawReviewForOtherAppRequest): void
 }
 
 const actions: ActionTree<ReviewsState, RootState> = {
@@ -93,6 +113,28 @@ const actions: ActionTree<ReviewsState, RootState> = {
       req.Message,
       (resp: GetWithdrawAddressReviewsByOtherAppResponse): void => {
         commit(MutationTypes.SetWithdrawAddressReviews, resp.Infos)
+      })
+  },
+
+  [ActionTypes.GetWithdrawReviewsByOtherApp] ({ commit }, req: GetWithdrawReviewsByOtherAppRequest) {
+    doAction<GetWithdrawReviewsByOtherAppRequest, GetWithdrawReviewsByOtherAppResponse>(
+      commit,
+      API.GET_WITHDRAW_REVIEWS_BY_OTHER_APP,
+      req,
+      req.Message,
+      (resp: GetWithdrawReviewsByOtherAppResponse): void => {
+        commit(MutationTypes.SetWithdrawReviews, resp.Infos)
+      })
+  },
+
+  [ActionTypes.UpdateUserWithdrawReviewForOtherApp] ({ commit }, req: UpdateUserWithdrawReviewForOtherAppRequest) {
+    doAction<UpdateUserWithdrawReviewForOtherAppRequest, UpdateUserWithdrawReviewForOtherAppResponse>(
+      commit,
+      API.GET_WITHDRAW_REVIEWS_BY_OTHER_APP,
+      req,
+      req.Message,
+      (resp: UpdateUserWithdrawReviewForOtherAppResponse): void => {
+        commit(MutationTypes.SetWithdrawReviews, [resp.Info])
       })
   }
 }

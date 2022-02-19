@@ -7,6 +7,9 @@ export enum MutationTypes {
   // Withdraw address review
   SetWithdrawAddressReviews = 'SET_WITHDRAW_ADDRESS_REVIEWS',
   SetWithdrawAddressSelectedAppID = 'SET_WITHDRAW_ADDRESS_SELECTED_APP_ID',
+  // Withdraw review
+  SetWithdrawReviews = 'SET_WITHDRAW_REVIEWS',
+  SetWithdrawSelectedAppID = 'SET_WITHDRAW_SELECTED_APP_ID',
   // Common
   UpdateReview = 'UPDATE_REVIEW'
 }

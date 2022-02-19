@@ -1,7 +1,7 @@
 import { MutationTree } from 'vuex'
 import { MutationTypes } from './mutation-types'
 import { ReviewsState } from './state'
-import { GoodReview, KYCReview, Review, WithdrawAddressReview } from './types'
+import { GoodReview, KYCReview, Review, WithdrawAddressReview, WithdrawReview } from './types'
 
 type ReviewMutations<S = ReviewsState> = {
   [MutationTypes.SetKYCReviews] (state: S, payload: Array<KYCReview>): void
@@ -10,6 +10,8 @@ type ReviewMutations<S = ReviewsState> = {
   [MutationTypes.UpdateReview] (state: S, payload: Review): void
   [MutationTypes.SetWithdrawAddressReviews] (state: S, payload: Array<WithdrawAddressReview>): void
   [MutationTypes.SetWithdrawAddressSelectedAppID] (state: S, payload: string): void
+  [MutationTypes.SetWithdrawReviews] (state: S, payload: Array<WithdrawReview>): void
+  [MutationTypes.SetWithdrawSelectedAppID] (state: S, payload: string): void
 }
 
 const mutations: MutationTree<ReviewsState> & ReviewMutations = {
@@ -44,6 +46,25 @@ const mutations: MutationTree<ReviewsState> & ReviewMutations = {
   },
   [MutationTypes.SetWithdrawAddressSelectedAppID] (state: ReviewsState, payload: string): void {
     state.SelectedWithdrawAddressAppID = payload
+  },
+  [MutationTypes.SetWithdrawReviews] (state: ReviewsState, payload: Array<WithdrawReview>): void {
+    for (let j = 0; j < payload.length; j++) {
+      let inserted = false
+      for (let i = 0; i < state.WithdrawReviews.length; i++) {
+        if (payload[j].Review.ID === state.WithdrawReviews[i].Review.ID) {
+          state.WithdrawReviews.splice(i, 1, payload[j])
+          inserted = true
+          break
+        }
+      }
+      if (!inserted) {
+        state.WithdrawReviews.push(payload[j])
+      }
+    }
+    state.WithdrawReviews = payload
+  },
+  [MutationTypes.SetWithdrawSelectedAppID] (state: ReviewsState, payload: string): void {
+    state.SelectedWithdrawAppID = payload
   }
 }
 
