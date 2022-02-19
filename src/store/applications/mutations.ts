@@ -2,7 +2,7 @@ import { MutationTree } from 'vuex'
 import { AppRole } from '../user-helper/types'
 import { MutationTypes } from './mutation-types'
 import { ApplicationsState } from './state'
-import { App, AppControl, AppGood, Application, BanApp, Recommend } from './types'
+import { App, AppControl, AppGood, Application, AppWithdrawSetting, BanApp, Recommend } from './types'
 
 type ApplicationMutations<S = ApplicationsState> = {
   [MutationTypes.SetApplications] (state: S, payload: Array<Application>): void
@@ -12,6 +12,7 @@ type ApplicationMutations<S = ApplicationsState> = {
   [MutationTypes.SetAppGoods] (state: S, payload: Array<AppGood>): void
   [MutationTypes.SetRecommends] (state: S, payload: Array<Recommend>): void
   [MutationTypes.DeleteAppGood] (state: S, payload: AppGood): void
+  [MutationTypes.SetAppWithdrawSettings] (state: ApplicationsState, payload: Array<AppWithdrawSetting>): void
   [MutationTypes.SetSelectedAppID] (state: S, payload: string): void
 }
 
@@ -93,6 +94,24 @@ const mutations: MutationTree<ApplicationsState> & ApplicationMutations = {
         recommends.push(recommend)
       })
       state.Recommends.set(payload[0].AppID, recommends)
+    }
+  },
+
+  [MutationTypes.SetAppWithdrawSettings] (state: ApplicationsState, payload: Array<AppWithdrawSetting>): void {
+    if (payload.length > 0) {
+      let settings = state.AppWithdrawSettings.get(payload[0].AppID) as Array<AppWithdrawSetting>
+      if (!settings) {
+        settings = [] as Array<AppWithdrawSetting>
+      }
+      payload.forEach((setting) => {
+        for (let i = 0; i < settings.length; i++) {
+          if (setting.ID === settings[i].ID) {
+            return
+          }
+        }
+        settings.push(setting)
+      })
+      state.AppWithdrawSettings.set(payload[0].AppID, settings)
     }
   },
 

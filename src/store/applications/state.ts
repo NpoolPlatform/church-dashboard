@@ -1,6 +1,6 @@
 import { AppID } from 'src/const/const'
 import { AppRole } from '../user-helper/types'
-import { App, AppGood, Application, Recommend } from './types'
+import { App, AppGood, Application, AppWithdrawSetting, Recommend } from './types'
 
 interface ApplicationsState {
   Applications: Map<string, Application>
@@ -9,6 +9,7 @@ interface ApplicationsState {
   AppRoles: Map<string, Array<AppRole>>
   AppGoods: Map<string, Array<AppGood>>
   Recommends: Map<string, Array<Recommend>>
+  AppWithdrawSettings: Map<string, Array<AppWithdrawSetting>>
 }
 
 function state (): ApplicationsState {
@@ -18,7 +19,8 @@ function state (): ApplicationsState {
     SelectedAppID: AppID,
     AppRoles: new Map<string, Array<AppRole>>(),
     AppGoods: new Map<string, Array<AppGood>>(),
-    Recommends: new Map<string, Array<Recommend>>()
+    Recommends: new Map<string, Array<Recommend>>(),
+    AppWithdrawSettings: new Map<string, Array<AppWithdrawSetting>>()
   }
 }
 

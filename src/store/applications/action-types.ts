@@ -13,5 +13,6 @@ export enum ActionTypes {
   CreateRecommendForOtherApp = 'CREATE_RECOMMEND_FOR_OTHER_APP',
   SetAppGoodPriceForOtherApp = 'SET_APP_GOOD_PRICE_FOR_OTHER_APP',
   OnsaleAppGoodForOtherApp = 'ONSALE_APP_GOOD_FOR_OTHER_APP',
-  OffsaleAppGoodForOtherApp = 'OFFSALE_APP_GOOD_FOR_OTHER_APP'
+  OffsaleAppGoodForOtherApp = 'OFFSALE_APP_GOOD_FOR_OTHER_APP',
+  GetAppWithdrawSettingByOtherApp = 'GET_APP_WITHDRAW_SETTINGS_BY_OTHER_APP'
 }

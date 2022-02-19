@@ -54,6 +54,30 @@
       </div>
     </template>
   </q-table>
+  <q-table
+    v-model:selected='selectedCoin'
+    flat
+    dense
+    row-key='ID'
+    :loading='loading'
+    :rows='coins'
+    selection='single'
+  />
+  <q-table
+    flat
+    dense
+    :loading='loading'
+    :rows='settings'
+  >
+    <template #top-right>
+      <div class='row'>
+        <q-space />
+        <q-btn dense @click='onCreateAppWithdrawSetting'>
+          {{ $t('MSG_CREATE') }}
+        </q-btn>
+      </div>
+    </template>
+  </q-table>
   <q-dialog
     v-model='modifying'
     position='right'
@@ -79,6 +103,7 @@ import { FunctionVoid } from 'src/types/types'
 import { MutationTypes as ApplicationMutationTypes } from 'src/store/applications/mutation-types'
 import { GoodBase } from 'src/store/goods/types'
 import { AppGood, Recommend } from 'src/store/applications/types'
+import { ActionTypes as CoinActionTypes } from 'src/store/coins/action-types'
 
 const ApplicationSelector = defineAsyncComponent(() => import('src/components/dropdown/ApplicationSelector.vue'))
 const CreateAppRecommendGood = defineAsyncComponent(() => import('src/components/application/CreateAppRecommendGood.vue'))
@@ -108,6 +133,10 @@ const appGoods = computed(() => store.getters.getAppGoodsByAppID(selectedAppID.v
 const selectedGoods = ref([] as Array<GoodBase>)
 const selectedAppGoods = ref([] as Array<AppGood>)
 const recommends = computed(() => store.getters.getRecommendsByAppID(selectedAppID.value))
+const settings = computed(() => store.getters.getAppWithdrawSettingsByAppID(selectedAppID.value))
+const coins = computed(() => store.getters.getCoins)
+
+const selectedCoin = ref([])
 
 const onAuthorizeGoods = () => {
   selectedGoods.value.forEach((good) => {
@@ -223,6 +252,10 @@ const onAddRecommend = () => {
   modifying.value = true
 }
 
+const onCreateAppWithdrawSetting = () => {
+  // TODO
+}
+
 const onUpdate = (recommend: Recommend) => {
   // TODO: fileter the list
   console.log('update', recommend)
@@ -247,6 +280,17 @@ const onSubmit = (recommend: Recommend) => {
 const unsubscribe = ref<FunctionVoid>()
 
 onMounted(() => {
+  store.dispatch(CoinActionTypes.GetCoins, {
+    Message: {
+      ModuleKey: ModuleKey.ModuleGoods,
+      Error: {
+        Title: t('MSG_GET_COINS_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+  })
+
   store.dispatch(GoodActionTypes.GetAllGoods, {
     Message: {
       ModuleKey: ModuleKey.ModuleInternationalization,

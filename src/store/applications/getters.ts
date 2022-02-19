@@ -1,7 +1,7 @@
 import { GetterTree } from 'vuex'
 import { RootState } from '../index'
 import { ApplicationsState } from './state'
-import { AppGood, Application, Recommend } from './types'
+import { AppGood, Application, AppWithdrawSetting, Recommend } from './types'
 import { AppID } from 'src/const/const'
 import { AppRole } from '../user-helper/types'
 
@@ -12,6 +12,7 @@ type ApplicationGetters = {
   getAppRolesByAppID (state: ApplicationsState): (appID: string) => Array<AppRole>
   getAppGoodsByAppID (state: ApplicationsState): (appID: string) => Array<AppGood>
   getRecommendsByAppID (state: ApplicationsState): (appID: string) => Array<Recommend>
+  getAppWithdrawSettingsByAppID (state: ApplicationsState): (appID: string) => Array<AppWithdrawSetting>
   getAppSelectedAppID (state: ApplicationsState): string
 }
 
@@ -42,6 +43,11 @@ const getters: GetterTree<ApplicationsState, RootState> & ApplicationGetters = {
   getRecommendsByAppID: (state: ApplicationsState): (appID: string) => Array<Recommend> => {
     return (appID: string) => {
       return state.Recommends.get(appID) as Array<Recommend>
+    }
+  },
+  getAppWithdrawSettingsByAppID: (state: ApplicationsState): (appID: string) => Array<AppWithdrawSetting> => {
+    return (appID: string) => {
+      return state.AppWithdrawSettings.get(appID) as Array<AppWithdrawSetting>
     }
   },
   getAppSelectedAppID: (state: ApplicationsState): string => state.SelectedAppID

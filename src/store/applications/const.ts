@@ -14,7 +14,8 @@ enum API {
   CREATE_RECOMMEND_FOR_OTHER_APP = '/cloud-hashing-goods/v1/create/recommend/for/other/app',
   SET_APP_GOOD_PRICE_FOR_OTHER_APP = '/cloud-hashing-goods/v1/set/app/good/price/for/other/app',
   ONSALE_APP_GOOD_FOR_OTHER_APP = '/cloud-hashing-goods/v1/onsale/app/good/for/other/app',
-  OFFSALE_APP_GOOD_FOR_OTHER_APP = '/cloud-hashing-goods/v1/offsale/app/good/for/other/app'
+  OFFSALE_APP_GOOD_FOR_OTHER_APP = '/cloud-hashing-goods/v1/offsale/app/good/for/other/app',
+  GET_APP_WITHDRAW_SETTINGS_BY_OTHER_APP = '/cloud-hashing-billing/v1/get/app/withdraw/settings/by/other/app'
 }
 
 export {

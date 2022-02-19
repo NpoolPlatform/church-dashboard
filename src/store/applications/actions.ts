@@ -17,6 +17,8 @@ import {
   GetApplicationsResponse,
   GetAppRolesByOtherAppRequest,
   GetAppRolesByOtherAppResponse,
+  GetAppWithdrawSettingsByOtherAppRequest,
+  GetAppWithdrawSettingsByOtherAppResponse,
   GetRecommendsByOtherAppRequest,
   GetRecommendsByOtherAppResponse,
   SetAppGoodOfflineForOtherAppRequest,
@@ -159,6 +161,14 @@ interface ApplicationActions {
     RootState,
     ApplicationMutations<ApplicationsState>>,
     req: SetAppGoodOfflineForOtherAppRequest): void
+
+  [ActionTypes.GetAppWithdrawSettingByOtherApp]({
+    commit
+  }: AugmentedActionContext<
+    ApplicationsState,
+    RootState,
+    ApplicationMutations<ApplicationsState>>,
+    req: GetAppWithdrawSettingsByOtherAppRequest): void
 }
 
 const actions: ActionTree<ApplicationsState, RootState> = {
@@ -329,6 +339,17 @@ const actions: ActionTree<ApplicationsState, RootState> = {
       req.Message,
       (resp: SetAppGoodOfflineForOtherAppResponse): void => {
         commit(MutationTypes.SetAppGoods, [resp.Info])
+      })
+  },
+
+  [ActionTypes.GetAppWithdrawSettingByOtherApp] ({ commit }, req: GetAppWithdrawSettingsByOtherAppRequest) {
+    doAction<GetAppWithdrawSettingsByOtherAppRequest, GetAppWithdrawSettingsByOtherAppResponse>(
+      commit,
+      API.GET_APP_WITHDRAW_SETTINGS_BY_OTHER_APP,
+      req,
+      req.Message,
+      (resp: GetAppWithdrawSettingsByOtherAppResponse): void => {
+        commit(MutationTypes.SetAppWithdrawSettings, resp.Infos)
       })
   }
 }

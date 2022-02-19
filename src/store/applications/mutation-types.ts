@@ -6,5 +6,6 @@ export enum MutationTypes {
   SetSelectedAppID = 'SET_SELECTED_APP_ID',
   SetAppGoods = 'SET_APP_GOODS',
   DeleteAppGood = 'DELETE_APP_GOOD',
-  SetRecommends = 'SET_RECOMMENDS'
+  SetRecommends = 'SET_RECOMMENDS',
+  SetAppWithdrawSettings = 'SET_APP_WITHDRAW_SETTINGS'
 }
