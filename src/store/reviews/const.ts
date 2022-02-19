@@ -4,7 +4,7 @@ enum API {
   UPDATE_REVIEW = '/review-service/v1/update/review',
   GET_WITHDRAW_ADDRESS_REVIEWS_BY_OTHER_APP = '/cloud-hashing-apis-v2/v1/get/withdraw/address/reviews/by/other/app',
   GET_WITHDRAW_REVIEWS_BY_OTHER_APP = '/cloud-hashing-apis-v2/v1/get/withdraw/reviews/by/other/app',
-  UPDATE_USER_WITHDRAW_REVIEW = '/cloud-hashing-apis-v2/v1/update/user/withdraw/review'
+  UPDATE_USER_WITHDRAW_REVIEW_FOR_OTHER_APP = '/cloud-hashing-apis-v2/v1/update/user/withdraw/review/for/other/app'
 }
 
 enum State {

@@ -130,7 +130,7 @@ const actions: ActionTree<ReviewsState, RootState> = {
   [ActionTypes.UpdateUserWithdrawReviewForOtherApp] ({ commit }, req: UpdateUserWithdrawReviewForOtherAppRequest) {
     doAction<UpdateUserWithdrawReviewForOtherAppRequest, UpdateUserWithdrawReviewForOtherAppResponse>(
       commit,
-      API.GET_WITHDRAW_REVIEWS_BY_OTHER_APP,
+      API.UPDATE_USER_WITHDRAW_REVIEW_FOR_OTHER_APP,
       req,
       req.Message,
       (resp: UpdateUserWithdrawReviewForOtherAppResponse): void => {
