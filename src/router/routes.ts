@@ -36,7 +36,10 @@ const routes: RouteRecordRaw[] = [
       { path: 'users/roles', component: () => import('pages/users/Roles.vue') },
       { path: 'users/auth/histories', component: () => import('pages/users/AuthHistories.vue') },
       { path: 'users/roleusers', component: () => import('pages/users/RoleUsers.vue') },
-      { path: 'users/roleauths', component: () => import('pages/users/RoleAuths.vue') }
+      { path: 'users/roleauths', component: () => import('pages/users/RoleAuths.vue') },
+
+      // Billing and orders
+      { path: 'billing', component: () => import('pages/Billing.vue') }
     ]
   },
 

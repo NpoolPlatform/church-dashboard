@@ -138,6 +138,14 @@ import {
   SettingActions
 } from './settings'
 
+import {
+  billings,
+  BillingsState,
+  BillingMutations,
+  BillingGetters,
+  BillingActions
+} from './billing'
+
 // 2 combine your store to root store
 export interface RootState {
   user: UserState,
@@ -156,6 +164,7 @@ export interface RootState {
   auths: AuthsState
   accounts: CoinAccountsState
   settings: SettingsState
+  billing: BillingsState
 }
 
 // 3 combine your actions, mutations and getters to root, if have multi use & combin
@@ -174,7 +183,8 @@ type Actions =
   AppContactActions &
   AuthActions &
   CoinAccountActions &
-  SettingActions
+  SettingActions &
+  BillingActions
 type Mutations =
   UserMutations &
   MainBreadcrumbsMutations &
@@ -191,7 +201,8 @@ type Mutations =
   AppContactMutations &
   AuthMutations &
   CoinAccountMutations &
-  SettingMutations
+  SettingMutations &
+  BillingMutations
 type Getters =
   UserGetters &
   MainBreadcrumbsGetters &
@@ -208,7 +219,8 @@ type Getters =
   AppContactGetters &
   AuthGetters &
   CoinAccountGetters &
-  SettingGetters
+  SettingGetters &
+  BillingGetters
 
 // 4 attach your module to root
 export default store(function (/* { ssrContext } */) {
@@ -229,7 +241,8 @@ export default store(function (/* { ssrContext } */) {
       appContacts,
       auths,
       accounts,
-      settings
+      settings,
+      billings
     },
 
     // enable strict mode (adds overhead!)

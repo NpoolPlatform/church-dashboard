@@ -213,7 +213,7 @@ const MainDrawerMenus = [
     label: '报表和账单',
     caption: 'APP、商品、用户收支明细',
     icon: 'format_list_numbered',
-    target: '/goods',
+    target: '/billing',
     level: 0,
     children: []
   }

@@ -191,5 +191,10 @@ export default {
   MSG_GET_WITHDRAW_REVIEWS_FAIL: 'Cannot get withdraw reviews',
   MSG_AMOUNT: '总数',
   MSG_CREATE_APP_WITHDRAW_SETTING_FAIL: 'You failed to create app withdraw setting',
-  MSG_GET_APP_WITHDRAW_SETTINGS_FAIL: 'You failed to get app withdraw settings'
+  MSG_GET_APP_WITHDRAW_SETTINGS_FAIL: 'You failed to get app withdraw settings',
+  MSG_GET_PLATFORM_BENEFITS_FAIL: 'You failed to get platform benefits',
+  MSG_GET_USER_BENEFITS_FAIL: 'You failed to get user benefits',
+  MSG_GET_COIN_ACCOUNT_TRANSACTIONS_FAIL: 'You failed to get transactions',
+  MSG_GET_USER_WITHDRAWS_FAIL: 'You failed to get user withdraws',
+  MSG_GET_PAYMENTS_FAIL: 'You failed to get payments'
 }
