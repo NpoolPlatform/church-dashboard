@@ -51,7 +51,7 @@ const mutations: MutationTree<ReviewsState> & ReviewMutations = {
     for (let j = 0; j < payload.length; j++) {
       let inserted = false
       for (let i = 0; i < state.WithdrawReviews.length; i++) {
-        if (payload[j].Review.ID === state.WithdrawReviews[i].Review.ID) {
+        if (payload[j].Withdraw.ID === state.WithdrawReviews[i].Withdraw.ID) {
           state.WithdrawReviews.splice(i, 1, payload[j])
           inserted = true
           break
