@@ -190,7 +190,20 @@ const onCreateUserCoinAccountSubmit = (account: CoinAccount) => {
 const allGoods = computed(() => {
   const goods = [] as Array<GoodBase>
   store.getters.getAllGoods.forEach((good) => {
-    goods.push(good.Good.Good)
+    goods.push({
+      ID: good.Good.Good.ID,
+      SeparateFee: good.Good.Good.SeparateFee,
+      UnitPower: good.Good.Good.UnitPower,
+      DurationDays: good.Good.Good.DurationDays,
+      Actuals: good.Good.Good.Actuals,
+      DeliveryAt: good.Good.Good.DeliveryAt,
+      Price: good.Good.Good.Price,
+      BenefitType: good.Good.Good.BenefitType,
+      Classic: good.Good.Good.Classic,
+      Title: good.Good.Good.Title,
+      Total: good.Good.Good.Total,
+      Unit: good.Good.Good.Unit
+    } as GoodBase)
   })
   return goods
 })
