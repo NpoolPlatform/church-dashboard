@@ -59,10 +59,10 @@ const selectedAppID = computed({
   }
 })
 
-const eReviews = computed(() => store.getters.getWithdrawReviews)
+const withdrawReviews = computed(() => store.getters.getWithdrawReviews)
 const reviews = computed(() => {
   const reviews = [] as Array<Review>
-  eReviews.value.forEach((review) => {
+  withdrawReviews.value.forEach((review) => {
     reviews.push(review.Review)
   })
   return reviews
@@ -136,8 +136,8 @@ onUnmounted(() => {
 const reviewing = ref(false)
 const selectedIndex = ref(0)
 const withdrawReview = computed(() => {
-  if (eReviews.value) {
-    return eReviews.value[selectedIndex.value]
+  if (withdrawReviews.value) {
+    return withdrawReviews.value[selectedIndex.value]
   }
   return undefined as unknown as WithdrawReview
 })
