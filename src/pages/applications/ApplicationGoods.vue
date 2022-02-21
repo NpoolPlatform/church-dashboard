@@ -277,7 +277,7 @@ const onAddRecommend = () => {
 
 const setting = computed(() => {
   if (selectedApp.value && selectedCoin.value.length > 0) {
-    return store.getters.getAppWithdrawSettingsByAppCoin(selectedApp.value.App.ID, selectedCoin.value[0].ID as string)
+    return store.getters.getAppWithdrawSettingByAppCoin(selectedApp.value.App.ID, selectedCoin.value[0].ID as string)
   }
   return undefined as unknown as AppWithdrawSetting
 })
@@ -286,7 +286,7 @@ const mySetting = ref(setting.value)
 const withdrawAutoReviewCoinAmount = ref(0)
 watch(selectedApp, () => {
   if (selectedCoin.value.length > 0) {
-    mySetting.value = store.getters.getAppWithdrawSettingsByAppCoin(selectedApp.value.App.ID, selectedCoin.value[0].ID as string)
+    mySetting.value = store.getters.getAppWithdrawSettingByAppCoin(selectedApp.value.App.ID, selectedCoin.value[0].ID as string)
     if (mySetting.value) {
       withdrawAutoReviewCoinAmount.value = mySetting.value.WithdrawAutoReviewCoinAmount
     }
@@ -306,7 +306,7 @@ watch(selectedApp, () => {
 })
 watch(selectedCoin, () => {
   if (selectedApp.value) {
-    mySetting.value = store.getters.getAppWithdrawSettingsByAppCoin(selectedApp.value.App.ID, selectedCoin.value[0].ID as string)
+    mySetting.value = store.getters.getAppWithdrawSettingByAppCoin(selectedApp.value.App.ID, selectedCoin.value[0].ID as string)
     if (mySetting.value) {
       withdrawAutoReviewCoinAmount.value = mySetting.value.WithdrawAutoReviewCoinAmount
     }
@@ -315,7 +315,7 @@ watch(selectedCoin, () => {
 
 const onCreateAppWithdrawSetting = () => {
   if (selectedCoin.value.length > 0) {
-    const setting = store.getters.getAppWithdrawSettingsByAppCoin(selectedApp.value.App.ID, selectedCoin.value[0].ID as string)
+    const setting = store.getters.getAppWithdrawSettingByAppCoin(selectedApp.value.App.ID, selectedCoin.value[0].ID as string)
     if (!setting) {
       store.dispatch(ApplicationActionTypes.CreateAppWithdrawSettingForOtherApp, {
         TargetAppID: selectedApp.value.App.ID,

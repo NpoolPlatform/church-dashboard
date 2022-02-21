@@ -12,7 +12,7 @@ type ApplicationMutations<S = ApplicationsState> = {
   [MutationTypes.SetAppGoods] (state: S, payload: Array<AppGood>): void
   [MutationTypes.SetRecommends] (state: S, payload: Array<Recommend>): void
   [MutationTypes.DeleteAppGood] (state: S, payload: AppGood): void
-  [MutationTypes.SetAppWithdrawSettings] (state: ApplicationsState, payload: Array<AppWithdrawSetting>): void
+  [MutationTypes.SetAppWithdrawSettings] (state: S, payload: Array<AppWithdrawSetting>): void
   [MutationTypes.SetSelectedAppID] (state: S, payload: string): void
 }
 

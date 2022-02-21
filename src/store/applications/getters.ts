@@ -13,7 +13,7 @@ type ApplicationGetters = {
   getAppGoodsByAppID (state: ApplicationsState): (appID: string) => Array<AppGood>
   getRecommendsByAppID (state: ApplicationsState): (appID: string) => Array<Recommend>
   getAppWithdrawSettingsByAppID (state: ApplicationsState): (appID: string) => Array<AppWithdrawSetting>
-  getAppWithdrawSettingsByAppCoin (state: ApplicationsState): (appID: string, coinTypeID: string) => AppWithdrawSetting
+  getAppWithdrawSettingByAppCoin (state: ApplicationsState): (appID: string, coinTypeID: string) => AppWithdrawSetting
   getAppSelectedAppID (state: ApplicationsState): string
 }
 
@@ -51,7 +51,7 @@ const getters: GetterTree<ApplicationsState, RootState> & ApplicationGetters = {
       return state.AppWithdrawSettings.get(appID) as Array<AppWithdrawSetting>
     }
   },
-  getAppWithdrawSettingsByAppCoin: (state: ApplicationsState): (appID: string, coinTypeID: string) => AppWithdrawSetting => {
+  getAppWithdrawSettingByAppCoin: (state: ApplicationsState): (appID: string, coinTypeID: string) => AppWithdrawSetting => {
     return (appID: string, coinTypeID: string) => {
       const settings = state.AppWithdrawSettings.get(appID) as Array<AppWithdrawSetting>
       if (settings) {
