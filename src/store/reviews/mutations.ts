@@ -51,7 +51,7 @@ const mutations: MutationTree<ReviewsState> & ReviewMutations = {
     for (let j = 0; j < payload.length; j++) {
       let inserted = false
       for (let i = 0; i < state.WithdrawReviews.length; i++) {
-        if (payload[j].Withdraw.ID === state.WithdrawReviews[i].Withdraw.ID) {
+        if (payload[j].Review.ID === state.WithdrawReviews[i].Review.ID) {
           state.WithdrawReviews.splice(i, 1, payload[j])
           inserted = true
           break
@@ -61,7 +61,6 @@ const mutations: MutationTree<ReviewsState> & ReviewMutations = {
         state.WithdrawReviews.push(payload[j])
       }
     }
-    state.WithdrawReviews = payload
   },
   [MutationTypes.SetWithdrawSelectedAppID] (state: ReviewsState, payload: string): void {
     state.SelectedWithdrawAppID = payload
