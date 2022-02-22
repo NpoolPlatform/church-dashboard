@@ -216,6 +216,14 @@ const MainDrawerMenus = [
     target: '/billing',
     level: 0,
     children: []
+  }, {
+    menuId: uid(),
+    label: '邀请码',
+    caption: '管理用户邀请码',
+    icon: 'format_list_numbered',
+    target: '/inspire/invitation/code',
+    level: 0,
+    children: []
   }
 ]
 

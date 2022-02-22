@@ -196,5 +196,6 @@ export default {
   MSG_GET_USER_BENEFITS_FAIL: 'You failed to get user benefits',
   MSG_GET_COIN_ACCOUNT_TRANSACTIONS_FAIL: 'You failed to get transactions',
   MSG_GET_USER_WITHDRAWS_FAIL: 'You failed to get user withdraws',
-  MSG_GET_PAYMENTS_FAIL: 'You failed to get payments'
+  MSG_GET_PAYMENTS_FAIL: 'You failed to get payments',
+  MSG_GET_USER_INVITATION_CODES_FAIL: 'You failed to get user invitation codes'
 }
