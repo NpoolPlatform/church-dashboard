@@ -190,12 +190,14 @@
 <script setup lang='ts'>
 import { DefaultID } from 'src/const/const'
 import { FeeType, Good, VendorLocation } from 'src/store/goods/types'
-import { defineProps, toRef, computed, ref, defineEmits, onMounted, watch } from 'vue'
+import { defineProps, toRef, computed, ref, defineEmits, onMounted, watch, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'src/store'
 import { ActionTypes as GoodActionTypes } from 'src/store/goods/action-types'
 import { ActionTypes as CoinActionTypes } from 'src/store/coins/action-types'
+import { MutationTypes as GoodMutationTypes } from 'src/store/goods/mutation-types'
 import { ModuleKey, Type as NotificationType } from 'src/store/notifications/const'
+import { FunctionVoid } from 'src/types/types'
 
 const store = useStore()
 
@@ -332,7 +334,63 @@ const onPriceCurrencyItemClick = (index: number) => {
   selectedPriceCurrencyIndex.value = index
 }
 
+const unsubscribe = ref<FunctionVoid>()
+
 onMounted(() => {
+  unsubscribe.value = store.subscribe((mutation) => {
+    if (mutation.type === GoodMutationTypes.SetAllDevices) {
+      store.dispatch(GoodActionTypes.GetAllVendorLocations, {
+        Message: {
+          ModuleKey: ModuleKey.ModuleGoods,
+          Error: {
+            Title: t('MSG_GET_ALL_VENDOR_LOCATIONS_FAIL'),
+            Popup: true,
+            Type: NotificationType.Error
+          }
+        }
+      })
+    }
+
+    if (mutation.type === GoodMutationTypes.SetAllVendorLocations) {
+      store.dispatch(GoodActionTypes.GetAllFeeTypes, {
+        Message: {
+          ModuleKey: ModuleKey.ModuleGoods,
+          Error: {
+            Title: t('MSG_GET_ALL_FEE_TYPES_FAIL'),
+            Popup: true,
+            Type: NotificationType.Error
+          }
+        }
+      })
+    }
+
+    if (mutation.type === GoodMutationTypes.SetAllFeeTypes) {
+      store.dispatch(GoodActionTypes.GetAllFees, {
+        Message: {
+          ModuleKey: ModuleKey.ModuleGoods,
+          Error: {
+            Title: t('MSG_GET_ALL_FEES_FAIL'),
+            Popup: true,
+            Type: NotificationType.Error
+          }
+        }
+      })
+    }
+
+    if (mutation.type === GoodMutationTypes.SetAllFees) {
+      store.dispatch(GoodActionTypes.GetAllPriceCurrencys, {
+        Message: {
+          ModuleKey: ModuleKey.ModuleGoods,
+          Error: {
+            Title: t('MSG_GET_ALL_PRICE_CURRENCYS_FAIL'),
+            Popup: true,
+            Type: NotificationType.Error
+          }
+        }
+      })
+    }
+  })
+
   store.dispatch(GoodActionTypes.GetAllDevices, {
     Message: {
       ModuleKey: ModuleKey.ModuleGoods,
@@ -343,16 +401,7 @@ onMounted(() => {
       }
     }
   })
-  store.dispatch(GoodActionTypes.GetAllVendorLocations, {
-    Message: {
-      ModuleKey: ModuleKey.ModuleGoods,
-      Error: {
-        Title: t('MSG_GET_ALL_VENDOR_LOCATIONS_FAIL'),
-        Popup: true,
-        Type: NotificationType.Error
-      }
-    }
-  })
+
   store.dispatch(CoinActionTypes.GetCoins, {
     Message: {
       ModuleKey: ModuleKey.ModuleGoods,
@@ -363,36 +412,10 @@ onMounted(() => {
       }
     }
   })
-  store.dispatch(GoodActionTypes.GetAllFeeTypes, {
-    Message: {
-      ModuleKey: ModuleKey.ModuleGoods,
-      Error: {
-        Title: t('MSG_GET_ALL_FEE_TYPES_FAIL'),
-        Popup: true,
-        Type: NotificationType.Error
-      }
-    }
-  })
-  store.dispatch(GoodActionTypes.GetAllFees, {
-    Message: {
-      ModuleKey: ModuleKey.ModuleGoods,
-      Error: {
-        Title: t('MSG_GET_ALL_FEES_FAIL'),
-        Popup: true,
-        Type: NotificationType.Error
-      }
-    }
-  })
-  store.dispatch(GoodActionTypes.GetAllPriceCurrencys, {
-    Message: {
-      ModuleKey: ModuleKey.ModuleGoods,
-      Error: {
-        Title: t('MSG_GET_ALL_PRICE_CURRENCYS_FAIL'),
-        Popup: true,
-        Type: NotificationType.Error
-      }
-    }
-  })
+})
+
+onUnmounted(() => {
+  unsubscribe.value?.()
 })
 
 </script>
