@@ -107,6 +107,7 @@ export default {
   MSG_SPEC: '标识',
   MSG_FULLNAME: '长名称',
   MSG_SHORTNAME: '短名称',
+  MSG_ACTIVITY_NAME: '活动名称',
   MSG_LOGO: '图标',
   MSG_CREATE_APPLICATION: '创建应用',
   MSG_DISPLAY_NAME: '名称',
@@ -198,5 +199,10 @@ export default {
   MSG_GET_USER_WITHDRAWS_FAIL: 'You failed to get user withdraws',
   MSG_GET_PAYMENTS_FAIL: 'You failed to get payments',
   MSG_GET_USER_INVITATION_CODES_FAIL: 'You failed to get user invitation codes',
-  MSG_CREATE_USER_INVITATION_CODE_FAIL: 'You failed to create user invitation code'
+  MSG_CREATE_USER_INVITATION_CODE_FAIL: 'You failed to create user invitation code',
+  MSG_CREATE_ACTIVITY_FAIL: 'You failed to create activity',
+  MSG_GET_ACTIVITIES_FAIL: 'You failed to get activities',
+  MSG_CREATE_ACTIVITY: '创建活动',
+  MSG_START_TIME: '开始时间',
+  MSG_END_TIME: '结束时间'
 }

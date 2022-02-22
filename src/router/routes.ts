@@ -42,7 +42,8 @@ const routes: RouteRecordRaw[] = [
       { path: 'billing', component: () => import('pages/Billing.vue') },
 
       // Invitation Code
-      { path: 'inspire/invitation/code', component: () => import('pages/inspire/InvitationCode.vue') }
+      { path: 'inspire/invitation/code', component: () => import('pages/inspire/InvitationCode.vue') },
+      { path: 'inspire/activity', component: () => import('pages/inspire/Activity.vue') }
     ]
   },
 

@@ -27,10 +27,54 @@ interface CreateUserInvitationCodeForOtherAppUserResponse {
   Info: UserInvitationCode
 }
 
+interface Activity {
+  ID?: string
+  AppID: string
+  CreatedBy: string
+  Name: string
+  Start: number
+  End: number
+}
+
+interface CreateActivityForOtherAppRequest {
+  TargetAppID: string
+  Info: Activity
+  Message: ReqMessage
+}
+
+interface CreateActivityForOtherAppResponse {
+  Info: Activity
+}
+
+interface GetActivitiesByOtherAppRequest {
+  TargetAppID: string
+  Message: ReqMessage
+}
+
+interface GetActivitiesByOtherAppResponse {
+  Infos: Array<Activity>
+}
+
+interface UpdateActivityRequest {
+  Info: Activity
+  Message: ReqMessage
+}
+
+interface UpdateActivityResponse {
+  Info: Activity
+}
+
 export {
   UserInvitationCode,
   GetUserInvitationCodesByOtherAppRequest,
   GetUserInvitationCodesByOtherAppResponse,
   CreateUserInvitationCodeForOtherAppUserRequest,
-  CreateUserInvitationCodeForOtherAppUserResponse
+  CreateUserInvitationCodeForOtherAppUserResponse,
+  Activity,
+  CreateActivityForOtherAppRequest,
+  CreateActivityForOtherAppResponse,
+  GetActivitiesByOtherAppRequest,
+  GetActivitiesByOtherAppResponse,
+  UpdateActivityRequest,
+  UpdateActivityResponse
 }

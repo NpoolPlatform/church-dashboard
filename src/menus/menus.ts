@@ -218,12 +218,44 @@ const MainDrawerMenus = [
     children: []
   }, {
     menuId: uid(),
-    label: '邀请码',
-    caption: '管理用户邀请码',
+    label: '激励体系',
+    caption: '管理邀请码、代金券',
     icon: 'format_list_numbered',
     target: '/inspire/invitation/code',
     level: 0,
-    children: []
+    children: [{
+      menuId: uid(),
+      label: '邀请码',
+      caption: '管理用户邀请码',
+      icon: 'format_list_numbered',
+      target: '/inspire/invitation/code',
+      level: 1,
+      children: []
+    }, {
+      menuId: uid(),
+      label: '活动',
+      caption: '管理应用活动',
+      icon: 'format_list_numbered',
+      target: '/inspire/activity',
+      level: 1,
+      children: []
+    }, {
+      menuId: uid(),
+      label: '事件',
+      caption: '管理应用领券事件',
+      icon: 'format_list_numbered',
+      target: '/inspire/invitation/code',
+      level: 1,
+      children: []
+    }, {
+      menuId: uid(),
+      label: '代金券',
+      caption: '管理定额、抵扣、定向代金券',
+      icon: 'format_list_numbered',
+      target: '/inspire/invitation/code',
+      level: 1,
+      children: []
+    }]
   }
 ]
 
