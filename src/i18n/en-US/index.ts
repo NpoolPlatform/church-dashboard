@@ -197,5 +197,6 @@ export default {
   MSG_GET_COIN_ACCOUNT_TRANSACTIONS_FAIL: 'You failed to get transactions',
   MSG_GET_USER_WITHDRAWS_FAIL: 'You failed to get user withdraws',
   MSG_GET_PAYMENTS_FAIL: 'You failed to get payments',
-  MSG_GET_USER_INVITATION_CODES_FAIL: 'You failed to get user invitation codes'
+  MSG_GET_USER_INVITATION_CODES_FAIL: 'You failed to get user invitation codes',
+  MSG_CREATE_USER_INVITATION_CODE_FAIL: 'You failed to create user invitation code'
 }

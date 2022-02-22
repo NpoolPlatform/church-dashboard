@@ -1,9 +1,12 @@
 <template>
   <q-table
+    v-model:selected='selectedUsers'
     flat
     dense
     :loading='loading'
     :rows='myUsers'
+    selection='multiple'
+    row-key='ID'
   >
     <template #top-right>
       <div class='row'>
@@ -16,11 +19,18 @@
     flat
     dense
     :rows='codes'
-  />
+  >
+    <template #top-right>
+      <div class='row'>
+        <q-space />
+        <q-btn :label='t("MSG_CREATE")' @click='onCreateInvitationCode' />
+      </div>
+    </template>
+  </q-table>
 </template>
 
 <script setup lang='ts'>
-import { onMounted, computed, ref, defineAsyncComponent, watch } from 'vue'
+import { onMounted, computed, ref, defineAsyncComponent, watch, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'src/store'
 import { ActionTypes as InspireActionTypes } from 'src/store/inspire/action-types'
@@ -57,6 +67,7 @@ const myUsers = computed(() => {
 const codes = computed(() => store.getters.getUserInvitationCodesByAppID(selectedAppID.value))
 
 const loading = ref(false)
+const selectedUsers = ref([] as Array<AppUser>)
 
 const unsubscribe = ref<FunctionVoid>()
 
@@ -87,6 +98,27 @@ watch(selectedAppID, () => {
   })
 })
 
+const onCreateInvitationCode = () => {
+  selectedUsers.value.forEach((user) => {
+    store.dispatch(InspireActionTypes.CreateUserInvitationCodeForOtherAppUser, {
+      TargetAppID: selectedAppID.value,
+      TargetUserID: user.ID as string,
+      Info: {
+        AppID: user.AppID,
+        UserID: user.ID as string
+      },
+      Message: {
+        ModuleKey: ModuleKey.ModuleUsers,
+        Error: {
+          Title: t('MSG_CREATE_USER_INVITATION_CODE_FAIL'),
+          Popup: true,
+          Type: NotificationType.Error
+        }
+      }
+    })
+  })
+}
+
 onMounted(() => {
   store.dispatch(ApplicationActionTypes.GetApplications, {
     Message: {
@@ -103,10 +135,11 @@ onMounted(() => {
     if (mutation.type === InspireMutationTypes.SetUserInvitationCodes) {
       loading.value = false
     }
-    if (mutation.type === InspireMutationTypes.SetUserInvitationCodes) {
-      loading.value = false
-    }
   })
+})
+
+onUnmounted(() => {
+  unsubscribe.value?.()
 })
 
 </script>

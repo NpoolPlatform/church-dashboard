@@ -6,7 +6,12 @@ import { AugmentedActionContext, RootState } from '../index'
 import { InspireMutations } from './mutations'
 import { API } from './const'
 import { doAction } from '../action'
-import { GetUserInvitationCodesByOtherAppRequest, GetUserInvitationCodesByOtherAppResponse } from './types'
+import {
+  CreateUserInvitationCodeForOtherAppUserRequest,
+  CreateUserInvitationCodeForOtherAppUserResponse,
+  GetUserInvitationCodesByOtherAppRequest,
+  GetUserInvitationCodesByOtherAppResponse
+} from './types'
 
 interface InspireActions {
   [ActionTypes.GetUserInvitationCodeByOtherApp]({
@@ -16,6 +21,14 @@ interface InspireActions {
     RootState,
     InspireMutations<InspiresState>>,
     req: GetUserInvitationCodesByOtherAppRequest): void
+
+  [ActionTypes.CreateUserInvitationCodeForOtherAppUser]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: CreateUserInvitationCodeForOtherAppUserRequest): void
 }
 
 const actions: ActionTree<InspiresState, RootState> = {
@@ -27,6 +40,17 @@ const actions: ActionTree<InspiresState, RootState> = {
       req.Message,
       (resp: GetUserInvitationCodesByOtherAppResponse): void => {
         commit(MutationTypes.SetUserInvitationCodes, resp.Infos)
+      })
+  },
+
+  [ActionTypes.CreateUserInvitationCodeForOtherAppUser] ({ commit }, req: CreateUserInvitationCodeForOtherAppUserRequest) {
+    doAction<CreateUserInvitationCodeForOtherAppUserRequest, CreateUserInvitationCodeForOtherAppUserResponse>(
+      commit,
+      API.CREATE_USER_INVITATION_CODE_FOR_OTHER_APP_USER,
+      req,
+      req.Message,
+      (resp: CreateUserInvitationCodeForOtherAppUserResponse): void => {
+        commit(MutationTypes.AppendUserInvitationCode, resp.Info)
       })
   }
 }
