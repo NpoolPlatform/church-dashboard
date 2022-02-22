@@ -190,14 +190,12 @@
 <script setup lang='ts'>
 import { DefaultID } from 'src/const/const'
 import { FeeType, Good, VendorLocation } from 'src/store/goods/types'
-import { defineProps, toRef, computed, ref, defineEmits, onBeforeMount, watch, onUnmounted } from 'vue'
+import { defineProps, toRef, computed, ref, defineEmits, onBeforeMount, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'src/store'
 import { ActionTypes as GoodActionTypes } from 'src/store/goods/action-types'
 import { ActionTypes as CoinActionTypes } from 'src/store/coins/action-types'
-import { MutationTypes as GoodMutationTypes } from 'src/store/goods/mutation-types'
 import { ModuleKey, Type as NotificationType } from 'src/store/notifications/const'
-import { FunctionVoid } from 'src/types/types'
 
 const store = useStore()
 
@@ -334,88 +332,71 @@ const onPriceCurrencyItemClick = (index: number) => {
   selectedPriceCurrencyIndex.value = index
 }
 
-const unsubscribe = ref<FunctionVoid>()
-
 onBeforeMount(() => {
-  unsubscribe.value = store.subscribe((mutation) => {
-    if (mutation.type === GoodMutationTypes.SetAllDevices) {
-      store.dispatch(GoodActionTypes.GetAllVendorLocations, {
-        Message: {
-          ModuleKey: ModuleKey.ModuleGoods,
-          Error: {
-            Title: t('MSG_GET_ALL_VENDOR_LOCATIONS_FAIL'),
-            Popup: true,
-            Type: NotificationType.Error
-          }
+  if (!vendorLocations.value || vendorLocations.value.length === 0) {
+    store.dispatch(GoodActionTypes.GetAllVendorLocations, {
+      Message: {
+        ModuleKey: ModuleKey.ModuleGoods,
+        Error: {
+          Title: t('MSG_GET_ALL_VENDOR_LOCATIONS_FAIL'),
+          Popup: true,
+          Type: NotificationType.Error
         }
-      })
-    }
-
-    if (mutation.type === GoodMutationTypes.SetAllVendorLocations) {
-      store.dispatch(GoodActionTypes.GetAllFeeTypes, {
-        Message: {
-          ModuleKey: ModuleKey.ModuleGoods,
-          Error: {
-            Title: t('MSG_GET_ALL_FEE_TYPES_FAIL'),
-            Popup: true,
-            Type: NotificationType.Error
-          }
-        }
-      })
-    }
-
-    if (mutation.type === GoodMutationTypes.SetAllFeeTypes) {
-      store.dispatch(GoodActionTypes.GetAllFees, {
-        Message: {
-          ModuleKey: ModuleKey.ModuleGoods,
-          Error: {
-            Title: t('MSG_GET_ALL_FEES_FAIL'),
-            Popup: true,
-            Type: NotificationType.Error
-          }
-        }
-      })
-    }
-
-    if (mutation.type === GoodMutationTypes.SetAllFees) {
-      store.dispatch(GoodActionTypes.GetAllPriceCurrencys, {
-        Message: {
-          ModuleKey: ModuleKey.ModuleGoods,
-          Error: {
-            Title: t('MSG_GET_ALL_PRICE_CURRENCYS_FAIL'),
-            Popup: true,
-            Type: NotificationType.Error
-          }
-        }
-      })
-    }
-  })
-
-  store.dispatch(GoodActionTypes.GetAllDevices, {
-    Message: {
-      ModuleKey: ModuleKey.ModuleGoods,
-      Error: {
-        Title: t('MSG_GET_ALL_DEVICES_FAIL'),
-        Popup: true,
-        Type: NotificationType.Error
       }
-    }
-  })
+    })
+  }
 
-  store.dispatch(CoinActionTypes.GetCoins, {
-    Message: {
-      ModuleKey: ModuleKey.ModuleGoods,
-      Error: {
-        Title: t('MSG_GET_COINS_FAIL'),
-        Popup: true,
-        Type: NotificationType.Error
+  if (!feeTypes.value || feeTypes.value.length === 0) {
+    store.dispatch(GoodActionTypes.GetAllFeeTypes, {
+      Message: {
+        ModuleKey: ModuleKey.ModuleGoods,
+        Error: {
+          Title: t('MSG_GET_ALL_FEE_TYPES_FAIL'),
+          Popup: true,
+          Type: NotificationType.Error
+        }
       }
-    }
-  })
-})
+    })
+  }
 
-onUnmounted(() => {
-  unsubscribe.value?.()
+  if (!priceCurrencys.value || priceCurrencys.value.length === 0) {
+    store.dispatch(GoodActionTypes.GetAllPriceCurrencys, {
+      Message: {
+        ModuleKey: ModuleKey.ModuleGoods,
+        Error: {
+          Title: t('MSG_GET_ALL_PRICE_CURRENCYS_FAIL'),
+          Popup: true,
+          Type: NotificationType.Error
+        }
+      }
+    })
+  }
+
+  if (!devices.value || devices.value.length === 0) {
+    store.dispatch(GoodActionTypes.GetAllDevices, {
+      Message: {
+        ModuleKey: ModuleKey.ModuleGoods,
+        Error: {
+          Title: t('MSG_GET_ALL_DEVICES_FAIL'),
+          Popup: true,
+          Type: NotificationType.Error
+        }
+      }
+    })
+  }
+
+  if (!coins.value || coins.value.length === 0) {
+    store.dispatch(CoinActionTypes.GetCoins, {
+      Message: {
+        ModuleKey: ModuleKey.ModuleGoods,
+        Error: {
+          Title: t('MSG_GET_COINS_FAIL'),
+          Popup: true,
+          Type: NotificationType.Error
+        }
+      }
+    })
+  }
 })
 
 </script>
