@@ -333,6 +333,8 @@ const onPriceCurrencyItemClick = (index: number) => {
 }
 
 onBeforeMount(() => {
+  // TODO: may timeout here and don't know why
+
   if (!vendorLocations.value || vendorLocations.value.length === 0) {
     store.dispatch(GoodActionTypes.GetAllVendorLocations, {
       Message: {
