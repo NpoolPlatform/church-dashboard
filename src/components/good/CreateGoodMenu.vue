@@ -213,18 +213,18 @@ const feeTypes = computed(() => store.getters.getAllFeeTypes)
 const priceCurrencys = computed(() => store.getters.getAllPriceCurrencys)
 
 const selectedCoinIndex = ref(0)
-const myCoinType = computed(() => coins.value[selectedCoinIndex.value].Name)
-const coinID = computed(() => coins.value[selectedCoinIndex.value].ID)
+const myCoinType = computed(() => coins.value[selectedCoinIndex.value]?.Name)
+const coinID = computed(() => coins.value[selectedCoinIndex.value]?.ID)
 
 const selectedDeviceIndex = ref(0)
-const deviceLabel = computed(() => devices.value[selectedDeviceIndex.value].Type)
-const deviceID = computed(() => devices.value[selectedDeviceIndex.value].ID)
+const deviceLabel = computed(() => devices.value[selectedDeviceIndex.value]?.Type)
+const deviceID = computed(() => devices.value[selectedDeviceIndex.value]?.ID)
 
 const selectedVendorLocationIndex = ref(0)
 const vendorLocationLabel = computed(() =>
   vendorLocationToLabel(vendorLocations.value[selectedVendorLocationIndex.value])
 )
-const vendorLocationID = computed(() => vendorLocations.value[selectedVendorLocationIndex.value].ID)
+const vendorLocationID = computed(() => vendorLocations.value[selectedVendorLocationIndex.value]?.ID)
 
 const myTitle = ref(editGood.value?.Title)
 const myActuals = ref(editGood.value?.Actuals)
@@ -236,8 +236,8 @@ const myDurationDays = ref(editGood.value?.DurationDays)
 const myUnitPower = ref(editGood.value?.UnitPower)
 
 const selectedPriceCurrencyIndex = ref(0)
-const priceCurrencyType = computed(() => priceCurrencys.value[selectedPriceCurrencyIndex.value].Name)
-const priceCurrencyID = computed(() => priceCurrencys.value[selectedPriceCurrencyIndex.value].ID)
+const priceCurrencyType = computed(() => priceCurrencys.value[selectedPriceCurrencyIndex.value]?.Name)
+const priceCurrencyID = computed(() => priceCurrencys.value[selectedPriceCurrencyIndex.value]?.ID)
 
 const myDeliveryAt = ref(0)
 const myUnit = ref(editGood.value?.Unit ? editGood.value?.Unit : 'TiB')
@@ -274,10 +274,10 @@ const benefitTypes = [
 const myBenefitType = ref('platform')
 
 const vendorLocationToLabel = (vendorLocation: VendorLocation) => {
-  return vendorLocation.Country + ' / ' +
-    vendorLocation.Province + ' / ' +
-    vendorLocation.City + ' / ' +
-    vendorLocation.Address
+  return vendorLocation?.Country + ' / ' +
+    vendorLocation?.Province + ' / ' +
+    vendorLocation?.City + ' / ' +
+    vendorLocation?.Address
 }
 
 const emit = defineEmits<{(e: 'submit', good: Good): void,
