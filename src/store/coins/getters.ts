@@ -13,11 +13,11 @@ const getters: GetterTree<CoinsState, RootState> & CoinGetters = {
     return (id: string) => state.Coins.get(id) as Coin
   },
   getCoins: (state: CoinsState): Array<Coin> => {
-    const Coins: Array<Coin> = []
+    const coins = [] as Array<Coin>
     state.Coins.forEach((val) => {
-      Coins.push(val)
+      coins.push(val)
     })
-    return Coins
+    return coins
   }
 }
 
