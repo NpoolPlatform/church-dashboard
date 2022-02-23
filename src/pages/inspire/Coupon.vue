@@ -41,6 +41,19 @@
       </div>
     </template>
   </q-table>
+  <q-table
+    flat
+    dense
+    :rows='userSpecialReductions'
+    @row-click='(evt, row, index) => onUserSpecialReductionClick(row as UserSpecialReduction)'
+  >
+    <template #top-right>
+      <div class='row'>
+        <q-space />
+        <q-btn :label='t("MSG_CREATE")' @click='onCreateUserSpecialReduction' />
+      </div>
+    </template>
+  </q-table>
   <q-dialog
     v-model='modifying'
     position='right'
@@ -63,6 +76,13 @@
       @update='onUpdateDiscountPool'
       @submit='onSubmitDiscountPool'
     />
+    <CreateUserSpecialReduction
+      v-if='addingType === AddingType.AddingUserSpecalReduction'
+      v-model:edit-user-special-reduction='selectedUserReduction'
+      v-model:selected-app='selectedApp'
+      @update='onUpdateUserSpecialReduction'
+      @submit='onSubmitUserSpecialReduction'
+    />
   </q-dialog>
 </template>
 
@@ -78,11 +98,12 @@ import { ActionTypes as ApplicationActionTypes } from 'src/store/applications/ac
 import { MutationTypes as UserMutationTypes } from 'src/store/user-helper/mutation-types'
 import { ActionTypes as UserActionTypes } from 'src/store/user-helper/action-types'
 import { AppUser } from 'src/store/user-helper/types'
-import { CouponPool, DiscountPool } from 'src/store/inspire/types'
+import { CouponPool, DiscountPool, UserSpecialReduction } from 'src/store/inspire/types'
 
 const ApplicationSelector = defineAsyncComponent(() => import('src/components/dropdown/ApplicationSelector.vue'))
 const CreateCouponPool = defineAsyncComponent(() => import('src/components/inspire/CreateCouponPool.vue'))
 const CreateDiscountPool = defineAsyncComponent(() => import('src/components/inspire/CreateDiscountPool.vue'))
+const CreateUserSpecialReduction = defineAsyncComponent(() => import('src/components/inspire/CreateUserSpecialReduction.vue'))
 
 const store = useStore()
 // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -98,6 +119,7 @@ const selectedApp = computed(() => store.getters.getApplicationByID(selectedAppI
 
 const selectedCoupon = ref(undefined as unknown as CouponPool)
 const selectedDiscount = ref(undefined as unknown as DiscountPool)
+const selectedUserReduction = ref(undefined as unknown as UserSpecialReduction)
 
 const users = computed(() => store.getters.getAppUserInfosByAppID(selectedAppID.value))
 const myUsers = computed(() => {
@@ -109,8 +131,10 @@ const myUsers = computed(() => {
   }
   return allUsers
 })
+
 const couponPools = computed(() => store.getters.getCouponPoolsByAppID(selectedAppID.value))
 const discountPools = computed(() => store.getters.getDiscountPoolsByAppID(selectedAppID.value))
+const userSpecialReductions = computed(() => store.getters.getUserSpecialReductionsByAppID(selectedAppID.value))
 
 const loading = ref(false)
 const selectedUsers = ref([] as Array<AppUser>)
@@ -154,6 +178,18 @@ watch(selectedAppID, () => {
       }
     }
   })
+
+  store.dispatch(InspireActionTypes.GetUserSpecialReductionsByOtherApp, {
+    TargetAppID: selectedAppID.value,
+    Message: {
+      ModuleKey: ModuleKey.ModuleApplications,
+      Error: {
+        Title: t('MSG_GET_USER_SPECIAL_REDUCTIONS_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+  })
 })
 
 const adding = ref(false)
@@ -192,6 +228,19 @@ const onDiscountPoolClick = (discountPool: DiscountPool) => {
   updating.value = true
   modifying.value = true
   addingType.value = AddingType.AddingDiscountCoupon
+}
+
+const onCreateUserSpecialReduction = () => {
+  adding.value = true
+  modifying.value = true
+  addingType.value = AddingType.AddingUserSpecalReduction
+}
+
+const onUserSpecialReductionClick = (userSpecialReduction: UserSpecialReduction) => {
+  selectedUserReduction.value = userSpecialReduction
+  updating.value = true
+  modifying.value = true
+  addingType.value = AddingType.AddingUserSpecalReduction
 }
 
 const onUpdateCouponPool = (couponPool: CouponPool) => {
@@ -250,6 +299,47 @@ const onSubmitDiscountPool = (discountPool: DiscountPool) => {
       }
     }
   })
+}
+
+const onUpdateUserSpecialReduction = (userSpecialReduction: UserSpecialReduction) => {
+  // TODO: fileter the list
+  console.log('update', userSpecialReduction)
+}
+
+const onSubmitUserSpecialReduction = (userSpecialReduction: UserSpecialReduction) => {
+  adding.value = false
+  updating.value = false
+  modifying.value = false
+
+  if (!updating.value) {
+    selectedUsers.value.forEach((user) => {
+      store.dispatch(InspireActionTypes.CreateUserSpecialReductionForOtherAppUser, {
+        TargetAppID: selectedApp.value.App.ID,
+        TargetUserID: user.ID as string,
+        Info: userSpecialReduction,
+        Message: {
+          ModuleKey: ModuleKey.ModuleApplications,
+          Error: {
+            Title: t('MSG_CREATE_USER_SPECIAL_REDUCTION_FAIL'),
+            Popup: true,
+            Type: NotificationType.Error
+          }
+        }
+      })
+    })
+  } else {
+    store.dispatch(InspireActionTypes.UpdateUserSpecialReduction, {
+      Info: userSpecialReduction,
+      Message: {
+        ModuleKey: ModuleKey.ModuleApplications,
+        Error: {
+          Title: t('MSG_CREATE_USER_SPECIAL_REDUCTION_FAIL'),
+          Popup: true,
+          Type: NotificationType.Error
+        }
+      }
+    })
+  }
 }
 
 onMounted(() => {

@@ -144,6 +144,46 @@ interface UpdateDiscountPoolResponse {
   Info: DiscountPool
 }
 
+interface UserSpecialReduction {
+  ID: string
+  AppID: string
+  UserID: string
+  Amount: number
+  ReleaseByUserID: string
+  Start: number
+  DurationDays: number
+  Message: string
+}
+
+interface CreateUserSpecialReductionForOtherAppUserRequest {
+  TargetAppID: string
+  TargetUserID: string
+  Info: UserSpecialReduction
+  Message: ReqMessage
+}
+
+interface CreateUserSpecialReductionForOtherAppUserResponse {
+  Info: UserSpecialReduction
+}
+
+interface GetUserSpecialReductionsByOtherAppRequest {
+  TargetAppID: string
+  Message: ReqMessage
+}
+
+interface GetUserSpecialReductionsByOtherAppResponse {
+  Infos: Array<UserSpecialReduction>
+}
+
+interface UpdateUserSpecialReductionRequest {
+  Info: UserSpecialReduction
+  Message: ReqMessage
+}
+
+interface UpdateUserSpecialReductionResponse {
+  Info: UserSpecialReduction
+}
+
 export {
   UserInvitationCode,
   GetUserInvitationCodesByOtherAppRequest,
@@ -170,5 +210,12 @@ export {
   GetDiscountPoolsByOtherAppRequest,
   GetDiscountPoolsByOtherAppResponse,
   UpdateDiscountPoolRequest,
-  UpdateDiscountPoolResponse
+  UpdateDiscountPoolResponse,
+  UserSpecialReduction,
+  CreateUserSpecialReductionForOtherAppUserRequest,
+  CreateUserSpecialReductionForOtherAppUserResponse,
+  GetUserSpecialReductionsByOtherAppRequest,
+  GetUserSpecialReductionsByOtherAppResponse,
+  UpdateUserSpecialReductionRequest,
+  UpdateUserSpecialReductionResponse
 }

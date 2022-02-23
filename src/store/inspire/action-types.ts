@@ -12,5 +12,9 @@ export enum ActionTypes {
 
   CreateDiscountPoolForOtherApp = 'CREATE_DISCOUNT_POOL_FOR_OTHER_APP',
   UpdateDiscountPool = 'UPDATE_DISCOUNT_POOL',
-  GetDiscountPoolsByOtherApp = 'GET_DISCOUNT_POOLS_BY_OTHER_APP'
+  GetDiscountPoolsByOtherApp = 'GET_DISCOUNT_POOLS_BY_OTHER_APP',
+
+  CreateUserSpecialReductionForOtherAppUser = 'CREATE_USER_SPECIAL_REDUCTION_FOR_OTHER_APP_USER',
+  UpdateUserSpecialReduction = 'UPDATE_USER_SPECIAL_REDUCTION',
+  GetUserSpecialReductionsByOtherApp = 'GET_USER_SPECIAL_REDUCTIONS_BY_OTHER_APP'
 }

@@ -15,6 +15,8 @@ import {
   CreateDiscountPoolForOtherAppResponse,
   CreateUserInvitationCodeForOtherAppUserRequest,
   CreateUserInvitationCodeForOtherAppUserResponse,
+  CreateUserSpecialReductionForOtherAppUserRequest,
+  CreateUserSpecialReductionForOtherAppUserResponse,
   GetActivitiesByOtherAppRequest,
   GetActivitiesByOtherAppResponse,
   GetCouponPoolsByOtherAppRequest,
@@ -23,12 +25,16 @@ import {
   GetDiscountPoolsByOtherAppResponse,
   GetUserInvitationCodesByOtherAppRequest,
   GetUserInvitationCodesByOtherAppResponse,
+  GetUserSpecialReductionsByOtherAppRequest,
+  GetUserSpecialReductionsByOtherAppResponse,
   UpdateActivityRequest,
   UpdateActivityResponse,
   UpdateCouponPoolRequest,
   UpdateCouponPoolResponse,
   UpdateDiscountPoolRequest,
-  UpdateDiscountPoolResponse
+  UpdateDiscountPoolResponse,
+  UpdateUserSpecialReductionRequest,
+  UpdateUserSpecialReductionResponse
 } from './types'
 
 interface InspireActions {
@@ -119,6 +125,30 @@ interface InspireActions {
     RootState,
     InspireMutations<InspiresState>>,
     req: GetDiscountPoolsByOtherAppRequest): void
+
+  [ActionTypes.CreateUserSpecialReductionForOtherAppUser]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: CreateUserSpecialReductionForOtherAppUserRequest): void
+
+  [ActionTypes.UpdateUserSpecialReduction]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: UpdateUserSpecialReductionRequest): void
+
+  [ActionTypes.GetUserSpecialReductionsByOtherApp]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: GetUserSpecialReductionsByOtherAppRequest): void
 }
 
 const actions: ActionTree<InspiresState, RootState> = {
@@ -240,6 +270,39 @@ const actions: ActionTree<InspiresState, RootState> = {
       req.Message,
       (resp: GetDiscountPoolsByOtherAppResponse): void => {
         commit(MutationTypes.SetDiscountPools, resp.Infos)
+      })
+  },
+
+  [ActionTypes.CreateUserSpecialReductionForOtherAppUser] ({ commit }, req: CreateUserSpecialReductionForOtherAppUserRequest) {
+    doAction<CreateUserSpecialReductionForOtherAppUserRequest, CreateUserSpecialReductionForOtherAppUserResponse>(
+      commit,
+      API.CREATE_USER_SPECIAL_REDUCTION_FOR_OTHER_APP_USER,
+      req,
+      req.Message,
+      (resp: CreateUserSpecialReductionForOtherAppUserResponse): void => {
+        commit(MutationTypes.AppendUserSpecialReduction, resp.Info)
+      })
+  },
+
+  [ActionTypes.UpdateUserSpecialReduction] ({ commit }, req: UpdateUserSpecialReductionRequest) {
+    doAction<UpdateUserSpecialReductionRequest, UpdateUserSpecialReductionResponse>(
+      commit,
+      API.UPDATE_USER_SPECIAL_REDUCTION,
+      req,
+      req.Message,
+      (resp: UpdateUserSpecialReductionResponse): void => {
+        commit(MutationTypes.AppendUserSpecialReduction, resp.Info)
+      })
+  },
+
+  [ActionTypes.GetUserSpecialReductionsByOtherApp] ({ commit }, req: GetUserSpecialReductionsByOtherAppRequest) {
+    doAction<GetUserSpecialReductionsByOtherAppRequest, GetUserSpecialReductionsByOtherAppResponse>(
+      commit,
+      API.GET_USER_SPECIAL_REDUCTIONS_BY_OTHER_APP,
+      req,
+      req.Message,
+      (resp: GetUserSpecialReductionsByOtherAppResponse): void => {
+        commit(MutationTypes.SetUserSpecialReductions, resp.Infos)
       })
   }
 }

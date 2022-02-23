@@ -11,5 +11,8 @@ export enum MutationTypes {
   SetDiscountPools = 'SET_DISCOUNT_POOLS',
   AppendDiscountPool = 'APPEND_DISCOUNT_POOL',
 
+  SetUserSpecialReductions = 'SET_USER_SPECIAL_REDUCTIONS',
+  AppendUserSpecialReduction = 'APPEND_USER_SPECIAL_REDUCTION',
+
   SetInspireSelectedAppID = 'SET_INSPIRE_SELECTED_APP_ID'
 }

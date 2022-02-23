@@ -212,10 +212,13 @@ export default {
   MSG_NAME: '名称',
   MSG_CREATE_COUPON_POOL: '创建定额券',
   MSG_CREATE_DISCOUNT_POOL: '创建折扣券',
+  MSG_CREATE_USER_SPECIAL_REDUCTION: '特定用户优惠',
   MSG_DURATION_DAYS: '有效天数',
   MSG_DENOMINATION: '面额',
   MSG_CIRCULATION: '总额',
   MSG_MESSAGE: '描述',
   MSG_DISCOUNT: '折扣',
-  MSG_GET_DISCOUNT_POOLS_FAIL: 'You failed to get discount pools'
+  MSG_GET_DISCOUNT_POOLS_FAIL: 'You failed to get discount pools',
+  MSG_CREATE_USER_SPECIAL_REDUCTION_FAIL: 'You failed to create user special reduction',
+  MSG_GET_USER_SPECIAL_REDUCTIONS_FAIL: 'You failed to get user special reductions'
 }
