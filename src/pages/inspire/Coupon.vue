@@ -28,6 +28,19 @@
       </div>
     </template>
   </q-table>
+  <q-table
+    flat
+    dense
+    :rows='discountPools'
+    @row-click='(evt, row, index) => onDiscountPoolClick(row as DiscountPool)'
+  >
+    <template #top-right>
+      <div class='row'>
+        <q-space />
+        <q-btn :label='t("MSG_CREATE")' @click='onCreateDiscountPool' />
+      </div>
+    </template>
+  </q-table>
   <q-dialog
     v-model='modifying'
     position='right'
@@ -40,8 +53,15 @@
       v-if='addingType === AddingType.AddingCouponPool'
       v-model:edit-coupon-pool='selectedCoupon'
       v-model:selected-app='selectedApp'
-      @update='onUpdate'
-      @submit='onSubmit'
+      @update='onUpdateCouponPool'
+      @submit='onSubmitCouponPool'
+    />
+    <CreateDiscountPool
+      v-if='addingType === AddingType.AddingDiscountCoupon'
+      v-model:edit-discount-pool='selectedDiscount'
+      v-model:selected-app='selectedApp'
+      @update='onUpdateDiscountPool'
+      @submit='onSubmitDiscountPool'
     />
   </q-dialog>
 </template>
@@ -58,10 +78,11 @@ import { ActionTypes as ApplicationActionTypes } from 'src/store/applications/ac
 import { MutationTypes as UserMutationTypes } from 'src/store/user-helper/mutation-types'
 import { ActionTypes as UserActionTypes } from 'src/store/user-helper/action-types'
 import { AppUser } from 'src/store/user-helper/types'
-import { CouponPool } from 'src/store/inspire/types'
+import { CouponPool, DiscountPool } from 'src/store/inspire/types'
 
 const ApplicationSelector = defineAsyncComponent(() => import('src/components/dropdown/ApplicationSelector.vue'))
 const CreateCouponPool = defineAsyncComponent(() => import('src/components/inspire/CreateCouponPool.vue'))
+const CreateDiscountPool = defineAsyncComponent(() => import('src/components/inspire/CreateDiscountPool.vue'))
 
 const store = useStore()
 // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -76,6 +97,7 @@ const selectedAppID = computed({
 const selectedApp = computed(() => store.getters.getApplicationByID(selectedAppID.value))
 
 const selectedCoupon = ref(undefined as unknown as CouponPool)
+const selectedDiscount = ref(undefined as unknown as DiscountPool)
 
 const users = computed(() => store.getters.getAppUserInfosByAppID(selectedAppID.value))
 const myUsers = computed(() => {
@@ -88,6 +110,7 @@ const myUsers = computed(() => {
   return allUsers
 })
 const couponPools = computed(() => store.getters.getCouponPoolsByAppID(selectedAppID.value))
+const discountPools = computed(() => store.getters.getDiscountPoolsByAppID(selectedAppID.value))
 
 const loading = ref(false)
 const selectedUsers = ref([] as Array<AppUser>)
@@ -113,7 +136,19 @@ watch(selectedAppID, () => {
     Message: {
       ModuleKey: ModuleKey.ModuleApplications,
       Error: {
-        Title: t('MSG_GET_ACTIVITIES_FAIL'),
+        Title: t('MSG_GET_COUPON_POOLS_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+  })
+
+  store.dispatch(InspireActionTypes.GetDiscountPoolsByOtherApp, {
+    TargetAppID: selectedAppID.value,
+    Message: {
+      ModuleKey: ModuleKey.ModuleApplications,
+      Error: {
+        Title: t('MSG_GET_DISCOUNT_POOLS_FAIL'),
         Popup: true,
         Type: NotificationType.Error
       }
@@ -146,12 +181,25 @@ const onCouponPoolClick = (couponPool: CouponPool) => {
   addingType.value = AddingType.AddingCouponPool
 }
 
-const onUpdate = (couponPool: CouponPool) => {
+const onCreateDiscountPool = () => {
+  adding.value = true
+  modifying.value = true
+  addingType.value = AddingType.AddingDiscountCoupon
+}
+
+const onDiscountPoolClick = (discountPool: DiscountPool) => {
+  selectedDiscount.value = discountPool
+  updating.value = true
+  modifying.value = true
+  addingType.value = AddingType.AddingDiscountCoupon
+}
+
+const onUpdateCouponPool = (couponPool: CouponPool) => {
   // TODO: fileter the list
   console.log('update', couponPool)
 }
 
-const onSubmit = (couponPool: CouponPool) => {
+const onSubmitCouponPool = (couponPool: CouponPool) => {
   let action = InspireActionTypes.CreateCouponPoolForOtherApp
   if (updating.value) {
     action = InspireActionTypes.UpdateCouponPool
@@ -168,6 +216,35 @@ const onSubmit = (couponPool: CouponPool) => {
       ModuleKey: ModuleKey.ModuleApplications,
       Error: {
         Title: t('MSG_CREATE_COUPON_POOL_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+  })
+}
+
+const onUpdateDiscountPool = (discountPool: DiscountPool) => {
+  // TODO: fileter the list
+  console.log('update', discountPool)
+}
+
+const onSubmitDiscountPool = (discountPool: DiscountPool) => {
+  let action = InspireActionTypes.CreateDiscountPoolForOtherApp
+  if (updating.value) {
+    action = InspireActionTypes.UpdateDiscountPool
+  }
+
+  adding.value = false
+  updating.value = false
+  modifying.value = false
+
+  store.dispatch(action, {
+    TargetAppID: selectedApp.value.App.ID,
+    Info: discountPool,
+    Message: {
+      ModuleKey: ModuleKey.ModuleApplications,
+      Error: {
+        Title: t('MSG_CREATE_DISCOUNT_POOL_FAIL'),
         Popup: true,
         Type: NotificationType.Error
       }

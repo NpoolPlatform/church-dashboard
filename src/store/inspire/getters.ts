@@ -1,12 +1,13 @@
 import { GetterTree } from 'vuex'
 import { RootState } from '../index'
 import { InspiresState } from './state'
-import { Activity, CouponPool, UserInvitationCode } from './types'
+import { Activity, CouponPool, DiscountPool, UserInvitationCode } from './types'
 
 type InspireGetters = {
   getUserInvitationCodesByAppID (state: InspiresState): (appID: string) => Array<UserInvitationCode>
   getActivitiesByAppID (state: InspiresState): (appID: string) => Array<Activity>
   getCouponPoolsByAppID (state: InspiresState): (appID: string) => Array<CouponPool>
+  getDiscountPoolsByAppID (state: InspiresState): (appID: string) => Array<DiscountPool>
   getInspireSelectedAppID (state: InspiresState): string
 }
 
@@ -24,6 +25,11 @@ const getters: GetterTree<InspiresState, RootState> & InspireGetters = {
   getCouponPoolsByAppID: (state: InspiresState): (appID: string) => Array<CouponPool> => {
     return (appID: string) => {
       return state.CouponPools.get(appID) as Array<CouponPool>
+    }
+  },
+  getDiscountPoolsByAppID: (state: InspiresState): (appID: string) => Array<DiscountPool> => {
+    return (appID: string) => {
+      return state.DiscountPools.get(appID) as Array<DiscountPool>
     }
   },
   getInspireSelectedAppID: (state: InspiresState): string => state.SelectedAppID

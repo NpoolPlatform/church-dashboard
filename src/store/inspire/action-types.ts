@@ -9,4 +9,8 @@ export enum ActionTypes {
   CreateCouponPoolForOtherApp = 'CREATE_COUPON_POOL_FOR_OTHER_APP',
   UpdateCouponPool = 'UPDATE_COUPON_POOL',
   GetCouponPoolsByOtherApp = 'GET_COUPON_POOLS_BY_OTHER_APP',
+
+  CreateDiscountPoolForOtherApp = 'CREATE_DISCOUNT_POOL_FOR_OTHER_APP',
+  UpdateDiscountPool = 'UPDATE_DISCOUNT_POOL',
+  GetDiscountPoolsByOtherApp = 'GET_DISCOUNT_POOLS_BY_OTHER_APP'
 }

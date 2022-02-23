@@ -11,18 +11,24 @@ import {
   CreateActivityForOtherAppResponse,
   CreateCouponPoolForOtherAppRequest,
   CreateCouponPoolForOtherAppResponse,
+  CreateDiscountPoolForOtherAppRequest,
+  CreateDiscountPoolForOtherAppResponse,
   CreateUserInvitationCodeForOtherAppUserRequest,
   CreateUserInvitationCodeForOtherAppUserResponse,
   GetActivitiesByOtherAppRequest,
   GetActivitiesByOtherAppResponse,
   GetCouponPoolsByOtherAppRequest,
   GetCouponPoolsByOtherAppResponse,
+  GetDiscountPoolsByOtherAppRequest,
+  GetDiscountPoolsByOtherAppResponse,
   GetUserInvitationCodesByOtherAppRequest,
   GetUserInvitationCodesByOtherAppResponse,
   UpdateActivityRequest,
   UpdateActivityResponse,
   UpdateCouponPoolRequest,
-  UpdateCouponPoolResponse
+  UpdateCouponPoolResponse,
+  UpdateDiscountPoolRequest,
+  UpdateDiscountPoolResponse
 } from './types'
 
 interface InspireActions {
@@ -89,6 +95,30 @@ interface InspireActions {
     RootState,
     InspireMutations<InspiresState>>,
     req: GetCouponPoolsByOtherAppRequest): void
+
+  [ActionTypes.CreateDiscountPoolForOtherApp]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: CreateDiscountPoolForOtherAppRequest): void
+
+  [ActionTypes.UpdateDiscountPool]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: UpdateDiscountPoolRequest): void
+
+  [ActionTypes.GetDiscountPoolsByOtherApp]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: GetDiscountPoolsByOtherAppRequest): void
 }
 
 const actions: ActionTree<InspiresState, RootState> = {
@@ -177,6 +207,39 @@ const actions: ActionTree<InspiresState, RootState> = {
       req.Message,
       (resp: GetCouponPoolsByOtherAppResponse): void => {
         commit(MutationTypes.SetCouponPools, resp.Infos)
+      })
+  },
+
+  [ActionTypes.CreateDiscountPoolForOtherApp] ({ commit }, req: CreateDiscountPoolForOtherAppRequest) {
+    doAction<CreateDiscountPoolForOtherAppRequest, CreateDiscountPoolForOtherAppResponse>(
+      commit,
+      API.CREATE_DISCOUNT_POOL_FOR_OTHER_APP,
+      req,
+      req.Message,
+      (resp: CreateDiscountPoolForOtherAppResponse): void => {
+        commit(MutationTypes.AppendDiscountPool, resp.Info)
+      })
+  },
+
+  [ActionTypes.UpdateDiscountPool] ({ commit }, req: UpdateDiscountPoolRequest) {
+    doAction<UpdateDiscountPoolRequest, UpdateDiscountPoolResponse>(
+      commit,
+      API.UPDATE_DISCOUNT_POOL,
+      req,
+      req.Message,
+      (resp: UpdateDiscountPoolResponse): void => {
+        commit(MutationTypes.AppendDiscountPool, resp.Info)
+      })
+  },
+
+  [ActionTypes.GetDiscountPoolsByOtherApp] ({ commit }, req: GetDiscountPoolsByOtherAppRequest) {
+    doAction<GetDiscountPoolsByOtherAppRequest, GetDiscountPoolsByOtherAppResponse>(
+      commit,
+      API.GET_DISCOUNT_POOLS_BY_OTHER_APP,
+      req,
+      req.Message,
+      (resp: GetDiscountPoolsByOtherAppResponse): void => {
+        commit(MutationTypes.SetDiscountPools, resp.Infos)
       })
   }
 }

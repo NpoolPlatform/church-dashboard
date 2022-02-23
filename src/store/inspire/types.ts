@@ -105,6 +105,45 @@ interface UpdateCouponPoolResponse {
   Info: CouponPool
 }
 
+interface DiscountPool {
+  ID: string
+  AppID: string
+  ReleaseByUserID: string
+  Discount: number
+  Start: number
+  DurationDays: number
+  Message: string
+  Name: string
+}
+
+interface CreateDiscountPoolForOtherAppRequest {
+  TargetAppID: string
+  Info: DiscountPool
+  Message: ReqMessage
+}
+
+interface CreateDiscountPoolForOtherAppResponse {
+  Info: DiscountPool
+}
+
+interface GetDiscountPoolsByOtherAppRequest {
+  TargetAppID: string
+  Message: ReqMessage
+}
+
+interface GetDiscountPoolsByOtherAppResponse {
+  Infos: Array<DiscountPool>
+}
+
+interface UpdateDiscountPoolRequest {
+  Info: DiscountPool
+  Message: ReqMessage
+}
+
+interface UpdateDiscountPoolResponse {
+  Info: DiscountPool
+}
+
 export {
   UserInvitationCode,
   GetUserInvitationCodesByOtherAppRequest,
@@ -124,5 +163,12 @@ export {
   GetCouponPoolsByOtherAppRequest,
   GetCouponPoolsByOtherAppResponse,
   UpdateCouponPoolRequest,
-  UpdateCouponPoolResponse
+  UpdateCouponPoolResponse,
+  DiscountPool,
+  CreateDiscountPoolForOtherAppRequest,
+  CreateDiscountPoolForOtherAppResponse,
+  GetDiscountPoolsByOtherAppRequest,
+  GetDiscountPoolsByOtherAppResponse,
+  UpdateDiscountPoolRequest,
+  UpdateDiscountPoolResponse
 }

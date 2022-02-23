@@ -8,7 +8,11 @@ enum API {
 
   CREATE_COUPON_POOL_FOR_OTHER_APP = '/cloud-hashing-inspire/v1/create/coupon/pool/for/other/app',
   UPDATE_COUPON_POOL = '/cloud-hashing-inspire/v1/update/coupon/pool',
-  GET_COUPON_POOLS_BY_OTHER_APP = '/cloud-hashing-inspire/v1/get/coupon/pools/by/other/app'
+  GET_COUPON_POOLS_BY_OTHER_APP = '/cloud-hashing-inspire/v1/get/coupon/pools/by/other/app',
+
+  CREATE_DISCOUNT_POOL_FOR_OTHER_APP = '/cloud-hashing-inspire/v1/create/discount/pool/for/other/app',
+  UPDATE_DISCOUNT_POOL = '/cloud-hashing-inspire/v1/update/discount/pool',
+  GET_DISCOUNT_POOLS_BY_OTHER_APP = '/cloud-hashing-inspire/v1/get/discount/pools/by/other/app'
 }
 
 export {

@@ -8,5 +8,8 @@ export enum MutationTypes {
   SetCouponPools = 'SET_COUPON_POOLS',
   AppendCouponPool = 'APPEND_COUPON_POOL',
 
+  SetDiscountPools = 'SET_DISCOUNT_POOLS',
+  AppendDiscountPool = 'APPEND_DISCOUNT_POOL',
+
   SetInspireSelectedAppID = 'SET_INSPIRE_SELECTED_APP_ID'
 }

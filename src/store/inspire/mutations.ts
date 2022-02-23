@@ -1,7 +1,7 @@
 import { MutationTree } from 'vuex'
 import { MutationTypes } from './mutation-types'
 import { InspiresState } from './state'
-import { Activity, CouponPool, UserInvitationCode } from './types'
+import { Activity, CouponPool, DiscountPool, UserInvitationCode } from './types'
 
 type InspireMutations<S = InspiresState> = {
   [MutationTypes.SetUserInvitationCodes] (state: S, payload: Array<UserInvitationCode>): void
@@ -10,6 +10,8 @@ type InspireMutations<S = InspiresState> = {
   [MutationTypes.AppendActivity] (state: S, payload: Activity): void
   [MutationTypes.SetCouponPools] (state: S, payload: Array<CouponPool>): void
   [MutationTypes.AppendCouponPool] (state: S, payload: CouponPool): void
+  [MutationTypes.SetDiscountPools] (state: S, payload: Array<DiscountPool>): void
+  [MutationTypes.AppendDiscountPool] (state: S, payload: DiscountPool): void
   [MutationTypes.SetInspireSelectedAppID] (state: S, payload: string): void
 }
 
@@ -52,6 +54,19 @@ const mutations: MutationTree<InspiresState> & InspireMutations = {
     }
     coupons.push(payload)
     state.CouponPools.set(payload.AppID, coupons)
+  },
+  [MutationTypes.SetDiscountPools] (state: InspiresState, payload: Array<DiscountPool>) {
+    if (payload.length > 0) {
+      state.DiscountPools.set(payload[0].AppID, payload)
+    }
+  },
+  [MutationTypes.AppendDiscountPool] (state: InspiresState, payload: DiscountPool): void {
+    let coupons = state.DiscountPools.get(payload.AppID)
+    if (!coupons) {
+      coupons = [] as Array<DiscountPool>
+    }
+    coupons.push(payload)
+    state.DiscountPools.set(payload.AppID, coupons)
   },
   [MutationTypes.SetInspireSelectedAppID] (state: InspiresState, payload: string): void {
     state.SelectedAppID = payload
