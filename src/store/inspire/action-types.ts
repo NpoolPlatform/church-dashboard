@@ -16,5 +16,8 @@ export enum ActionTypes {
 
   CreateUserSpecialReductionForOtherAppUser = 'CREATE_USER_SPECIAL_REDUCTION_FOR_OTHER_APP_USER',
   UpdateUserSpecialReduction = 'UPDATE_USER_SPECIAL_REDUCTION',
-  GetUserSpecialReductionsByOtherApp = 'GET_USER_SPECIAL_REDUCTIONS_BY_OTHER_APP'
+  GetUserSpecialReductionsByOtherApp = 'GET_USER_SPECIAL_REDUCTIONS_BY_OTHER_APP',
+
+  CreateCouponAllocatedForOtherAppUser = 'CREATE_COUPON_ALLOCATED_FOR_OTHER_APP_USER',
+  GetCouponsAllocatedByOtherApp = 'GET_COUPONS_ALLOCATED_BY_OTHER_APP'
 }

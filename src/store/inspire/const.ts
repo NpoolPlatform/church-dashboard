@@ -16,7 +16,10 @@ enum API {
 
   CREATE_USER_SPECIAL_REDUCTION_FOR_OTHER_APP_USER = '/cloud-hashing-inspire/v1/create/user/special/reduction/for/other/app/user',
   UPDATE_USER_SPECIAL_REDUCTION = '/cloud-hashing-inspire/v1/update/user/special/reduction',
-  GET_USER_SPECIAL_REDUCTIONS_BY_OTHER_APP = '/cloud-hashing-inspire/v1/get/user/special/reductions/by/other/app'
+  GET_USER_SPECIAL_REDUCTIONS_BY_OTHER_APP = '/cloud-hashing-inspire/v1/get/user/special/reductions/by/other/app',
+
+  CREATE_COUPON_ALLOCATED_FOR_OTHER_APP_USER = '/cloud-hashing-inspire/v1/create/coupon/allocated/for/other/app/user',
+  GET_COUPONS_ALLOCATED_BY_OTHER_APP = '/cloud-hashing-inspire/v1/get/coupons/allocated/by/other/app'
 }
 
 export {

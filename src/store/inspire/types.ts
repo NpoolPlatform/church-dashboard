@@ -184,6 +184,34 @@ interface UpdateUserSpecialReductionResponse {
   Info: UserSpecialReduction
 }
 
+interface CouponAllocated {
+  ID?: string
+  AppID?: string
+  UserID?: string
+  Type: string
+  CouponID: string
+}
+
+interface CreateCouponAllocatedForOtherAppUserRequest {
+  TargetAppID: string
+  TargetUserID: string
+  Info: CouponAllocated
+  Message: ReqMessage
+}
+
+interface CreateCouponAllocatedForOtherAppUserResponse {
+  Info: CouponAllocated
+}
+
+interface GetCouponsAllocatedByOtherAppRequest {
+  TargetAppID: string
+  Message: ReqMessage
+}
+
+interface GetCouponsAllocatedByOtherAppResponse {
+  Infos: Array<CouponAllocated>
+}
+
 export {
   UserInvitationCode,
   GetUserInvitationCodesByOtherAppRequest,
@@ -217,5 +245,10 @@ export {
   GetUserSpecialReductionsByOtherAppRequest,
   GetUserSpecialReductionsByOtherAppResponse,
   UpdateUserSpecialReductionRequest,
-  UpdateUserSpecialReductionResponse
+  UpdateUserSpecialReductionResponse,
+  CouponAllocated,
+  CreateCouponAllocatedForOtherAppUserRequest,
+  CreateCouponAllocatedForOtherAppUserResponse,
+  GetCouponsAllocatedByOtherAppRequest,
+  GetCouponsAllocatedByOtherAppResponse
 }

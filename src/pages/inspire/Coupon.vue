@@ -16,28 +16,36 @@
     </template>
   </q-table>
   <q-table
+    v-model:selected='selectedCouponPools'
     flat
     dense
     :rows='couponPools'
+    selection='single'
+    row-key='ID'
     @row-click='(evt, row, index) => onCouponPoolClick(row as CouponPool)'
   >
     <template #top-right>
       <div class='row'>
         <q-space />
         <q-btn :label='t("MSG_CREATE")' @click='onCreateCouponPool' />
+        <q-btn :label='t("MSG_AIR_DROP")' @click='onAirDropCouponPool' />
       </div>
     </template>
   </q-table>
   <q-table
+    v-model:selected='selectedDiscountPools'
     flat
     dense
     :rows='discountPools'
+    selection='single'
+    row-key='ID'
     @row-click='(evt, row, index) => onDiscountPoolClick(row as DiscountPool)'
   >
     <template #top-right>
       <div class='row'>
         <q-space />
         <q-btn :label='t("MSG_CREATE")' @click='onCreateDiscountPool' />
+        <q-btn :label='t("MSG_AIR_DROP")' @click='onAirDropDiscountPool' />
       </div>
     </template>
   </q-table>
@@ -54,6 +62,11 @@
       </div>
     </template>
   </q-table>
+  <q-table
+    flat
+    dense
+    :rows='couponsAllocated'
+  />
   <q-dialog
     v-model='modifying'
     position='right'
@@ -117,6 +130,9 @@ const selectedAppID = computed({
 })
 const selectedApp = computed(() => store.getters.getApplicationByID(selectedAppID.value))
 
+const selectedCouponPools = ref([] as Array<CouponPool>)
+const selectedDiscountPools = ref([] as Array<DiscountPool>)
+
 const selectedCoupon = ref(undefined as unknown as CouponPool)
 const selectedDiscount = ref(undefined as unknown as DiscountPool)
 const selectedUserReduction = ref(undefined as unknown as UserSpecialReduction)
@@ -135,6 +151,7 @@ const myUsers = computed(() => {
 const couponPools = computed(() => store.getters.getCouponPoolsByAppID(selectedAppID.value))
 const discountPools = computed(() => store.getters.getDiscountPoolsByAppID(selectedAppID.value))
 const userSpecialReductions = computed(() => store.getters.getUserSpecialReductionsByAppID(selectedAppID.value))
+const couponsAllocated = computed(() => store.getters.getCouponsAllocatedByAppID(selectedAppID.value))
 
 const loading = ref(false)
 const selectedUsers = ref([] as Array<AppUser>)
@@ -190,6 +207,18 @@ watch(selectedAppID, () => {
       }
     }
   })
+
+  store.dispatch(InspireActionTypes.GetCouponsAllocatedByOtherApp, {
+    TargetAppID: selectedAppID.value,
+    Message: {
+      ModuleKey: ModuleKey.ModuleApplications,
+      Error: {
+        Title: t('MSG_GET_COUPONS_ALLOCATED_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+  })
 })
 
 const adding = ref(false)
@@ -217,6 +246,29 @@ const onCouponPoolClick = (couponPool: CouponPool) => {
   addingType.value = AddingType.AddingCouponPool
 }
 
+const onAirDropCouponPool = () => {
+  if (selectedCouponPools.value.length > 0) {
+    selectedUsers.value.forEach((user) => {
+      store.dispatch(InspireActionTypes.CreateCouponAllocatedForOtherAppUser, {
+        TargetAppID: selectedApp.value.App.ID,
+        TargetUserID: user.ID as string,
+        Info: {
+          CouponID: selectedCouponPools.value[0].ID,
+          Type: 'coupon'
+        },
+        Message: {
+          ModuleKey: ModuleKey.ModuleApplications,
+          Error: {
+            Title: t('MSG_CREATE_COUPON_ALLOCATED_FAIL'),
+            Popup: true,
+            Type: NotificationType.Error
+          }
+        }
+      })
+    })
+  }
+}
+
 const onCreateDiscountPool = () => {
   adding.value = true
   modifying.value = true
@@ -228,6 +280,29 @@ const onDiscountPoolClick = (discountPool: DiscountPool) => {
   updating.value = true
   modifying.value = true
   addingType.value = AddingType.AddingDiscountCoupon
+}
+
+const onAirDropDiscountPool = () => {
+  if (selectedDiscountPools.value.length > 0) {
+    selectedUsers.value.forEach((user) => {
+      store.dispatch(InspireActionTypes.CreateCouponAllocatedForOtherAppUser, {
+        TargetAppID: selectedApp.value.App.ID,
+        TargetUserID: user.ID as string,
+        Info: {
+          CouponID: selectedDiscountPools.value[0].ID,
+          Type: 'discount'
+        },
+        Message: {
+          ModuleKey: ModuleKey.ModuleApplications,
+          Error: {
+            Title: t('MSG_CREATE_COUPON_ALLOCATED_FAIL'),
+            Popup: true,
+            Type: NotificationType.Error
+          }
+        }
+      })
+    })
+  }
 }
 
 const onCreateUserSpecialReduction = () => {

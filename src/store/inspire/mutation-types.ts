@@ -14,5 +14,8 @@ export enum MutationTypes {
   SetUserSpecialReductions = 'SET_USER_SPECIAL_REDUCTIONS',
   AppendUserSpecialReduction = 'APPEND_USER_SPECIAL_REDUCTION',
 
+  SetCouponsAllocated = 'SET_COUPONS_ALLOCATED',
+  AppendCouponAllocated = 'APPEND_COUPON_ALLOCATED',
+
   SetInspireSelectedAppID = 'SET_INSPIRE_SELECTED_APP_ID'
 }

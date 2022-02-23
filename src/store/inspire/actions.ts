@@ -9,6 +9,8 @@ import { doAction } from '../action'
 import {
   CreateActivityForOtherAppRequest,
   CreateActivityForOtherAppResponse,
+  CreateCouponAllocatedForOtherAppUserRequest,
+  CreateCouponAllocatedForOtherAppUserResponse,
   CreateCouponPoolForOtherAppRequest,
   CreateCouponPoolForOtherAppResponse,
   CreateDiscountPoolForOtherAppRequest,
@@ -21,6 +23,8 @@ import {
   GetActivitiesByOtherAppResponse,
   GetCouponPoolsByOtherAppRequest,
   GetCouponPoolsByOtherAppResponse,
+  GetCouponsAllocatedByOtherAppRequest,
+  GetCouponsAllocatedByOtherAppResponse,
   GetDiscountPoolsByOtherAppRequest,
   GetDiscountPoolsByOtherAppResponse,
   GetUserInvitationCodesByOtherAppRequest,
@@ -149,6 +153,22 @@ interface InspireActions {
     RootState,
     InspireMutations<InspiresState>>,
     req: GetUserSpecialReductionsByOtherAppRequest): void
+
+  [ActionTypes.CreateCouponAllocatedForOtherAppUser]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: CreateCouponAllocatedForOtherAppUserRequest): void
+
+  [ActionTypes.GetCouponsAllocatedByOtherApp]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: GetCouponsAllocatedByOtherAppRequest): void
 }
 
 const actions: ActionTree<InspiresState, RootState> = {
@@ -303,6 +323,28 @@ const actions: ActionTree<InspiresState, RootState> = {
       req.Message,
       (resp: GetUserSpecialReductionsByOtherAppResponse): void => {
         commit(MutationTypes.SetUserSpecialReductions, resp.Infos)
+      })
+  },
+
+  [ActionTypes.CreateCouponAllocatedForOtherAppUser] ({ commit }, req: CreateCouponAllocatedForOtherAppUserRequest) {
+    doAction<CreateCouponAllocatedForOtherAppUserRequest, CreateCouponAllocatedForOtherAppUserResponse>(
+      commit,
+      API.CREATE_COUPON_ALLOCATED_FOR_OTHER_APP_USER,
+      req,
+      req.Message,
+      (resp: CreateCouponAllocatedForOtherAppUserResponse): void => {
+        commit(MutationTypes.AppendCouponAllocated, resp.Info)
+      })
+  },
+
+  [ActionTypes.GetCouponsAllocatedByOtherApp] ({ commit }, req: GetCouponsAllocatedByOtherAppRequest) {
+    doAction<GetCouponsAllocatedByOtherAppRequest, GetCouponsAllocatedByOtherAppResponse>(
+      commit,
+      API.GET_COUPONS_ALLOCATED_BY_OTHER_APP,
+      req,
+      req.Message,
+      (resp: GetCouponsAllocatedByOtherAppResponse): void => {
+        commit(MutationTypes.SetCouponsAllocated, resp.Infos)
       })
   }
 }

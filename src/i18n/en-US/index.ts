@@ -218,7 +218,10 @@ export default {
   MSG_CIRCULATION: '总额',
   MSG_MESSAGE: '描述',
   MSG_DISCOUNT: '折扣',
+  MSG_AIR_DROP: '空投',
   MSG_GET_DISCOUNT_POOLS_FAIL: 'You failed to get discount pools',
   MSG_CREATE_USER_SPECIAL_REDUCTION_FAIL: 'You failed to create user special reduction',
-  MSG_GET_USER_SPECIAL_REDUCTIONS_FAIL: 'You failed to get user special reductions'
+  MSG_GET_USER_SPECIAL_REDUCTIONS_FAIL: 'You failed to get user special reductions',
+  MSG_CREATE_COUPON_ALLOCATED_FAIL: 'You failed to allocate coupon to user',
+  MSG_GET_COUPONS_ALLOCATED_FAIL: 'You fail to get coupons allocated'
 }
