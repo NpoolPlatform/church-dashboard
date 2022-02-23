@@ -19,6 +19,7 @@
     flat
     dense
     :rows='couponPools'
+    @row-click='(evt, row, index) => onCouponPoolClick(row as CouponPool)'
   >
     <template #top-right>
       <div class='row'>
@@ -125,6 +126,12 @@ const modifying = ref(false)
 
 const onCreateCouponPool = () => {
   adding.value = true
+  modifying.value = true
+}
+
+const onCouponPoolClick = (couponPool: CouponPool) => {
+  selectedCoupon.value = couponPool
+  updating.value = true
   modifying.value = true
 }
 
