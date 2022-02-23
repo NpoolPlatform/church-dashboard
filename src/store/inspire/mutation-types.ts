@@ -17,5 +17,8 @@ export enum MutationTypes {
   SetCouponsAllocated = 'SET_COUPONS_ALLOCATED',
   AppendCouponAllocated = 'APPEND_COUPON_ALLOCATED',
 
+  SetEventCoupons = 'SET_EVENT_COUPONS',
+  AppendEventCoupon = 'APPEND_EVENT_COUPON',
+
   SetInspireSelectedAppID = 'SET_INSPIRE_SELECTED_APP_ID'
 }

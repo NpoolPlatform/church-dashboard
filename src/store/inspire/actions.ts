@@ -15,6 +15,8 @@ import {
   CreateCouponPoolForOtherAppResponse,
   CreateDiscountPoolForOtherAppRequest,
   CreateDiscountPoolForOtherAppResponse,
+  CreateEventCouponForOtherAppRequest,
+  CreateEventCouponForOtherAppResponse,
   CreateUserInvitationCodeForOtherAppUserRequest,
   CreateUserInvitationCodeForOtherAppUserResponse,
   CreateUserSpecialReductionForOtherAppUserRequest,
@@ -27,6 +29,8 @@ import {
   GetCouponsAllocatedByOtherAppResponse,
   GetDiscountPoolsByOtherAppRequest,
   GetDiscountPoolsByOtherAppResponse,
+  GetEventCouponsByOtherAppRequest,
+  GetEventCouponsByOtherAppResponse,
   GetUserInvitationCodesByOtherAppRequest,
   GetUserInvitationCodesByOtherAppResponse,
   GetUserSpecialReductionsByOtherAppRequest,
@@ -169,6 +173,22 @@ interface InspireActions {
     RootState,
     InspireMutations<InspiresState>>,
     req: GetCouponsAllocatedByOtherAppRequest): void
+
+  [ActionTypes.CreateEventCouponForOtherApp]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: CreateEventCouponForOtherAppRequest): void
+
+  [ActionTypes.GetEventCouponsByOtherApp]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: GetEventCouponsByOtherAppRequest): void
 }
 
 const actions: ActionTree<InspiresState, RootState> = {
@@ -345,6 +365,28 @@ const actions: ActionTree<InspiresState, RootState> = {
       req.Message,
       (resp: GetCouponsAllocatedByOtherAppResponse): void => {
         commit(MutationTypes.SetCouponsAllocated, resp.Infos)
+      })
+  },
+
+  [ActionTypes.CreateEventCouponForOtherApp] ({ commit }, req: CreateEventCouponForOtherAppRequest) {
+    doAction<CreateEventCouponForOtherAppRequest, CreateEventCouponForOtherAppResponse>(
+      commit,
+      API.CREATE_EVENT_COUPON_FOR_OTHER_APP,
+      req,
+      req.Message,
+      (resp: CreateEventCouponForOtherAppResponse): void => {
+        commit(MutationTypes.AppendEventCoupon, resp.Info)
+      })
+  },
+
+  [ActionTypes.GetEventCouponsByOtherApp] ({ commit }, req: GetEventCouponsByOtherAppRequest) {
+    doAction<GetEventCouponsByOtherAppRequest, GetEventCouponsByOtherAppResponse>(
+      commit,
+      API.GET_EVENT_COUPONS_BY_OTHER_APP,
+      req,
+      req.Message,
+      (resp: GetEventCouponsByOtherAppResponse): void => {
+        commit(MutationTypes.SetEventCoupons, resp.Infos)
       })
   }
 }

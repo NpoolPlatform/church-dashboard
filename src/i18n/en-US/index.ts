@@ -223,5 +223,7 @@ export default {
   MSG_CREATE_USER_SPECIAL_REDUCTION_FAIL: 'You failed to create user special reduction',
   MSG_GET_USER_SPECIAL_REDUCTIONS_FAIL: 'You failed to get user special reductions',
   MSG_CREATE_COUPON_ALLOCATED_FAIL: 'You failed to allocate coupon to user',
-  MSG_GET_COUPONS_ALLOCATED_FAIL: 'You fail to get coupons allocated'
+  MSG_GET_COUPONS_ALLOCATED_FAIL: 'You failed to get coupons allocated',
+  MSG_GET_EVENT_COUPONS_FAIL: 'You failed to get event coupons',
+  MSG_CREATE_EVENT_COUPON_FAIL: 'You failed to create event coupon'
 }

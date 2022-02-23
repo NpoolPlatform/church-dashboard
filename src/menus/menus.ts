@@ -244,7 +244,7 @@ const MainDrawerMenus = [
       label: '事件',
       caption: '管理应用领券事件',
       icon: 'format_list_numbered',
-      target: '/inspire/invitation/code',
+      target: '/inspire/eventcoupon',
       level: 1,
       children: []
     }, {

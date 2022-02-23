@@ -212,6 +212,34 @@ interface GetCouponsAllocatedByOtherAppResponse {
   Infos: Array<CouponAllocated>
 }
 
+interface EventCoupon {
+  ID?: string
+  AppID?: string
+  ActivityID: string
+  Event: string
+  CouponID: string
+  Type: string
+}
+
+interface CreateEventCouponForOtherAppRequest {
+  TargetAppID: string
+  Info: EventCoupon
+  Message: ReqMessage
+}
+
+interface CreateEventCouponForOtherAppResponse {
+  Info: EventCoupon
+}
+
+interface GetEventCouponsByOtherAppRequest {
+  TargetAppID: string
+  Message: ReqMessage
+}
+
+interface GetEventCouponsByOtherAppResponse {
+  Infos: Array<EventCoupon>
+}
+
 export {
   UserInvitationCode,
   GetUserInvitationCodesByOtherAppRequest,
@@ -250,5 +278,10 @@ export {
   CreateCouponAllocatedForOtherAppUserRequest,
   CreateCouponAllocatedForOtherAppUserResponse,
   GetCouponsAllocatedByOtherAppRequest,
-  GetCouponsAllocatedByOtherAppResponse
+  GetCouponsAllocatedByOtherAppResponse,
+  EventCoupon,
+  CreateEventCouponForOtherAppRequest,
+  CreateEventCouponForOtherAppResponse,
+  GetEventCouponsByOtherAppRequest,
+  GetEventCouponsByOtherAppResponse
 }

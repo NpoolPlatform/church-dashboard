@@ -19,5 +19,8 @@ export enum ActionTypes {
   GetUserSpecialReductionsByOtherApp = 'GET_USER_SPECIAL_REDUCTIONS_BY_OTHER_APP',
 
   CreateCouponAllocatedForOtherAppUser = 'CREATE_COUPON_ALLOCATED_FOR_OTHER_APP_USER',
-  GetCouponsAllocatedByOtherApp = 'GET_COUPONS_ALLOCATED_BY_OTHER_APP'
+  GetCouponsAllocatedByOtherApp = 'GET_COUPONS_ALLOCATED_BY_OTHER_APP',
+
+  CreateEventCouponForOtherApp = 'CREATE_EVENT_COUPON_FOR_OTHER_APP',
+  GetEventCouponsByOtherApp = 'GET_EVENT_COUPONS_BY_OTHER_APP'
 }
