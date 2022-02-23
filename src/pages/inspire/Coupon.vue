@@ -37,6 +37,7 @@
     @hide='onMenuHide'
   >
     <CreateCouponPool
+      v-if='addingType === AddingType.AddingCouponPool'
       v-model:edit-coupon-pool='selectedCoupon'
       v-model:selected-app='selectedApp'
       @update='onUpdate'
@@ -124,15 +125,25 @@ const adding = ref(false)
 const updating = ref(false)
 const modifying = ref(false)
 
+enum AddingType {
+  AddingCouponPool = 'coupon-pool',
+  AddingDiscountCoupon = 'discount-coupon',
+  AddingUserSpecalReduction = 'user-special-recudtion',
+  AddingNone = 'none'
+}
+const addingType = ref(AddingType.AddingNone)
+
 const onCreateCouponPool = () => {
   adding.value = true
   modifying.value = true
+  addingType.value = AddingType.AddingCouponPool
 }
 
 const onCouponPoolClick = (couponPool: CouponPool) => {
   selectedCoupon.value = couponPool
   updating.value = true
   modifying.value = true
+  addingType.value = AddingType.AddingCouponPool
 }
 
 const onUpdate = (couponPool: CouponPool) => {
@@ -191,6 +202,7 @@ const onMenuHide = () => {
   adding.value = false
   updating.value = false
   modifying.value = false
+  addingType.value = AddingType.AddingNone
 }
 
 </script>
