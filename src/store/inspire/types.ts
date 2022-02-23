@@ -219,6 +219,7 @@ interface EventCoupon {
   Event: string
   CouponID: string
   Type: string
+  Count: number
 }
 
 interface CreateEventCouponForOtherAppRequest {

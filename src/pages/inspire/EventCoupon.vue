@@ -115,7 +115,8 @@ const onCreateEventCoupon = () => {
           ActivityID: act.ID as string,
           Event: event.value as string,
           Type: 'coupon',
-          CouponID: coupon.ID
+          CouponID: coupon.ID,
+          Count: 1
         },
         Message: {
           ModuleKey: ModuleKey.ModuleApplications,
@@ -135,7 +136,8 @@ const onCreateEventCoupon = () => {
           ActivityID: act.ID as string,
           Event: event.value as string,
           Type: 'discount',
-          CouponID: coupon.ID
+          CouponID: coupon.ID,
+          Count: 1
         },
         Message: {
           ModuleKey: ModuleKey.ModuleApplications,
