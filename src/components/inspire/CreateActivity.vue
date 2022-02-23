@@ -31,6 +31,9 @@
           <q-icon name='window' />
         </template>
       </q-input>
+      <q-toggle
+        v-model='systemActivity' :label='$t("MSG_SYSTEM_ACTIVITY")' dense
+      />
     </q-item-section>
     <q-item-section>
       <q-btn
@@ -73,6 +76,11 @@ const editActivityEnd = computed(() => {
 })
 const endTime = ref(editActivityEnd.value)
 
+const editActivitySystem = computed(() => {
+  return editActivity.value && editActivity.value.SystemActivity ? editActivity.value.SystemActivity : false
+})
+const systemActivity = ref(editActivitySystem.value)
+
 const editActivityID = computed(() => {
   return editActivity.value ? editActivity.value.ID : undefined
 })
@@ -88,7 +96,8 @@ const activity = computed(() => {
     CreatedBy: userID.value,
     Name: activityName.value,
     Start: startTime.value,
-    End: endTime.value
+    End: endTime.value,
+    SystemActivity: systemActivity.value
   } as Activity
 })
 

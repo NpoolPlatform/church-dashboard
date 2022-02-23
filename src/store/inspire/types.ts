@@ -34,6 +34,7 @@ interface Activity {
   Name: string
   Start: number
   End: number
+  SystemActivity: boolean
 }
 
 interface CreateActivityForOtherAppRequest {

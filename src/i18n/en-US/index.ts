@@ -204,5 +204,6 @@ export default {
   MSG_GET_ACTIVITIES_FAIL: 'You failed to get activities',
   MSG_CREATE_ACTIVITY: '创建活动',
   MSG_START_TIME: '开始时间',
-  MSG_END_TIME: '结束时间'
+  MSG_END_TIME: '结束时间',
+  MSG_SYSTEM_ACTIVITY: '系统默认活动'
 }
