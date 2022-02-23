@@ -1,9 +1,14 @@
 enum API {
   GET_USER_INVITATION_CODES_BY_OTHER_APP = '/cloud-hashing-inspire/v1/get/user/invitation/codes/by/other/app',
   CREATE_USER_INVITATION_CODE_FOR_OTHER_APP_USER = '/cloud-hashing-inspire/v1/create/user/invitation/code/for/other/app/user',
+
   CREATE_ACTIVITY_FOR_OTHER_APP = '/cloud-hashing-inspire/v1/create/activity/for/other/app',
   UPDATE_ACTIVITY = '/cloud-hashing-inspire/v1/update/activity',
-  GET_ACTIVITIES_BY_OTHER_APP = '/cloud-hashing-inspire/v1/get/activities/by/other/app'
+  GET_ACTIVITIES_BY_OTHER_APP = '/cloud-hashing-inspire/v1/get/activities/by/other/app',
+
+  CREATE_COUPON_POOL_FOR_OTHER_APP = '/cloud-hashing-inspire/v1/create/coupon/pool/for/other/app',
+  UPDATE_COUPON_POOL = '/cloud-hashing-inspire/v1/update/coupon/pool',
+  GET_COUPON_POOLS_BY_OTHER_APP = '/cloud-hashing-inspire/v1/get/coupon/pools/by/other/app'
 }
 
 export {

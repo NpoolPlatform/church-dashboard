@@ -9,14 +9,20 @@ import { doAction } from '../action'
 import {
   CreateActivityForOtherAppRequest,
   CreateActivityForOtherAppResponse,
+  CreateCouponPoolForOtherAppRequest,
+  CreateCouponPoolForOtherAppResponse,
   CreateUserInvitationCodeForOtherAppUserRequest,
   CreateUserInvitationCodeForOtherAppUserResponse,
   GetActivitiesByOtherAppRequest,
   GetActivitiesByOtherAppResponse,
+  GetCouponPoolsByOtherAppRequest,
+  GetCouponPoolsByOtherAppResponse,
   GetUserInvitationCodesByOtherAppRequest,
   GetUserInvitationCodesByOtherAppResponse,
   UpdateActivityRequest,
-  UpdateActivityResponse
+  UpdateActivityResponse,
+  UpdateCouponPoolRequest,
+  UpdateCouponPoolResponse
 } from './types'
 
 interface InspireActions {
@@ -59,6 +65,30 @@ interface InspireActions {
     RootState,
     InspireMutations<InspiresState>>,
     req: GetActivitiesByOtherAppRequest): void
+
+  [ActionTypes.CreateCouponPoolForOtherApp]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: CreateCouponPoolForOtherAppRequest): void
+
+  [ActionTypes.UpdateCouponPool]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: UpdateCouponPoolRequest): void
+
+  [ActionTypes.GetCouponPoolsByOtherApp]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: GetCouponPoolsByOtherAppRequest): void
 }
 
 const actions: ActionTree<InspiresState, RootState> = {
@@ -114,6 +144,39 @@ const actions: ActionTree<InspiresState, RootState> = {
       req.Message,
       (resp: GetActivitiesByOtherAppResponse): void => {
         commit(MutationTypes.SetActivities, resp.Infos)
+      })
+  },
+
+  [ActionTypes.CreateCouponPoolForOtherApp] ({ commit }, req: CreateCouponPoolForOtherAppRequest) {
+    doAction<CreateCouponPoolForOtherAppRequest, CreateCouponPoolForOtherAppResponse>(
+      commit,
+      API.CREATE_COUPON_POOL_FOR_OTHER_APP,
+      req,
+      req.Message,
+      (resp: CreateCouponPoolForOtherAppResponse): void => {
+        commit(MutationTypes.AppendCouponPool, resp.Info)
+      })
+  },
+
+  [ActionTypes.UpdateCouponPool] ({ commit }, req: UpdateCouponPoolRequest) {
+    doAction<UpdateCouponPoolRequest, UpdateCouponPoolResponse>(
+      commit,
+      API.UPDATE_COUPON_POOL,
+      req,
+      req.Message,
+      (resp: UpdateCouponPoolResponse): void => {
+        commit(MutationTypes.AppendCouponPool, resp.Info)
+      })
+  },
+
+  [ActionTypes.GetCouponPoolsByOtherApp] ({ commit }, req: GetCouponPoolsByOtherAppRequest) {
+    doAction<GetCouponPoolsByOtherAppRequest, GetCouponPoolsByOtherAppResponse>(
+      commit,
+      API.GET_COUPON_POOLS_BY_OTHER_APP,
+      req,
+      req.Message,
+      (resp: GetCouponPoolsByOtherAppResponse): void => {
+        commit(MutationTypes.SetCouponPools, resp.Infos)
       })
   }
 }

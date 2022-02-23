@@ -252,7 +252,7 @@ const MainDrawerMenus = [
       label: '代金券',
       caption: '管理定额、抵扣、定向代金券',
       icon: 'format_list_numbered',
-      target: '/inspire/invitation/code',
+      target: '/inspire/coupon',
       level: 1,
       children: []
     }]

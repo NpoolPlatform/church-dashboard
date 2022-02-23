@@ -65,6 +65,46 @@ interface UpdateActivityResponse {
   Info: Activity
 }
 
+interface CouponPool {
+  ID: string
+  AppID: string
+  ReleaseByUserID: string
+  Denomination: number
+  Circulation: number
+  Start: number
+  DurationDays: number
+  Message: string
+  Name: string
+}
+
+interface CreateCouponPoolForOtherAppRequest {
+  TargetAppID: string
+  Info: CouponPool
+  Message: ReqMessage
+}
+
+interface CreateCouponPoolForOtherAppResponse {
+  Info: CouponPool
+}
+
+interface GetCouponPoolsByOtherAppRequest {
+  TargetAppID: string
+  Message: ReqMessage
+}
+
+interface GetCouponPoolsByOtherAppResponse {
+  Infos: Array<CouponPool>
+}
+
+interface UpdateCouponPoolRequest {
+  Info: CouponPool
+  Message: ReqMessage
+}
+
+interface UpdateCouponPoolResponse {
+  Info: CouponPool
+}
+
 export {
   UserInvitationCode,
   GetUserInvitationCodesByOtherAppRequest,
@@ -77,5 +117,12 @@ export {
   GetActivitiesByOtherAppRequest,
   GetActivitiesByOtherAppResponse,
   UpdateActivityRequest,
-  UpdateActivityResponse
+  UpdateActivityResponse,
+  CouponPool,
+  CreateCouponPoolForOtherAppRequest,
+  CreateCouponPoolForOtherAppResponse,
+  GetCouponPoolsByOtherAppRequest,
+  GetCouponPoolsByOtherAppResponse,
+  UpdateCouponPoolRequest,
+  UpdateCouponPoolResponse
 }

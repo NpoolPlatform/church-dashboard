@@ -202,8 +202,16 @@ export default {
   MSG_CREATE_USER_INVITATION_CODE_FAIL: 'You failed to create user invitation code',
   MSG_CREATE_ACTIVITY_FAIL: 'You failed to create activity',
   MSG_GET_ACTIVITIES_FAIL: 'You failed to get activities',
+  MSG_GET_COUPON_POOLS_FAIL: 'You failed to get coupon pools',
   MSG_CREATE_ACTIVITY: '创建活动',
   MSG_START_TIME: '开始时间',
   MSG_END_TIME: '结束时间',
-  MSG_SYSTEM_ACTIVITY: '系统默认活动'
+  MSG_SYSTEM_ACTIVITY: '系统默认活动',
+  MSG_CREATE_COUPON_POOL_FAIL: 'You failed to create coupon pool',
+  MSG_NAME: '名称',
+  MSG_CREATE_COUPON_POOL: '创建定额券',
+  MSG_DURATION_DAYS: '有效天数',
+  MSG_DENOMINATION: '面额',
+  MSG_CIRCULATION: '总额',
+  MSG_MESSAGE: '描述'
 }
