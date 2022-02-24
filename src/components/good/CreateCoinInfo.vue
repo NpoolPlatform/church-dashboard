@@ -42,6 +42,10 @@
         v-model='coinPresale'
         :label='$t("MSG_COIN_PRESALE_WARN")'
       />
+      <q-toggle
+        v-model='coinForPay'
+        :label='$t("MSG_COIN_FOR_PAY")'
+      />
     </q-item-section>
     <q-item-section>
       <q-btn
@@ -67,6 +71,7 @@ const coinName = ref(editCoin.value?.Name)
 const coinUnit = ref(editCoin.value?.Unit)
 const coinLogo = ref(editCoin.value?.Logo)
 const coinPresale = ref(editCoin.value?.PreSale)
+const coinForPay = ref(editCoin.value?.ForPay)
 const coinReservedAmount = ref(editCoin.value?.ReservedAmount)
 
 const coin = computed(() => {
@@ -76,6 +81,7 @@ const coin = computed(() => {
     Unit: coinUnit.value,
     Logo: coinLogo.value,
     PreSale: coinPresale.value,
+    ForPay: coinForPay.value,
     ReservedAmount: coinReservedAmount.value,
     ENV: editCoin.value?.ENV
   } as Coin

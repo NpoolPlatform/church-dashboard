@@ -225,5 +225,6 @@ export default {
   MSG_CREATE_COUPON_ALLOCATED_FAIL: 'You failed to allocate coupon to user',
   MSG_GET_COUPONS_ALLOCATED_FAIL: 'You failed to get coupons allocated',
   MSG_GET_EVENT_COUPONS_FAIL: 'You failed to get event coupons',
-  MSG_CREATE_EVENT_COUPON_FAIL: 'You failed to create event coupon'
+  MSG_CREATE_EVENT_COUPON_FAIL: 'You failed to create event coupon',
+  MSG_COIN_FOR_PAY: '用作支付'
 }
