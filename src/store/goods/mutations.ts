@@ -74,7 +74,9 @@ const mutations: MutationTree<GoodsState> & GoodMutations = {
 
   [MutationTypes.AppendGood] (state: GoodsState, payload: Good): void {
     state.AllGoods.splice(0, 0, {
-      Good: payload as unknown as GoodDetail
+      Good: {
+        Good: payload
+      } as GoodDetail
     })
   },
 
