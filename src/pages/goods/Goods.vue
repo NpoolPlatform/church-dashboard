@@ -538,6 +538,13 @@ const onCreateGoodSubmit = (good: Good) => {
 
 const onMenuHide = () => {
   addingType.value = AddingType.AddingNone
+
+  selectedCoin.value = undefined as unknown as Coin
+  selectedDevice.value = undefined as unknown as DeviceInfo
+  selectedGood.value = undefined as unknown as Good
+  selectedFeeType.value = undefined as unknown as FeeType
+  selectedPriceCurrency.value = undefined as unknown as PriceCurrency
+  selectedVendorLocation.value = undefined as unknown as VendorLocation
 }
 
 </script>
