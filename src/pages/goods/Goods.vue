@@ -153,19 +153,19 @@ const onGoodClick = (good: GoodBase) => {
   addingType.value = AddingType.AddingGood
 }
 const onUpdateGood = (good: Good) => {
-  selectedGood.value = good
+  filterGoods.value = doFilterGood(good)
 }
 
-const doFilterGood = () => {
+const doFilterGood = (targetGood: Good) => {
   return addingType.value !== AddingType.AddingNone && selectedGood.value ? allGoods.value.filter((good) => {
-    return good.Title.toLowerCase().includes(selectedGood.value.Title?.toLowerCase())
+    return good.Title.toLowerCase().includes(targetGood.Title?.toLowerCase())
   }) : allGoods.value
 }
 watch(selectedGood, () => {
-  filterGoods.value = doFilterGood()
+  filterGoods.value = doFilterGood(selectedGood.value)
 })
 watch(allGoods, () => {
-  filterGoods.value = doFilterGood()
+  filterGoods.value = doFilterGood(selectedGood.value)
 })
 
 const allVendorLocations = computed(() => store.getters.getAllVendorLocations)
@@ -177,22 +177,22 @@ const onVendorLocationClick = (vendorLocation: VendorLocation) => {
   addingType.value = AddingType.AddingVendorLocation
 }
 const onUpdateVendorLocation = (vendorLication: VendorLocation) => {
-  selectedVendorLocation.value = vendorLication
+  filterVendorLocations.value = doFilterVendorLocation(vendorLication)
 }
 
-const doFilterVendorLocation = () => {
+const doFilterVendorLocation = (vendorLication: VendorLocation) => {
   return addingType.value !== AddingType.AddingNone && selectedVendorLocation.value ? allVendorLocations.value.filter((loc) => {
-    return loc.Address.toLowerCase().includes(selectedVendorLocation.value.Address.toLowerCase()) &&
-      loc.City.toLowerCase().includes(selectedVendorLocation.value.City.toLowerCase()) &&
-      loc.Country.toLowerCase().includes(selectedVendorLocation.value.Country.toLowerCase()) &&
-      loc.Province.toLowerCase().includes(selectedVendorLocation.value.Province.toLowerCase())
+    return loc.Address.toLowerCase().includes(vendorLication.Address.toLowerCase()) &&
+      loc.City.toLowerCase().includes(vendorLication.City.toLowerCase()) &&
+      loc.Country.toLowerCase().includes(vendorLication.Country.toLowerCase()) &&
+      loc.Province.toLowerCase().includes(vendorLication.Province.toLowerCase())
   }) : allVendorLocations.value
 }
 watch(selectedVendorLocation, () => {
-  filterVendorLocations.value = doFilterVendorLocation()
+  filterVendorLocations.value = doFilterVendorLocation(selectedVendorLocation.value)
 })
 watch(allVendorLocations, () => {
-  filterVendorLocations.value = doFilterVendorLocation()
+  filterVendorLocations.value = doFilterVendorLocation(selectedVendorLocation.value)
 })
 
 const allDevices = computed(() => store.getters.getAllDevices)
@@ -204,19 +204,19 @@ const onDeviceClick = (device: DeviceInfo) => {
   addingType.value = AddingType.AddingDevice
 }
 const onUpdateDevice = (device: DeviceInfo) => {
-  selectedDevice.value = device
+  filterDevices.value = doFilterDevice(device)
 }
 
-const doFilterDevice = () => {
+const doFilterDevice = (device: DeviceInfo) => {
   return addingType.value !== AddingType.AddingNone && selectedDevice.value ? allDevices.value.filter((dev) => {
-    return dev.Type.toLowerCase().includes(selectedDevice.value.Type.toLowerCase())
+    return dev.Type.toLowerCase().includes(device.Type.toLowerCase())
   }) : allDevices.value
 }
 watch(selectedDevice, () => {
-  filterDevices.value = doFilterDevice()
+  filterDevices.value = doFilterDevice(selectedDevice.value)
 })
 watch(allDevices, () => {
-  filterDevices.value = doFilterDevice()
+  filterDevices.value = doFilterDevice(selectedDevice.value)
 })
 
 const allCoins = computed(() => store.getters.getCoins)
@@ -227,19 +227,19 @@ const onCoinClick = (coin: Coin) => {
   addingType.value = AddingType.AddingCoinInfo
 }
 const onUpdateCoinInfo = (coin: Coin) => {
-  selectedCoin.value = coin
+  filterCoins.value = doFilterCoin(coin)
 }
 
-const doFilterCoin = () => {
+const doFilterCoin = (myCoin: Coin) => {
   return addingType.value !== AddingType.AddingNone && selectedCoin.value ? allCoins.value.filter((coin) => {
-    return coin.Name.toLowerCase().includes(selectedCoin.value.Name.toLowerCase())
+    return coin.Name.toLowerCase().includes(myCoin.Name.toLowerCase())
   }) : allCoins.value
 }
 watch(selectedCoin, () => {
-  filterCoins.value = doFilterCoin()
+  filterCoins.value = doFilterCoin(selectedCoin.value)
 })
 watch(allCoins, () => {
-  filterCoins.value = doFilterCoin()
+  filterCoins.value = doFilterCoin(selectedCoin.value)
 })
 
 const allFeeTypes = computed(() => store.getters.getAllFeeTypes)
@@ -251,19 +251,19 @@ const onFeeTypeClick = (feeType: FeeType) => {
   addingType.value = AddingType.AddingFeeType
 }
 const onUpdateFeeType = (feeType: FeeType) => {
-  selectedFeeType.value = feeType
+  filterFeeTypes.value = doFilterFeeType(feeType)
 }
 
-const doFilterFeeType = () => {
+const doFilterFeeType = (myFeeType: FeeType) => {
   return addingType.value !== AddingType.AddingNone && selectedFeeType.value ? allFeeTypes.value.filter((feeType) => {
-    return feeType.FeeType.toLowerCase().includes(selectedFeeType.value.FeeType.toLowerCase())
+    return feeType.FeeType.toLowerCase().includes(myFeeType.FeeType.toLowerCase())
   }) : allFeeTypes.value
 }
 watch(selectedFeeType, () => {
-  filterFeeTypes.value = doFilterFeeType()
+  filterFeeTypes.value = doFilterFeeType(selectedFeeType.value)
 })
 watch(allFeeTypes, () => {
-  filterFeeTypes.value = doFilterFeeType()
+  filterFeeTypes.value = doFilterFeeType(selectedFeeType.value)
 })
 
 const allPriceCurrencys = computed(() => store.getters.getAllPriceCurrencys)
@@ -275,19 +275,19 @@ const onPriceCurrencyClick = (currency: PriceCurrency) => {
   addingType.value = AddingType.AddingPriceCurrency
 }
 const onUpdatePriceCurrency = (currency: PriceCurrency) => {
-  selectedPriceCurrency.value = currency
+  filterPriceCurrencys.value = doFilterPriceCurrency(currency)
 }
 
-const doFilterPriceCurrency = () => {
-  return addingType.value !== AddingType.AddingNone && selectedPriceCurrency.value ? allPriceCurrencys.value.filter((feeType) => {
-    return feeType.Name.toLowerCase().includes(selectedPriceCurrency.value.Name.toLowerCase())
+const doFilterPriceCurrency = (myCurrency: PriceCurrency) => {
+  return addingType.value !== AddingType.AddingNone && selectedPriceCurrency.value ? allPriceCurrencys.value.filter((currency) => {
+    return currency.Name.toLowerCase().includes(myCurrency.Name.toLowerCase())
   }) : allPriceCurrencys.value
 }
 watch(selectedPriceCurrency, () => {
-  filterPriceCurrencys.value = doFilterPriceCurrency()
+  filterPriceCurrencys.value = doFilterPriceCurrency(selectedPriceCurrency.value)
 })
 watch(allPriceCurrencys, () => {
-  filterPriceCurrencys.value = doFilterPriceCurrency()
+  filterPriceCurrencys.value = doFilterPriceCurrency(selectedPriceCurrency.value)
 })
 
 // eslint-disable-next-line @typescript-eslint/unbound-method
