@@ -11,10 +11,14 @@ export enum ActionTypes {
   UnauthorizeAppGood = 'UNAUTHORIZE_APP_GOOD',
   GetRecommendsByOtherApp = 'GET_RECOMMENDS_BY_OTHER_APP',
   CreateRecommendForOtherApp = 'CREATE_RECOMMEND_FOR_OTHER_APP',
+  UpdateRecommend = 'UPDATE_RECOMMEND',
   SetAppGoodPriceForOtherApp = 'SET_APP_GOOD_PRICE_FOR_OTHER_APP',
   OnsaleAppGoodForOtherApp = 'ONSALE_APP_GOOD_FOR_OTHER_APP',
   OffsaleAppGoodForOtherApp = 'OFFSALE_APP_GOOD_FOR_OTHER_APP',
   GetAppWithdrawSettingsByOtherApp = 'GET_APP_WITHDRAW_SETTINGS_BY_OTHER_APP',
   CreateAppWithdrawSettingForOtherApp = 'CREATE_APP_WITHDRAW_SETTING_FOR_OTHER_APP',
-  UpdateAppWithdrawSetting = 'UPDATE_APP_WITHDRAW_SETTING'
+  UpdateAppWithdrawSetting = 'UPDATE_APP_WITHDRAW_SETTING',
+  CreateAppGoodPromotionForOtherApp = 'CREATE_APP_GOOD_PROMOTION_FOR_OTHER_APP',
+  UpdateAppGoodPromotion = 'UPDATE_APP_GOOD_PROMOTION',
+  GetAppGoodPromotionsByOtherApp = 'GET_APP_GOOD_PROMOTIONS_BY_OTHER_APP'
 }

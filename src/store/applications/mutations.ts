@@ -2,7 +2,7 @@ import { MutationTree } from 'vuex'
 import { AppRole } from '../user-helper/types'
 import { MutationTypes } from './mutation-types'
 import { ApplicationsState } from './state'
-import { App, AppControl, AppGood, Application, AppWithdrawSetting, BanApp, Recommend } from './types'
+import { App, AppControl, AppGood, AppGoodPromotion, Application, AppWithdrawSetting, BanApp, Recommend } from './types'
 
 type ApplicationMutations<S = ApplicationsState> = {
   [MutationTypes.SetApplications] (state: S, payload: Array<Application>): void
@@ -13,6 +13,7 @@ type ApplicationMutations<S = ApplicationsState> = {
   [MutationTypes.SetRecommends] (state: S, payload: Array<Recommend>): void
   [MutationTypes.DeleteAppGood] (state: S, payload: AppGood): void
   [MutationTypes.SetAppWithdrawSettings] (state: S, payload: Array<AppWithdrawSetting>): void
+  [MutationTypes.SetAppGoodPromotions] (state: S, payload: Array<AppGoodPromotion>): void
   [MutationTypes.SetSelectedAppID] (state: S, payload: string): void
 }
 
@@ -114,6 +115,25 @@ const mutations: MutationTree<ApplicationsState> & ApplicationMutations = {
         settings.push(setting)
       })
       state.AppWithdrawSettings.set(payload[0].AppID as string, settings)
+    }
+  },
+
+  [MutationTypes.SetAppGoodPromotions] (state: ApplicationsState, payload: Array<AppGoodPromotion>): void {
+    if (payload.length > 0) {
+      let promotions = state.Promotions.get(payload[0].AppID) as Array<AppGoodPromotion>
+      if (!promotions) {
+        promotions = [] as Array<AppGoodPromotion>
+      }
+      payload.forEach((setting) => {
+        for (let i = 0; i < promotions.length; i++) {
+          if (setting.ID === promotions[i].ID) {
+            promotions.splice(i, 1, setting)
+            return
+          }
+        }
+        promotions.push(setting)
+      })
+      state.Promotions.set(payload[0].AppID, promotions)
     }
   },
 

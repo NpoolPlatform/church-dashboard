@@ -44,6 +44,7 @@
     dense
     :loading='loading'
     :rows='recommends'
+    @row-click='(evt, row, index) => onRecommendClick(row as Recommend)'
   >
     <template #top-right>
       <div class='row'>
@@ -100,14 +101,44 @@
       </q-tr>
     </template>
   </q-table>
+  <q-table
+    flat
+    dense
+    :loading='loading'
+    :rows='promotions'
+    @row-click='(evt, row, index) => onPromotionClick(row as AppGoodPromotion)'
+  >
+    <template #top-right>
+      <div class='row'>
+        <q-space />
+        <q-btn dense @click='onCreatePromotion'>
+          {{ $t('MSG_CREATE') }}
+        </q-btn>
+      </div>
+    </template>
+  </q-table>
   <q-dialog
     v-model='modifying'
     position='right'
     full-width
     square
     no-shake
+    @hide='onMenuHide'
   >
-    <CreateAppRecommendGood v-model:selected-app='selectedApp' @update='onUpdate' @submit='onSubmit' />
+    <CreateAppRecommendGood
+      v-if='addingType === AddingType.AddingRecommend'
+      v-model:selected-app='selectedApp'
+      v-model:edit-recommend='selectedRecommend'
+      @update='onRecommendUpdate'
+      @submit='onRecommendSubmit'
+    />
+    <CreateAppGoodPromotion
+      v-if='addingType === AddingType.AddingPromotion'
+      v-model:selected-app='selectedApp'
+      v-model:edit-promotion='selectedPromotion'
+      @update='onPromotionUpdate'
+      @submit='onPromotionSubmit'
+    />
   </q-dialog>
 </template>
 
@@ -124,12 +155,13 @@ import { notify, notificationPop } from 'src/store/notifications/helper'
 import { FunctionVoid } from 'src/types/types'
 import { MutationTypes as ApplicationMutationTypes } from 'src/store/applications/mutation-types'
 import { GoodBase } from 'src/store/goods/types'
-import { AppGood, AppWithdrawSetting, Recommend } from 'src/store/applications/types'
+import { AppGood, AppWithdrawSetting, Recommend, AppGoodPromotion } from 'src/store/applications/types'
 import { ActionTypes as CoinActionTypes } from 'src/store/coins/action-types'
 import { Coin } from 'src/store/coins/types'
 
 const ApplicationSelector = defineAsyncComponent(() => import('src/components/dropdown/ApplicationSelector.vue'))
 const CreateAppRecommendGood = defineAsyncComponent(() => import('src/components/application/CreateAppRecommendGood.vue'))
+const CreateAppGoodPromotion = defineAsyncComponent(() => import('src/components/application/CreateAppGoodPromotion.vue'))
 
 const store = useStore()
 // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -171,6 +203,7 @@ const selectedAppGoods = ref([] as Array<AppGood>)
 const recommends = computed(() => store.getters.getRecommendsByAppID(selectedAppID.value))
 const settings = computed(() => store.getters.getAppWithdrawSettingsByAppID(selectedAppID.value))
 const coins = computed(() => store.getters.getCoins)
+const promotions = computed(() => store.getters.getAppGoodPromotionsByAppID(selectedAppID.value))
 
 const selectedCoin = ref([] as Array<Coin>)
 
@@ -282,10 +315,44 @@ const onModifyPrice = () => {
   })
 }
 
+enum AddingType {
+  AddingRecommend = 'recommend',
+  AddingPromotion = 'promotion',
+  AddingNone = 'none'
+}
+
+const selectedRecommend = ref(undefined as unknown as Recommend)
+const selectedPromotion = ref(undefined as unknown as AppGoodPromotion)
+
 const modifying = ref(false)
+const adding = ref(false)
+const updating = ref(false)
+const addingType = ref(AddingType.AddingNone)
 
 const onAddRecommend = () => {
   modifying.value = true
+  adding.value = true
+  addingType.value = AddingType.AddingRecommend
+}
+
+const onRecommendClick = (recommend: Recommend) => {
+  selectedRecommend.value = recommend
+  modifying.value = true
+  updating.value = true
+  addingType.value = AddingType.AddingRecommend
+}
+
+const onCreatePromotion = () => {
+  modifying.value = true
+  adding.value = true
+  addingType.value = AddingType.AddingPromotion
+}
+
+const onPromotionClick = (promotion: AppGoodPromotion) => {
+  selectedPromotion.value = promotion
+  modifying.value = true
+  updating.value = true
+  addingType.value = AddingType.AddingPromotion
 }
 
 const setting = computed(() => {
@@ -366,20 +433,53 @@ const onCreateAppWithdrawSetting = () => {
   }
 }
 
-const onUpdate = (recommend: Recommend) => {
+const onRecommendUpdate = (recommend: Recommend) => {
   // TODO: fileter the list
   console.log('update', recommend)
 }
 
-const onSubmit = (recommend: Recommend) => {
+const onRecommendSubmit = (recommend: Recommend) => {
   modifying.value = false
-  store.dispatch(ApplicationActionTypes.CreateRecommendForOtherApp, {
+
+  let action = ApplicationActionTypes.CreateRecommendForOtherApp
+  if (updating.value) {
+    action = ApplicationActionTypes.UpdateRecommend
+  }
+
+  store.dispatch(action, {
     TargetAppID: selectedApp.value.App.ID,
     Info: recommend,
     Message: {
       ModuleKey: ModuleKey.ModuleApplications,
       Error: {
         Title: t('MSG_CREATE_RECOMMEND_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+  })
+}
+
+const onPromotionUpdate = (promotion: AppGoodPromotion) => {
+  // TODO: fileter the list
+  console.log('update', promotion)
+}
+
+const onPromotionSubmit = (promotion: AppGoodPromotion) => {
+  modifying.value = false
+
+  let action = ApplicationActionTypes.CreateAppGoodPromotionForOtherApp
+  if (updating.value) {
+    action = ApplicationActionTypes.UpdateAppGoodPromotion
+  }
+
+  store.dispatch(action, {
+    TargetAppID: selectedApp.value.App.ID,
+    Info: promotion,
+    Message: {
+      ModuleKey: ModuleKey.ModuleApplications,
+      Error: {
+        Title: t('MSG_CREATE_APP_GOOD_PROMOTION_FAIL'),
         Popup: true,
         Type: NotificationType.Error
       }
@@ -468,5 +568,15 @@ onMounted(() => {
 onUnmounted(() => {
   unsubscribe.value?.()
 })
+
+const onMenuHide = () => {
+  modifying.value = false
+  adding.value = false
+  updating.value = false
+  addingType.value = AddingType.AddingNone
+
+  selectedPromotion.value = undefined as unknown as AppGoodPromotion
+  selectedRecommend.value = undefined as unknown as Recommend
+}
 
 </script>

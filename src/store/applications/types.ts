@@ -161,6 +161,15 @@ interface CreateRecommendForOtherAppResponse {
   Info: Recommend
 }
 
+interface UpdateRecommendRequest {
+  Info: Recommend
+  Message: ReqMessage
+}
+
+interface UpdateRecommendResponse {
+  Info: Recommend
+}
+
 interface SetAppGoodPriceForOtherAppRequest {
   TargetAppID: string
   Info: AppGood
@@ -226,6 +235,44 @@ interface UpdateAppWithdrawSettingResponse {
   Info: AppWithdrawSetting
 }
 
+interface AppGoodPromotion {
+  ID?: string
+  AppID: string
+  GoodID: string
+  Message: string
+  Start: number
+  End: string
+  Price: string
+}
+
+interface CreateAppGoodPromotionForOtherAppRequest {
+  TargetAppID: string
+  Info: AppGoodPromotion
+  Message: ReqMessage
+}
+
+interface CreateAppGoodPromotionForOtherAppResponse {
+  Info: AppGoodPromotion
+}
+
+interface UpdateAppGoodPromotionRequest {
+  Info: AppGoodPromotion
+  Message: ReqMessage
+}
+
+interface UpdateAppGoodPromotionResponse {
+  Info: AppGoodPromotion
+}
+
+interface GetAppGoodPromotionsByOtherAppRequest {
+  TargetAppID: string
+  Message: ReqMessage
+}
+
+interface GetAppGoodPromotionsByOtherAppResponse {
+  Infos: Array<AppGoodPromotion>
+}
+
 export {
   App,
   AppControl,
@@ -257,6 +304,8 @@ export {
   GetRecommendsByOtherAppResponse,
   CreateRecommendForOtherAppRequest,
   CreateRecommendForOtherAppResponse,
+  UpdateRecommendRequest,
+  UpdateRecommendResponse,
   SetAppGoodPriceForOtherAppRequest,
   SetAppGoodPriceForOtherAppResponse,
   SetAppGoodOnlineForOtherAppRequest,
@@ -269,5 +318,12 @@ export {
   CreateAppWithdrawSettingForOtherAppRequest,
   CreateAppWithdrawSettingForOtherAppResponse,
   UpdateAppWithdrawSettingRequest,
-  UpdateAppWithdrawSettingResponse
+  UpdateAppWithdrawSettingResponse,
+  AppGoodPromotion,
+  CreateAppGoodPromotionForOtherAppRequest,
+  CreateAppGoodPromotionForOtherAppResponse,
+  UpdateAppGoodPromotionRequest,
+  UpdateAppGoodPromotionResponse,
+  GetAppGoodPromotionsByOtherAppRequest,
+  GetAppGoodPromotionsByOtherAppResponse
 }

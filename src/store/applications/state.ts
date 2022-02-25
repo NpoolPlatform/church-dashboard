@@ -1,6 +1,6 @@
 import { AppID } from 'src/const/const'
 import { AppRole } from '../user-helper/types'
-import { App, AppGood, Application, AppWithdrawSetting, Recommend } from './types'
+import { App, AppGood, AppGoodPromotion, Application, AppWithdrawSetting, Recommend } from './types'
 
 interface ApplicationsState {
   Applications: Map<string, Application>
@@ -10,6 +10,7 @@ interface ApplicationsState {
   AppGoods: Map<string, Array<AppGood>>
   Recommends: Map<string, Array<Recommend>>
   AppWithdrawSettings: Map<string, Array<AppWithdrawSetting>>
+  Promotions: Map<string, Array<AppGoodPromotion>>
 }
 
 function state (): ApplicationsState {
@@ -20,7 +21,8 @@ function state (): ApplicationsState {
     AppRoles: new Map<string, Array<AppRole>>(),
     AppGoods: new Map<string, Array<AppGood>>(),
     Recommends: new Map<string, Array<Recommend>>(),
-    AppWithdrawSettings: new Map<string, Array<AppWithdrawSetting>>()
+    AppWithdrawSettings: new Map<string, Array<AppWithdrawSetting>>(),
+    Promotions: new Map<string, Array<AppGoodPromotion>>()
   }
 }
 

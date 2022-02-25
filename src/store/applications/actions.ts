@@ -5,6 +5,8 @@ import {
   AuthorizeAppGoodForOtherAppResponse,
   CreateAppControlRequest,
   CreateAppControlResponse,
+  CreateAppGoodPromotionForOtherAppRequest,
+  CreateAppGoodPromotionForOtherAppResponse,
   CreateApplicationRequest,
   CreateApplicationResponse,
   CreateAppRoleForOtherAppRequest,
@@ -13,6 +15,8 @@ import {
   CreateAppWithdrawSettingForOtherAppResponse,
   CreateRecommendForOtherAppRequest,
   CreateRecommendForOtherAppResponse,
+  GetAppGoodPromotionsByOtherAppRequest,
+  GetAppGoodPromotionsByOtherAppResponse,
   GetAppGoodsByOtherAppRequest,
   GetAppGoodsByOtherAppResponse,
   GetApplicationsRequest,
@@ -33,10 +37,14 @@ import {
   UnauthorizeAppGoodResponse,
   UpdateAppControlRequest,
   UpdateAppControlResponse,
+  UpdateAppGoodPromotionRequest,
+  UpdateAppGoodPromotionResponse,
   UpdateApplicationRequest,
   UpdateApplicationResponse,
   UpdateAppWithdrawSettingRequest,
-  UpdateAppWithdrawSettingResponse
+  UpdateAppWithdrawSettingResponse,
+  UpdateRecommendRequest,
+  UpdateRecommendResponse
 } from './types'
 import { ApplicationsState } from './state'
 import { ActionTree } from 'vuex'
@@ -142,6 +150,14 @@ interface ApplicationActions {
     ApplicationMutations<ApplicationsState>>,
     req: CreateRecommendForOtherAppRequest): void
 
+  [ActionTypes.UpdateRecommend]({
+    commit
+  }: AugmentedActionContext<
+    ApplicationsState,
+    RootState,
+    ApplicationMutations<ApplicationsState>>,
+    req: UpdateRecommendRequest): void
+
   [ActionTypes.SetAppGoodPriceForOtherApp]({
     commit
   }: AugmentedActionContext<
@@ -189,6 +205,30 @@ interface ApplicationActions {
     RootState,
     ApplicationMutations<ApplicationsState>>,
     req: UpdateAppWithdrawSettingRequest): void
+
+  [ActionTypes.CreateAppGoodPromotionForOtherApp]({
+    commit
+  }: AugmentedActionContext<
+    ApplicationsState,
+    RootState,
+    ApplicationMutations<ApplicationsState>>,
+    req: CreateAppGoodPromotionForOtherAppRequest): void
+
+  [ActionTypes.UpdateAppGoodPromotion]({
+    commit
+  }: AugmentedActionContext<
+    ApplicationsState,
+    RootState,
+    ApplicationMutations<ApplicationsState>>,
+    req: UpdateAppGoodPromotionRequest): void
+
+  [ActionTypes.GetAppGoodPromotionsByOtherApp]({
+    commit
+  }: AugmentedActionContext<
+    ApplicationsState,
+    RootState,
+    ApplicationMutations<ApplicationsState>>,
+    req: GetAppGoodPromotionsByOtherAppResponse): void
 }
 
 const actions: ActionTree<ApplicationsState, RootState> = {
@@ -329,6 +369,17 @@ const actions: ActionTree<ApplicationsState, RootState> = {
       })
   },
 
+  [ActionTypes.UpdateRecommend] ({ commit }, req: UpdateRecommendRequest) {
+    doAction<UpdateRecommendRequest, UpdateRecommendResponse>(
+      commit,
+      API.UPDATE_RECOMMEND,
+      req,
+      req.Message,
+      (resp: UpdateRecommendResponse): void => {
+        commit(MutationTypes.SetRecommends, [resp.Info])
+      })
+  },
+
   [ActionTypes.SetAppGoodPriceForOtherApp] ({ commit }, req: SetAppGoodPriceForOtherAppRequest) {
     doAction<SetAppGoodPriceForOtherAppRequest, SetAppGoodPriceForOtherAppResponse>(
       commit,
@@ -392,6 +443,39 @@ const actions: ActionTree<ApplicationsState, RootState> = {
       req.Message,
       (resp: UpdateAppWithdrawSettingResponse): void => {
         commit(MutationTypes.SetAppWithdrawSettings, [resp.Info])
+      })
+  },
+
+  [ActionTypes.CreateAppGoodPromotionForOtherApp] ({ commit }, req: CreateAppGoodPromotionForOtherAppRequest) {
+    doAction<CreateAppGoodPromotionForOtherAppRequest, CreateAppGoodPromotionForOtherAppResponse>(
+      commit,
+      API.CREATE_APP_GOOD_PROMOTION_FOR_OTHER_APP,
+      req,
+      req.Message,
+      (resp: CreateAppGoodPromotionForOtherAppResponse): void => {
+        commit(MutationTypes.SetAppGoodPromotions, [resp.Info])
+      })
+  },
+
+  [ActionTypes.UpdateAppGoodPromotion] ({ commit }, req: UpdateAppGoodPromotionRequest) {
+    doAction<UpdateAppGoodPromotionRequest, UpdateAppGoodPromotionResponse>(
+      commit,
+      API.UPDATE_APP_GOOD_PROMOTION,
+      req,
+      req.Message,
+      (resp: UpdateAppGoodPromotionResponse): void => {
+        commit(MutationTypes.SetAppGoodPromotions, [resp.Info])
+      })
+  },
+
+  [ActionTypes.GetAppGoodPromotionsByOtherApp] ({ commit }, req: GetAppGoodPromotionsByOtherAppRequest) {
+    doAction<GetAppGoodPromotionsByOtherAppRequest, GetAppGoodPromotionsByOtherAppResponse>(
+      commit,
+      API.GET_APP_GOOD_PROMOTIONS_BY_OTHER_APP,
+      req,
+      req.Message,
+      (resp: GetAppGoodPromotionsByOtherAppResponse): void => {
+        commit(MutationTypes.SetAppGoodPromotions, resp.Infos)
       })
   }
 }
