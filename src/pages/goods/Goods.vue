@@ -476,7 +476,8 @@ const onCreateCoinInfoSubmit = (coin: Coin) => {
       ID: coin.ID,
       PreSale: coin.PreSale,
       Logo: coin.Logo,
-      ReservedAmount: coin.ReservedAmount
+      ReservedAmount: coin.ReservedAmount,
+      ForPay: coin.ForPay
     } as UpdateCoinRequest
     req.Message = {
       ModuleKey: ModuleKey.ModuleGoods,

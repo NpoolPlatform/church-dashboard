@@ -212,15 +212,39 @@ const coins = computed(() => store.getters.getCoins)
 const feeTypes = computed(() => store.getters.getAllFeeTypes)
 const priceCurrencys = computed(() => store.getters.getAllPriceCurrencys)
 
-const selectedCoinIndex = ref(0)
+const coinIndex = computed(() => {
+  for (let i = 0; i < coins.value.length; i++) {
+    if (coins.value[i].ID === editGood.value?.CoinInfoID) {
+      return i
+    }
+  }
+  return 0
+})
+const selectedCoinIndex = ref(coinIndex.value)
 const myCoinType = computed(() => coins.value[selectedCoinIndex.value]?.Name)
 const coinID = computed(() => coins.value[selectedCoinIndex.value]?.ID)
 
-const selectedDeviceIndex = ref(0)
+const deviceIndex = computed(() => {
+  for (let i = 0; i < devices.value.length; i++) {
+    if (devices.value[i].ID === editGood.value?.DeviceInfoID) {
+      return i
+    }
+  }
+  return 0
+})
+const selectedDeviceIndex = ref(deviceIndex.value)
 const deviceLabel = computed(() => devices.value[selectedDeviceIndex.value]?.Type)
 const deviceID = computed(() => devices.value[selectedDeviceIndex.value]?.ID)
 
-const selectedVendorLocationIndex = ref(0)
+const locationIndex = computed(() => {
+  for (let i = 0; i < vendorLocations.value.length; i++) {
+    if (vendorLocations.value[i].ID === editGood.value?.VendorLocationID) {
+      return i
+    }
+  }
+  return 0
+})
+const selectedVendorLocationIndex = ref(locationIndex.value)
 const vendorLocationLabel = computed(() =>
   vendorLocationToLabel(vendorLocations.value[selectedVendorLocationIndex.value])
 )
@@ -235,7 +259,15 @@ const myPrice = ref(editGood.value?.Price)
 const myDurationDays = ref(editGood.value?.DurationDays)
 const myUnitPower = ref(editGood.value?.UnitPower)
 
-const selectedPriceCurrencyIndex = ref(0)
+const currencyIndex = computed(() => {
+  for (let i = 0; i < priceCurrencys.value.length; i++) {
+    if (priceCurrencys.value[i].ID === editGood.value?.PriceCurrency) {
+      return i
+    }
+  }
+  return 0
+})
+const selectedPriceCurrencyIndex = ref(currencyIndex.value)
 const priceCurrencyType = computed(() => priceCurrencys.value[selectedPriceCurrencyIndex.value]?.Name)
 const priceCurrencyID = computed(() => priceCurrencys.value[selectedPriceCurrencyIndex.value]?.ID)
 

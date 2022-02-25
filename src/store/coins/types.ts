@@ -32,6 +32,7 @@ interface UpdateCoinRequest {
   PreSale: boolean
   Logo: string
   ReservedAmount: number
+  ForPay: boolean
   Message: ReqMessage
 }
 
