@@ -1,4 +1,4 @@
-import { CoinAccountTransaction, Payment, PlatformBenefit, UserBenefit, UserWithdraw } from './types'
+import { CoinAccountTransaction, Payment, PlatformBenefit, UserBenefit, UserPaymentBalance, UserWithdraw } from './types'
 
 interface BillingsState {
   PlatformBenefits: Array<PlatformBenefit>
@@ -6,6 +6,7 @@ interface BillingsState {
   Transactions: Array<CoinAccountTransaction>
   UserBenefits: Array<UserBenefit>
   Payments: Array<Payment>
+  UserPaymentBalances: Array<UserPaymentBalance>
 }
 
 function state (): BillingsState {
@@ -14,7 +15,8 @@ function state (): BillingsState {
     UserWithdraws: [],
     Transactions: [],
     UserBenefits: [],
-    Payments: []
+    Payments: [],
+    UserPaymentBalances: []
   }
 }
 

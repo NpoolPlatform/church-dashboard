@@ -6,7 +6,22 @@ import { AugmentedActionContext, RootState } from '../index'
 import { BillingMutations } from './mutations'
 import { API } from './const'
 import { doAction } from '../action'
-import { GetCoinAccountTransactionsRequest, GetCoinAccountTransactionsResponse, GetPaymentsRequest, GetPaymentsResponse, GetPlatformBenefitsRequest, GetPlatformBenefitsResponse, GetUserBenefitsRequest, GetUserBenefitsResponse, GetUserWithdrawsRequest, GetUserWithdrawsResponse } from './types'
+import {
+  CreateUserPaymentBalanceForOtherAppUserRequest,
+  CreateUserPaymentBalanceForOtherAppUserResponse,
+  GetCoinAccountTransactionsRequest,
+  GetCoinAccountTransactionsResponse,
+  GetPaymentsRequest,
+  GetPaymentsResponse,
+  GetPlatformBenefitsRequest,
+  GetPlatformBenefitsResponse,
+  GetUserBenefitsRequest,
+  GetUserBenefitsResponse,
+  GetUserPaymentBalancesByOtherAppRequest,
+  GetUserPaymentBalancesByOtherAppResponse,
+  GetUserWithdrawsRequest,
+  GetUserWithdrawsResponse
+} from './types'
 
 interface BillingActions {
   [ActionTypes.GetPlatformBenefits]({
@@ -48,6 +63,22 @@ interface BillingActions {
     RootState,
     BillingMutations<BillingsState>>,
     req: GetPaymentsRequest): void
+
+  [ActionTypes.CreateUserPaymentBalanceForOtherAppUser]({
+    commit
+  }: AugmentedActionContext<
+    BillingsState,
+    RootState,
+    BillingMutations<BillingsState>>,
+    req: CreateUserPaymentBalanceForOtherAppUserRequest): void
+
+  [ActionTypes.GetUserPaymentBalancesByOtherApp]({
+    commit
+  }: AugmentedActionContext<
+    BillingsState,
+    RootState,
+    BillingMutations<BillingsState>>,
+    req: GetUserPaymentBalancesByOtherAppRequest): void
 }
 
 const actions: ActionTree<BillingsState, RootState> = {
@@ -103,6 +134,28 @@ const actions: ActionTree<BillingsState, RootState> = {
       req.Message,
       (resp: GetPaymentsResponse): void => {
         commit(MutationTypes.SetPayments, resp.Infos)
+      })
+  },
+
+  [ActionTypes.CreateUserPaymentBalanceForOtherAppUser] ({ commit }, req: CreateUserPaymentBalanceForOtherAppUserRequest) {
+    doAction<CreateUserPaymentBalanceForOtherAppUserRequest, CreateUserPaymentBalanceForOtherAppUserResponse>(
+      commit,
+      API.CREATE_USER_PAYMENT_BALANCE_FOR_OTHER_APP_USER,
+      req,
+      req.Message,
+      (resp: CreateUserPaymentBalanceForOtherAppUserResponse): void => {
+        commit(MutationTypes.SetUserPaymentBalances, [resp.Info])
+      })
+  },
+
+  [ActionTypes.GetUserPaymentBalancesByOtherApp] ({ commit }, req: GetUserPaymentBalancesByOtherAppRequest) {
+    doAction<GetUserPaymentBalancesByOtherAppRequest, GetUserPaymentBalancesByOtherAppResponse>(
+      commit,
+      API.GET_USER_PAYMENT_BALANCES_BY_OTHER_APP,
+      req,
+      req.Message,
+      (resp: GetUserPaymentBalancesByOtherAppResponse): void => {
+        commit(MutationTypes.SetUserPaymentBalances, resp.Infos)
       })
   }
 }

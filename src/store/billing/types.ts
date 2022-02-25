@@ -86,6 +86,7 @@ interface Payment {
   OrderID: string
   AccountID: string
   StartAmount: number
+  FinishAmount: number
   Amount: number
   CoinInfoID: string
   State: string
@@ -103,6 +104,34 @@ interface GetPaymentsResponse {
   Infos: Array<Payment>
 }
 
+interface UserPaymentBalance {
+  ID?: string
+  AppID?: string
+  UserID?: string
+  PaymentID: string
+  Amount: number
+}
+
+interface CreateUserPaymentBalanceForOtherAppUserRequest {
+  TargetAppID: string
+  TargetUserID: string
+  Info: UserPaymentBalance
+  Message: ReqMessage
+}
+
+interface CreateUserPaymentBalanceForOtherAppUserResponse {
+  Info: UserPaymentBalance
+}
+
+interface GetUserPaymentBalancesByOtherAppRequest {
+  TargetAppID: string
+  Message: ReqMessage
+}
+
+interface GetUserPaymentBalancesByOtherAppResponse {
+  Infos: Array<UserPaymentBalance>
+}
+
 export {
   PlatformBenefit,
   GetPlatformBenefitsRequest,
@@ -118,5 +147,10 @@ export {
   GetUserBenefitsResponse,
   Payment,
   GetPaymentsRequest,
-  GetPaymentsResponse
+  GetPaymentsResponse,
+  UserPaymentBalance,
+  CreateUserPaymentBalanceForOtherAppUserRequest,
+  CreateUserPaymentBalanceForOtherAppUserResponse,
+  GetUserPaymentBalancesByOtherAppRequest,
+  GetUserPaymentBalancesByOtherAppResponse
 }

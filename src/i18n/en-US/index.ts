@@ -228,5 +228,8 @@ export default {
   MSG_CREATE_EVENT_COUPON_FAIL: 'You failed to create event coupon',
   MSG_COIN_FOR_PAY: '用作支付',
   MSG_CREATE_APP_GOOD_PROMOTION_FAIL: 'You failed to create promotion',
-  MSG_PROMOTION_REASON: '促销原因'
+  MSG_PROMOTION_REASON: '促销原因',
+  MSG_GET_USER_PAYMENT_BALANCES_FAIL: 'You failed to get user payment balances',
+  MSG_CREATE_USER_PAYMENT_BALANCE: '将不足金额转到用户余额',
+  MSG_CREATE_USER_PAYMENT_BALANCE_FAIL: 'You failed to create user payment balance'
 }
