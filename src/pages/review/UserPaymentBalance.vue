@@ -141,7 +141,7 @@ onUnmounted(() => {
 
 const onCreateUserPaymentBalances = () => {
   selectedPayments.value.forEach((payment) => {
-    if (payment.State === PaymentState.Timeout) {
+    if (payment.State === PaymentState.Timeout && payment.FinishAmount <= payment.StartAmount) {
       store.dispatch(BillingActionTypes.CreateUserPaymentBalanceForOtherAppUser, {
         TargetAppID: selectedAppID.value,
         TargetUserID: payment.UserID,
