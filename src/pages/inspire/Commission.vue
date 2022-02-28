@@ -169,7 +169,7 @@ const selectedUserID = computed(() => {
   }
   return undefined
 })
-const editUser = computed(() => selectedUser.value.length > 0 ? selectedUser.value[0] : undefined as unknown as AppUser)
+const editUser = ref(selectedUser.value.length > 0 ? selectedUser.value[0] : undefined as unknown as AppUser)
 
 const appCommissionSetting = computed(() => store.getters.getAppCommissionSettingByAppID(selectedAppID.value))
 const selectedAppCommissionSetting = ref(undefined as unknown as AppCommissionSetting)
@@ -321,10 +321,11 @@ const onAppPurchaseAmountSettingClick = (setting: AppPurchaseAmountSetting) => {
 }
 
 const onCreateAppUserPurchaseAmountSetting = () => {
-  if (!editUser.value) {
+  if (selectedUser.value.length === 0) {
     return
   }
 
+  editUser.value = selectedUser.value[0]
   addingType.value = AddingType.AddingTypeAppUserPurchaseAmountSetting
   adding.value = true
   modifying.value = true
@@ -332,6 +333,11 @@ const onCreateAppUserPurchaseAmountSetting = () => {
 
 const onAppUserPurchaseAmountSettingClick = (setting: AppUserPurchaseAmountSetting) => {
   editAppUserPurchaseAmountSetting.value = setting
+  editUser.value = store.getters.getUserByAppUserID(setting.AppID, setting.UserID)?.User as AppUser
+  if (!editUser.value) {
+    return
+  }
+
   addingType.value = AddingType.AddingTypeAppUserPurchaseAmountSetting
   updating.value = true
   modifying.value = true
