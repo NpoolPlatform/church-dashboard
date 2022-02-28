@@ -268,7 +268,7 @@ const MainDrawerMenus = [
       label: '佣金设置',
       caption: '管理邀请和购买佣金',
       icon: 'format_list_numbered',
-      target: '/inspire/coupon',
+      target: '/inspire/commission',
       level: 1,
       children: []
     }]

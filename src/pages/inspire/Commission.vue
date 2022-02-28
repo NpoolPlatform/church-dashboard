@@ -1,45 +1,50 @@
 <template>
   <ApplicationSelector v-model:selected-app-id='selectedAppID' />
   <q-table
-    v-model:selected='selectedActivities'
+    v-model:selected='selectedUser'
     flat
     dense
-    :rows='activities'
+    :rows='myUsers ? myUsers : []'
     selection='single'
     row-key='ID'
   />
   <q-table
-    v-model:selected='selectedCouponPools'
     flat
     dense
-    :rows='couponPools'
+    :rows='appCommissionSetting ? [appCommissionSetting] : []'
+  />
+  <q-table
+    v-model:selected='selectedAppInvitationSetting'
+    flat
+    dense
+    :rows='appInvitationSettings ? appInvitationSettings : []'
     selection='single'
     row-key='ID'
   />
   <q-table
-    v-model:selected='selectedDiscountPools'
+    v-model:selected='selectedAppPurchaseAmountSetting'
     flat
     dense
-    :rows='discountPools'
+    :rows='appPurchaseAmountSettings ? appPurchaseAmountSettings : []'
     selection='single'
     row-key='ID'
   />
-  <q-option-group
-    v-model='event'
-    :options='events'
-  />
   <q-table
+    v-model:selected='selectedAppUserInvitationSetting'
     flat
     dense
-    :rows='eventCoupons'
-  >
-    <template #top-right>
-      <div class='row'>
-        <q-space />
-        <q-btn :label='t("MSG_CREATE")' @click='onCreateEventCoupon' />
-      </div>
-    </template>
-  </q-table>
+    :rows='appUserInvitationSettings ? appUserInvitationSettings : []'
+    selection='single'
+    row-key='ID'
+  />
+  <q-table
+    v-model:selected='selectedAppUserPurchaseAmountSetting'
+    flat
+    dense
+    :rows='appUserPurchaseAmountSettings ? appUserPurchaseAmountSettings : []'
+    selection='single'
+    row-key='ID'
+  />
 </template>
 
 <script setup lang='ts'>
@@ -52,7 +57,9 @@ import { FunctionVoid } from 'src/types/types'
 import { MutationTypes as InspireMutationTypes } from 'src/store/inspire/mutation-types'
 import { ActionTypes as ApplicationActionTypes } from 'src/store/applications/action-types'
 import { MutationTypes as UserMutationTypes } from 'src/store/user-helper/mutation-types'
-import { CouponPool, DiscountPool, Activity } from 'src/store/inspire/types'
+import { ActionTypes as UserActionTypes } from 'src/store/user-helper/action-types'
+import { AppInvitationSetting, AppPurchaseAmountSetting, AppUserInvitationSetting, AppUserPurchaseAmountSetting } from 'src/store/inspire/types'
+import { AppUser } from 'src/store/user-helper/types'
 
 const ApplicationSelector = defineAsyncComponent(() => import('src/components/dropdown/ApplicationSelector.vue'))
 
@@ -67,90 +74,34 @@ const selectedAppID = computed({
   }
 })
 
-const selectedCouponPools = ref([] as Array<CouponPool>)
-const selectedDiscountPools = ref([] as Array<DiscountPool>)
-const selectedActivities = ref([] as Array<Activity>)
+const selectedAppInvitationSetting = ref([] as Array<AppInvitationSetting>)
+const selectedAppPurchaseAmountSetting = ref([] as Array<AppPurchaseAmountSetting>)
+const selectedAppUserInvitationSetting = ref([] as Array<AppUserInvitationSetting>)
+const selectedAppUserPurchaseAmountSetting = ref([] as Array<AppUserPurchaseAmountSetting>)
 
-const couponPools = computed(() => store.getters.getCouponPoolsByAppID(selectedAppID.value))
-const discountPools = computed(() => store.getters.getDiscountPoolsByAppID(selectedAppID.value))
-const activities = computed(() => store.getters.getActivitiesByAppID(selectedAppID.value))
-const eventCoupons = computed(() => store.getters.getEventCouponsByAppID(selectedAppID.value))
-
-const events = [
-  {
-    label: 'Sharing',
-    value: 'sharing'
-  }, {
-    label: 'Invitation Registration',
-    value: 'invitation-registeration'
-  }, {
-    label: 'Invitation Purchase',
-    value: 'invitation-purchase'
-  }, {
-    label: 'Register',
-    value: 'register'
-  }, {
-    label: 'KYC Authenticate',
-    value: 'kyc-authenticate'
-  }, {
-    label: 'Total Amount',
-    value: 'total-amount'
-  }, {
-    label: 'Single Amount',
-    value: 'single-amount'
-  }
-]
-const event = ref()
-
-const onCreateEventCoupon = () => {
-  if (!event.value) {
-    return
-  }
-
-  selectedActivities.value.forEach((act) => {
-    selectedCouponPools.value.forEach((coupon) => {
-      store.dispatch(InspireActionTypes.CreateEventCouponForOtherApp, {
-        TargetAppID: selectedAppID.value,
-        Info: {
-          ActivityID: act.ID as string,
-          Event: event.value as string,
-          Type: 'coupon',
-          CouponID: coupon.ID,
-          Count: 1
-        },
-        Message: {
-          ModuleKey: ModuleKey.ModuleApplications,
-          Error: {
-            Title: t('MSG_CREATE_EVENT_COUPON_FAIL'),
-            Popup: true,
-            Type: NotificationType.Error
-          }
-        }
-      })
+const users = computed(() => store.getters.getAppUserInfosByAppID(selectedAppID.value))
+const myUsers = computed(() => {
+  const allUsers = [] as Array<AppUser>
+  if (users.value) {
+    users.value.forEach((user) => {
+      allUsers.push(user.User as AppUser)
     })
+  }
+  return allUsers
+})
+const selectedUser = ref([] as Array<AppUser>)
+const selectedUserID = computed(() => {
+  if (selectedUser.value.length > 0) {
+    return selectedUser.value[0].ID
+  }
+  return undefined
+})
 
-    selectedDiscountPools.value.forEach((coupon) => {
-      store.dispatch(InspireActionTypes.CreateEventCouponForOtherApp, {
-        TargetAppID: selectedAppID.value,
-        Info: {
-          ActivityID: act.ID as string,
-          Event: event.value as string,
-          Type: 'discount',
-          CouponID: coupon.ID,
-          Count: 1
-        },
-        Message: {
-          ModuleKey: ModuleKey.ModuleApplications,
-          Error: {
-            Title: t('MSG_CREATE_EVENT_COUPON_FAIL'),
-            Popup: true,
-            Type: NotificationType.Error
-          }
-        }
-      })
-    })
-  })
-}
+const appCommissionSetting = computed(() => store.getters.getAppCommissionSettingByAppID(selectedAppID.value))
+const appInvitationSettings = computed(() => store.getters.getAppInvitationSettingsByAppID(selectedAppID.value))
+const appPurchaseAmountSettings = computed(() => store.getters.getAppPurchaseAmountSettingsByAppID(selectedAppID.value))
+const appUserInvitationSettings = computed(() => store.getters.getAppUserInvitationSettingsByAppUser(selectedAppID.value, selectedUserID.value as string))
+const appUserPurchaseAmountSettings = computed(() => store.getters.getAppUserPurchaseAmountSettingsByAppUser(selectedAppID.value, selectedUserID.value as string))
 
 const loading = ref(false)
 
@@ -158,48 +109,72 @@ const unsubscribe = ref<FunctionVoid>()
 
 watch(selectedAppID, () => {
   loading.value = true
-  store.dispatch(InspireActionTypes.GetCouponPoolsByOtherApp, {
+  store.dispatch(UserActionTypes.GetAppUserInfosByOtherApp, {
     TargetAppID: selectedAppID.value,
     Message: {
       ModuleKey: ModuleKey.ModuleApplications,
       Error: {
-        Title: t('MSG_GET_COUPON_POOLS_FAIL'),
+        Title: t('MSG_GET_APP_USER_INFOS_FAIL'),
         Popup: true,
         Type: NotificationType.Error
       }
     }
   })
 
-  store.dispatch(InspireActionTypes.GetDiscountPoolsByOtherApp, {
+  store.dispatch(InspireActionTypes.GetAppCommissionSettingByOtherApp, {
     TargetAppID: selectedAppID.value,
     Message: {
       ModuleKey: ModuleKey.ModuleApplications,
       Error: {
-        Title: t('MSG_GET_DISCOUNT_POOLS_FAIL'),
+        Title: t('MSG_GET_APP_COMMISSION_SETTING_FAIL'),
         Popup: true,
         Type: NotificationType.Error
       }
     }
   })
 
-  store.dispatch(InspireActionTypes.GetActivitiesByOtherApp, {
+  store.dispatch(InspireActionTypes.GetAppInvitationSettingsByOtherApp, {
     TargetAppID: selectedAppID.value,
     Message: {
       ModuleKey: ModuleKey.ModuleApplications,
       Error: {
-        Title: t('MSG_GET_ACTIVITIES_FAIL'),
+        Title: t('MSG_GET_APP_INVITATION_SETTINGS_FAIL'),
         Popup: true,
         Type: NotificationType.Error
       }
     }
   })
 
-  store.dispatch(InspireActionTypes.GetEventCouponsByOtherApp, {
+  store.dispatch(InspireActionTypes.GetAppPurchaseAmountSettingsByOtherApp, {
     TargetAppID: selectedAppID.value,
     Message: {
       ModuleKey: ModuleKey.ModuleApplications,
       Error: {
-        Title: t('MSG_GET_EVENT_COUPONS_FAIL'),
+        Title: t('MSG_GET_APP_PURCHASE_AMOUNT_SETTINGS_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+  })
+
+  store.dispatch(InspireActionTypes.GetAppUserInvitationSettingsByOtherApp, {
+    TargetAppID: selectedAppID.value,
+    Message: {
+      ModuleKey: ModuleKey.ModuleApplications,
+      Error: {
+        Title: t('MSG_GET_APP_USER_INVITATION_SETTINGS_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+  })
+
+  store.dispatch(InspireActionTypes.GetAppUserPurchaseAmountSettingsByOtherApp, {
+    TargetAppID: selectedAppID.value,
+    Message: {
+      ModuleKey: ModuleKey.ModuleApplications,
+      Error: {
+        Title: t('MSG_GET_APP_USER_PURCHASE_AMOUNT_SETTINGS_FAIL'),
         Popup: true,
         Type: NotificationType.Error
       }
@@ -220,7 +195,7 @@ onMounted(() => {
   })
 
   unsubscribe.value = store.subscribe((mutation) => {
-    if (mutation.type === InspireMutationTypes.SetEventCoupons) {
+    if (mutation.type === InspireMutationTypes.SetAppInvitationSettings) {
       loading.value = false
     }
   })

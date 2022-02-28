@@ -633,7 +633,7 @@ const actions: ActionTree<InspiresState, RootState> = {
   [ActionTypes.GetAppPurchaseAmountSettingsByOtherApp] ({ commit }, req: GetAppPurchaseAmountSettingsByOtherAppRequest) {
     doAction<GetAppPurchaseAmountSettingsByOtherAppRequest, GetAppPurchaseAmountSettingsByOtherAppResponse>(
       commit,
-      API.CREATE_EVENT_COUPON_FOR_OTHER_APP,
+      API.GET_APP_PURCHASE_AMOUNT_SETTINGS_BY_OTHER_APP,
       req,
       req.Message,
       (resp: GetAppPurchaseAmountSettingsByOtherAppResponse): void => {
@@ -699,7 +699,7 @@ const actions: ActionTree<InspiresState, RootState> = {
   [ActionTypes.GetAppUserPurchaseAmountSettingsByOtherApp] ({ commit }, req: GetAppUserPurchaseAmountSettingsByOtherAppRequest) {
     doAction<GetAppUserPurchaseAmountSettingsByOtherAppRequest, GetAppUserPurchaseAmountSettingsByOtherAppResponse>(
       commit,
-      API.CREATE_EVENT_COUPON_FOR_OTHER_APP,
+      API.GET_APP_USER_PURCHASE_AMOUNT_SETTINGS_BY_OTHER_APP,
       req,
       req.Message,
       (resp: GetAppUserPurchaseAmountSettingsByOtherAppResponse): void => {

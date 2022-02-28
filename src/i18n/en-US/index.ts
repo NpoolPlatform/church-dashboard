@@ -231,5 +231,10 @@ export default {
   MSG_PROMOTION_REASON: '促销原因',
   MSG_GET_USER_PAYMENT_BALANCES_FAIL: 'You failed to get user payment balances',
   MSG_CREATE_USER_PAYMENT_BALANCE: '将不足金额转到用户余额',
-  MSG_CREATE_USER_PAYMENT_BALANCE_FAIL: 'You failed to create user payment balance'
+  MSG_CREATE_USER_PAYMENT_BALANCE_FAIL: 'You failed to create user payment balance',
+  MSG_GET_APP_COMMISSION_SETTING_FAIL: 'You failed to get app commission setting',
+  MSG_GET_APP_INVITATION_SETTINGS_FAIL: 'You failed to get app invitation settings',
+  MSG_GET_APP_PURCHASE_AMOUNT_SETTINGS_FAIL: 'You failed to get app purchase amount settings',
+  MSG_GET_APP_USER_INVITATION_SETTINGS_FAIL: 'You failed to get app user invitation settings',
+  MSG_GET_APP_USER_PURCHASE_AMOUNT_SETTINGS_FAIL: 'You failed to get app user purchase amount settings'
 }
