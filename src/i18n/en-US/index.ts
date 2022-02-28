@@ -236,5 +236,12 @@ export default {
   MSG_GET_APP_INVITATION_SETTINGS_FAIL: 'You failed to get app invitation settings',
   MSG_GET_APP_PURCHASE_AMOUNT_SETTINGS_FAIL: 'You failed to get app purchase amount settings',
   MSG_GET_APP_USER_INVITATION_SETTINGS_FAIL: 'You failed to get app user invitation settings',
-  MSG_GET_APP_USER_PURCHASE_AMOUNT_SETTINGS_FAIL: 'You failed to get app user purchase amount settings'
+  MSG_GET_APP_USER_PURCHASE_AMOUNT_SETTINGS_FAIL: 'You failed to get app user purchase amount settings',
+  MSG_INVITATION_DISCOUNT: '邀请折扣',
+  MSG_USER_UNIQUE_SETTING: 'APP内所有用户使用相同设置',
+  MSG_TYPE: '类型',
+  MSG_LEVEL: '级别',
+  MSG_CREATE_APP_COMMISSION_SETTING: '创建APP佣金设置',
+  MSG_APP_COMMISSION_SETTING: 'APP佣金设置',
+  MSG_CREATE_APP_COMMISSION_SETTING_FAIL: 'You failed to create app commission setting'
 }

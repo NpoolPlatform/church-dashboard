@@ -12,7 +12,15 @@
     flat
     dense
     :rows='appCommissionSetting ? [appCommissionSetting] : []'
-  />
+    :title='t("MSG_APP_COMMISSION_SETTING")'
+  >
+    <template v-if='!appCommissionSetting' #top-right>
+      <div class='row'>
+        <q-space />
+        <q-btn :label='t("MSG_CREATE")' @click='onCreateAppCommissionSetting' />
+      </div>
+    </template>
+  </q-table>
   <q-table
     v-model:selected='selectedAppInvitationSetting'
     flat
@@ -45,6 +53,22 @@
     selection='single'
     row-key='ID'
   />
+  <q-dialog
+    v-model='modifying'
+    position='right'
+    full-width
+    square
+    no-shake
+    @hide='onMenuHide'
+  >
+    <CreateAppCommissionSetting
+      v-if='addingType === AddingType.AddingAppCommissionSetting'
+      v-model:edit-setting='appCommissionSetting'
+      v-model:selected-app='selectedApp'
+      @update='onUpdateAppCommissionSetting'
+      @submit='onSubmitAppCommissionSetting'
+    />
+  </q-dialog>
 </template>
 
 <script setup lang='ts'>
@@ -56,23 +80,34 @@ import { ModuleKey, Type as NotificationType } from 'src/store/notifications/con
 import { FunctionVoid } from 'src/types/types'
 import { MutationTypes as InspireMutationTypes } from 'src/store/inspire/mutation-types'
 import { ActionTypes as ApplicationActionTypes } from 'src/store/applications/action-types'
-import { MutationTypes as UserMutationTypes } from 'src/store/user-helper/mutation-types'
 import { ActionTypes as UserActionTypes } from 'src/store/user-helper/action-types'
-import { AppInvitationSetting, AppPurchaseAmountSetting, AppUserInvitationSetting, AppUserPurchaseAmountSetting } from 'src/store/inspire/types'
+import {
+  AppCommissionSetting,
+  AppInvitationSetting,
+  AppPurchaseAmountSetting,
+  AppUserInvitationSetting,
+  AppUserPurchaseAmountSetting
+} from 'src/store/inspire/types'
 import { AppUser } from 'src/store/user-helper/types'
 
 const ApplicationSelector = defineAsyncComponent(() => import('src/components/dropdown/ApplicationSelector.vue'))
+const CreateAppCommissionSetting = defineAsyncComponent(() => import('src/components/inspire/CreateAppCommissionSetting.vue'))
+// const CreateAppInvitationSetting = defineAsyncComponent(() => import('src/components/inspire/CreateAppInvitationSetting.vue'))
+// const CreateAppPurchaseAmountSetting = defineAsyncComponent(() => import('src/components/inspire/CreateAppPurchaseAmountSetting.vue'))
+// const CreateAppUserInvitationSetting = defineAsyncComponent(() => import('src/components/inspire/CreateAppUserInvitationSetting.vue'))
+// const CreateAppUserPurchaseAmountSetting = defineAsyncComponent(() => import('src/components/inspire/CreateAppUserPurchaseAmountSetting.vue'))
 
 const store = useStore()
 // eslint-disable-next-line @typescript-eslint/unbound-method
 const { t } = useI18n({ useScope: 'global' })
 
 const selectedAppID = computed({
-  get: () => store.getters.getUserSelectedAppID,
+  get: () => store.getters.getInspireSelectedAppID,
   set: (val) => {
-    store.commit(UserMutationTypes.SetSelectedAppID, val)
+    store.commit(InspireMutationTypes.SetInspireSelectedAppID, val)
   }
 })
+const selectedApp = computed(() => store.getters.getApplicationByID(selectedAppID.value))
 
 const selectedAppInvitationSetting = ref([] as Array<AppInvitationSetting>)
 const selectedAppPurchaseAmountSetting = ref([] as Array<AppPurchaseAmountSetting>)
@@ -112,7 +147,7 @@ watch(selectedAppID, () => {
   store.dispatch(UserActionTypes.GetAppUserInfosByOtherApp, {
     TargetAppID: selectedAppID.value,
     Message: {
-      ModuleKey: ModuleKey.ModuleApplications,
+      ModuleKey: ModuleKey.ModuleInspire,
       Error: {
         Title: t('MSG_GET_APP_USER_INFOS_FAIL'),
         Popup: true,
@@ -124,7 +159,7 @@ watch(selectedAppID, () => {
   store.dispatch(InspireActionTypes.GetAppCommissionSettingByOtherApp, {
     TargetAppID: selectedAppID.value,
     Message: {
-      ModuleKey: ModuleKey.ModuleApplications,
+      ModuleKey: ModuleKey.ModuleInspire,
       Error: {
         Title: t('MSG_GET_APP_COMMISSION_SETTING_FAIL'),
         Popup: true,
@@ -136,7 +171,7 @@ watch(selectedAppID, () => {
   store.dispatch(InspireActionTypes.GetAppInvitationSettingsByOtherApp, {
     TargetAppID: selectedAppID.value,
     Message: {
-      ModuleKey: ModuleKey.ModuleApplications,
+      ModuleKey: ModuleKey.ModuleInspire,
       Error: {
         Title: t('MSG_GET_APP_INVITATION_SETTINGS_FAIL'),
         Popup: true,
@@ -148,7 +183,7 @@ watch(selectedAppID, () => {
   store.dispatch(InspireActionTypes.GetAppPurchaseAmountSettingsByOtherApp, {
     TargetAppID: selectedAppID.value,
     Message: {
-      ModuleKey: ModuleKey.ModuleApplications,
+      ModuleKey: ModuleKey.ModuleInspire,
       Error: {
         Title: t('MSG_GET_APP_PURCHASE_AMOUNT_SETTINGS_FAIL'),
         Popup: true,
@@ -160,7 +195,7 @@ watch(selectedAppID, () => {
   store.dispatch(InspireActionTypes.GetAppUserInvitationSettingsByOtherApp, {
     TargetAppID: selectedAppID.value,
     Message: {
-      ModuleKey: ModuleKey.ModuleApplications,
+      ModuleKey: ModuleKey.ModuleInspire,
       Error: {
         Title: t('MSG_GET_APP_USER_INVITATION_SETTINGS_FAIL'),
         Popup: true,
@@ -172,7 +207,7 @@ watch(selectedAppID, () => {
   store.dispatch(InspireActionTypes.GetAppUserPurchaseAmountSettingsByOtherApp, {
     TargetAppID: selectedAppID.value,
     Message: {
-      ModuleKey: ModuleKey.ModuleApplications,
+      ModuleKey: ModuleKey.ModuleInspire,
       Error: {
         Title: t('MSG_GET_APP_USER_PURCHASE_AMOUNT_SETTINGS_FAIL'),
         Popup: true,
@@ -185,7 +220,7 @@ watch(selectedAppID, () => {
 onMounted(() => {
   store.dispatch(ApplicationActionTypes.GetApplications, {
     Message: {
-      ModuleKey: ModuleKey.ModuleUsers,
+      ModuleKey: ModuleKey.ModuleInspire,
       Error: {
         Title: t('MSG_GET_APPLICATIONS_FAIL'),
         Popup: true,
@@ -204,5 +239,54 @@ onMounted(() => {
 onUnmounted(() => {
   unsubscribe.value?.()
 })
+
+const adding = ref(false)
+const updating = ref(false)
+const modifying = ref(false)
+
+enum AddingType {
+  AddingNone = 'none',
+  AddingAppCommissionSetting = 'app-commission-setting'
+}
+const addingType = ref(AddingType.AddingNone)
+
+const onCreateAppCommissionSetting = () => {
+  addingType.value = AddingType.AddingAppCommissionSetting
+  adding.value = true
+  modifying.value = true
+}
+
+const onMenuHide = () => {
+  adding.value = false
+  updating.value = false
+  modifying.value = false
+  addingType.value = AddingType.AddingNone
+}
+
+const onUpdateAppCommissionSetting = (setting: AppCommissionSetting) => {
+  console.log(setting)
+}
+
+const onSubmitAppCommissionSetting = (setting: AppCommissionSetting) => {
+  let action = InspireActionTypes.CreateAppCommissionSettingForOtherApp
+  if (updating.value) {
+    action = InspireActionTypes.UpdateAppCommissionSetting
+  }
+
+  store.dispatch(action, {
+    TargetAppID: selectedAppID.value,
+    Info: setting,
+    Message: {
+      ModuleKey: ModuleKey.ModuleInspire,
+      Error: {
+        Title: t('MSG_CREATE_APP_COMMISSION_SETTING_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+  })
+
+  onMenuHide()
+}
 
 </script>
