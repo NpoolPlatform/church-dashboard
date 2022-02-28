@@ -9,6 +9,16 @@ import { doAction } from '../action'
 import {
   CreateActivityForOtherAppRequest,
   CreateActivityForOtherAppResponse,
+  CreateAppCommissionSettingForOtherAppRequest,
+  CreateAppCommissionSettingForOtherAppResponse,
+  CreateAppInvitationSettingForOtherAppRequest,
+  CreateAppInvitationSettingForOtherAppResponse,
+  CreateAppPurchaseAmountSettingForOtherAppRequest,
+  CreateAppPurchaseAmountSettingForOtherAppResponse,
+  CreateAppUserInvitationSettingForOtherAppUserRequest,
+  CreateAppUserInvitationSettingForOtherAppUserResponse,
+  CreateAppUserPurchaseAmountSettingForOtherAppUserRequest,
+  CreateAppUserPurchaseAmountSettingForOtherAppUserResponse,
   CreateCouponAllocatedForOtherAppUserRequest,
   CreateCouponAllocatedForOtherAppUserResponse,
   CreateCouponPoolForOtherAppRequest,
@@ -23,6 +33,16 @@ import {
   CreateUserSpecialReductionForOtherAppUserResponse,
   GetActivitiesByOtherAppRequest,
   GetActivitiesByOtherAppResponse,
+  GetAppCommissionSettingByOtherAppRequest,
+  GetAppCommissionSettingByOtherAppResponse,
+  GetAppInvitationSettingsByOtherAppRequest,
+  GetAppInvitationSettingsByOtherAppResponse,
+  GetAppPurchaseAmountSettingsByOtherAppRequest,
+  GetAppPurchaseAmountSettingsByOtherAppResponse,
+  GetAppUserInvitationSettingsByOtherAppRequest,
+  GetAppUserInvitationSettingsByOtherAppResponse,
+  GetAppUserPurchaseAmountSettingsByOtherAppRequest,
+  GetAppUserPurchaseAmountSettingsByOtherAppResponse,
   GetCouponPoolsByOtherAppRequest,
   GetCouponPoolsByOtherAppResponse,
   GetCouponsAllocatedByOtherAppRequest,
@@ -37,6 +57,16 @@ import {
   GetUserSpecialReductionsByOtherAppResponse,
   UpdateActivityRequest,
   UpdateActivityResponse,
+  UpdateAppCommissionSettingRequest,
+  UpdateAppCommissionSettingResponse,
+  UpdateAppInvitationSettingRequest,
+  UpdateAppInvitationSettingResponse,
+  UpdateAppPurchaseAmountSettingRequest,
+  UpdateAppPurchaseAmountSettingResponse,
+  UpdateAppUserInvitationSettingRequest,
+  UpdateAppUserInvitationSettingResponse,
+  UpdateAppUserPurchaseAmountSettingRequest,
+  UpdateAppUserPurchaseAmountSettingResponse,
   UpdateCouponPoolRequest,
   UpdateCouponPoolResponse,
   UpdateDiscountPoolRequest,
@@ -189,6 +219,126 @@ interface InspireActions {
     RootState,
     InspireMutations<InspiresState>>,
     req: GetEventCouponsByOtherAppRequest): void
+
+  [ActionTypes.CreateAppCommissionSettingForOtherApp]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: CreateAppCommissionSettingForOtherAppRequest): void
+
+  [ActionTypes.UpdateAppCommissionSetting]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: UpdateAppCommissionSettingRequest): void
+
+  [ActionTypes.GetAppCommissionSettingByOtherApp]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: GetAppCommissionSettingByOtherAppRequest): void
+
+  [ActionTypes.CreateAppInvitationSettingForOtherApp]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: CreateAppInvitationSettingForOtherAppRequest): void
+
+  [ActionTypes.UpdateAppInvitationSetting]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: UpdateAppInvitationSettingRequest): void
+
+  [ActionTypes.GetAppInvitationSettingsByOtherApp]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: GetAppInvitationSettingsByOtherAppRequest): void
+
+  [ActionTypes.CreateAppPurchaseAmountSettingForOtherApp]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: CreateAppPurchaseAmountSettingForOtherAppRequest): void
+
+  [ActionTypes.UpdateAppPurchaseAmountSetting]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: UpdateAppPurchaseAmountSettingRequest): void
+
+  [ActionTypes.GetAppPurchaseAmountSettingsByOtherApp]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: GetAppPurchaseAmountSettingsByOtherAppRequest): void
+
+  [ActionTypes.CreateAppUserInvitationSettingForOtherApp]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: CreateAppUserInvitationSettingForOtherAppUserRequest): void
+
+  [ActionTypes.UpdateAppUserInvitationSetting]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: UpdateAppUserInvitationSettingRequest): void
+
+  [ActionTypes.GetAppUserInvitationSettingsByOtherApp]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: GetAppUserInvitationSettingsByOtherAppRequest): void
+
+  [ActionTypes.CreateAppUserPurchaseAmountSettingForOtherApp]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: CreateAppUserPurchaseAmountSettingForOtherAppUserRequest): void
+
+  [ActionTypes.UpdateAppUserPurchaseAmountSetting]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: UpdateAppUserPurchaseAmountSettingRequest): void
+
+  [ActionTypes.GetAppUserPurchaseAmountSettingsByOtherApp]({
+    commit
+  }: AugmentedActionContext<
+  InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: GetAppUserPurchaseAmountSettingsByOtherAppRequest): void
 }
 
 const actions: ActionTree<InspiresState, RootState> = {
@@ -387,6 +537,173 @@ const actions: ActionTree<InspiresState, RootState> = {
       req.Message,
       (resp: GetEventCouponsByOtherAppResponse): void => {
         commit(MutationTypes.SetEventCoupons, resp.Infos)
+      })
+  },
+
+  // ---------------------------------------------------------------------------------------
+
+  [ActionTypes.CreateAppCommissionSettingForOtherApp] ({ commit }, req: CreateAppCommissionSettingForOtherAppRequest) {
+    doAction<CreateAppCommissionSettingForOtherAppRequest, CreateAppCommissionSettingForOtherAppResponse>(
+      commit,
+      API.CREATE_APP_COMMISSION_SETTING_FOR_OTHER_APP,
+      req,
+      req.Message,
+      (resp: CreateAppCommissionSettingForOtherAppResponse): void => {
+        commit(MutationTypes.SetAppCommissionSetting, resp.Info)
+      })
+  },
+
+  [ActionTypes.UpdateAppCommissionSetting] ({ commit }, req: UpdateAppCommissionSettingRequest) {
+    doAction<UpdateAppCommissionSettingRequest, UpdateAppCommissionSettingResponse>(
+      commit,
+      API.UPDATE_APP_COMMISSION_SETTING,
+      req,
+      req.Message,
+      (resp: UpdateAppCommissionSettingResponse): void => {
+        commit(MutationTypes.SetAppCommissionSetting, resp.Info)
+      })
+  },
+
+  [ActionTypes.GetAppCommissionSettingByOtherApp] ({ commit }, req: GetAppCommissionSettingByOtherAppRequest) {
+    doAction<GetAppCommissionSettingByOtherAppRequest, GetAppCommissionSettingByOtherAppResponse>(
+      commit,
+      API.GET_APP_COMMISSION_SETTING_BY_OTHER_APP,
+      req,
+      req.Message,
+      (resp: GetAppCommissionSettingByOtherAppResponse): void => {
+        commit(MutationTypes.SetAppCommissionSetting, resp.Info)
+      })
+  },
+
+  [ActionTypes.CreateAppInvitationSettingForOtherApp] ({ commit }, req: CreateAppInvitationSettingForOtherAppRequest) {
+    doAction<CreateAppInvitationSettingForOtherAppRequest, CreateAppInvitationSettingForOtherAppResponse>(
+      commit,
+      API.CREATE_APP_INVITATION_SETTING_FOR_OTHER_APP,
+      req,
+      req.Message,
+      (resp: CreateAppInvitationSettingForOtherAppResponse): void => {
+        commit(MutationTypes.AppendAppInvitationSetting, resp.Info)
+      })
+  },
+
+  [ActionTypes.UpdateAppInvitationSetting] ({ commit }, req: UpdateAppInvitationSettingRequest) {
+    doAction<UpdateAppInvitationSettingRequest, UpdateAppInvitationSettingResponse>(
+      commit,
+      API.UPDATE_APP_INVITATION_SETTING,
+      req,
+      req.Message,
+      (resp: UpdateAppInvitationSettingResponse): void => {
+        commit(MutationTypes.AppendAppInvitationSetting, resp.Info)
+      })
+  },
+
+  [ActionTypes.GetAppInvitationSettingsByOtherApp] ({ commit }, req: GetAppInvitationSettingsByOtherAppRequest) {
+    doAction<GetAppInvitationSettingsByOtherAppRequest, GetAppInvitationSettingsByOtherAppResponse>(
+      commit,
+      API.GET_APP_INVITATION_SETTINGS_BY_OTHER_APP,
+      req,
+      req.Message,
+      (resp: GetAppInvitationSettingsByOtherAppResponse): void => {
+        commit(MutationTypes.SetAppInvitationSettings, resp.Infos)
+      })
+  },
+
+  [ActionTypes.CreateAppPurchaseAmountSettingForOtherApp] ({ commit }, req: CreateAppPurchaseAmountSettingForOtherAppRequest) {
+    doAction<CreateAppPurchaseAmountSettingForOtherAppRequest, CreateAppPurchaseAmountSettingForOtherAppResponse>(
+      commit,
+      API.CREATE_APP_PURCHASE_AMOUNT_SETTING_FOR_OTHER_APP,
+      req,
+      req.Message,
+      (resp: CreateAppPurchaseAmountSettingForOtherAppResponse): void => {
+        commit(MutationTypes.AppendAppPurchaseAmountSetting, resp.Info)
+      })
+  },
+
+  [ActionTypes.UpdateAppPurchaseAmountSetting] ({ commit }, req: UpdateAppPurchaseAmountSettingRequest) {
+    doAction<UpdateAppPurchaseAmountSettingRequest, UpdateAppPurchaseAmountSettingResponse>(
+      commit,
+      API.UPDATE_APP_PURCHASE_AMOUNT_SETTING,
+      req,
+      req.Message,
+      (resp: UpdateAppPurchaseAmountSettingResponse): void => {
+        commit(MutationTypes.AppendAppPurchaseAmountSetting, resp.Info)
+      })
+  },
+
+  [ActionTypes.GetAppPurchaseAmountSettingsByOtherApp] ({ commit }, req: GetAppPurchaseAmountSettingsByOtherAppRequest) {
+    doAction<GetAppPurchaseAmountSettingsByOtherAppRequest, GetAppPurchaseAmountSettingsByOtherAppResponse>(
+      commit,
+      API.CREATE_EVENT_COUPON_FOR_OTHER_APP,
+      req,
+      req.Message,
+      (resp: GetAppPurchaseAmountSettingsByOtherAppResponse): void => {
+        commit(MutationTypes.SetAppPurchaseAmountSettings, resp.Infos)
+      })
+  },
+
+  [ActionTypes.CreateAppUserInvitationSettingForOtherApp] ({ commit }, req: CreateAppUserInvitationSettingForOtherAppUserRequest) {
+    doAction<CreateAppUserInvitationSettingForOtherAppUserRequest, CreateAppUserInvitationSettingForOtherAppUserResponse>(
+      commit,
+      API.CREATE_APP_USER_INVITATION_SETTING_FOR_OTHER_APP,
+      req,
+      req.Message,
+      (resp: CreateAppUserInvitationSettingForOtherAppUserResponse): void => {
+        commit(MutationTypes.AppendAppUserInvitationSetting, resp.Info)
+      })
+  },
+
+  [ActionTypes.UpdateAppUserInvitationSetting] ({ commit }, req: UpdateAppUserInvitationSettingRequest) {
+    doAction<UpdateAppUserInvitationSettingRequest, UpdateAppUserInvitationSettingResponse>(
+      commit,
+      API.UPDATE_APP_USER_INVITATION_SETTING,
+      req,
+      req.Message,
+      (resp: UpdateAppUserInvitationSettingResponse): void => {
+        commit(MutationTypes.AppendAppUserInvitationSetting, resp.Info)
+      })
+  },
+
+  [ActionTypes.GetAppUserInvitationSettingsByOtherApp] ({ commit }, req: GetAppUserInvitationSettingsByOtherAppRequest) {
+    doAction<GetAppUserInvitationSettingsByOtherAppRequest, GetAppUserInvitationSettingsByOtherAppResponse>(
+      commit,
+      API.GET_APP_USER_INVITATION_SETTINGS_BY_OTHER_APP,
+      req,
+      req.Message,
+      (resp: GetAppUserInvitationSettingsByOtherAppResponse): void => {
+        commit(MutationTypes.SetAppUserInvitationSettings, resp.Infos)
+      })
+  },
+
+  [ActionTypes.CreateAppUserPurchaseAmountSettingForOtherApp] ({ commit }, req: CreateAppUserPurchaseAmountSettingForOtherAppUserRequest) {
+    doAction<CreateAppUserPurchaseAmountSettingForOtherAppUserRequest, CreateAppUserPurchaseAmountSettingForOtherAppUserResponse>(
+      commit,
+      API.CREATE_APP_USER_PURCHASE_AMOUNT_SETTING_FOR_OTHER_APP,
+      req,
+      req.Message,
+      (resp: CreateAppUserPurchaseAmountSettingForOtherAppUserResponse): void => {
+        commit(MutationTypes.AppendAppUserPurchaseAmountSetting, resp.Info)
+      })
+  },
+
+  [ActionTypes.UpdateAppUserPurchaseAmountSetting] ({ commit }, req: UpdateAppUserPurchaseAmountSettingRequest) {
+    doAction<UpdateAppUserPurchaseAmountSettingRequest, UpdateAppUserPurchaseAmountSettingResponse>(
+      commit,
+      API.UPDATE_APP_USER_PURCHASE_AMOUNT_SETTING,
+      req,
+      req.Message,
+      (resp: UpdateAppUserPurchaseAmountSettingResponse): void => {
+        commit(MutationTypes.AppendAppUserPurchaseAmountSetting, resp.Info)
+      })
+  },
+
+  [ActionTypes.GetAppUserPurchaseAmountSettingsByOtherApp] ({ commit }, req: GetAppUserPurchaseAmountSettingsByOtherAppRequest) {
+    doAction<GetAppUserPurchaseAmountSettingsByOtherAppRequest, GetAppUserPurchaseAmountSettingsByOtherAppResponse>(
+      commit,
+      API.CREATE_EVENT_COUPON_FOR_OTHER_APP,
+      req,
+      req.Message,
+      (resp: GetAppUserPurchaseAmountSettingsByOtherAppResponse): void => {
+        commit(MutationTypes.SetAppUserPurchaseAmountSettings, resp.Infos)
       })
   }
 }

@@ -46,7 +46,8 @@ const routes: RouteRecordRaw[] = [
       { path: 'inspire/invitation/code', component: () => import('pages/inspire/InvitationCode.vue') },
       { path: 'inspire/activity', component: () => import('pages/inspire/Activity.vue') },
       { path: 'inspire/coupon', component: () => import('pages/inspire/Coupon.vue') },
-      { path: 'inspire/eventcoupon', component: () => import('pages/inspire/EventCoupon.vue') }
+      { path: 'inspire/eventcoupon', component: () => import('pages/inspire/EventCoupon.vue') },
+      { path: 'inspire/commission', component: () => import('pages/inspire/Commission.vue') }
     ]
   },
 

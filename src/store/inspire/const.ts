@@ -22,7 +22,27 @@ enum API {
   GET_COUPONS_ALLOCATED_BY_OTHER_APP = '/cloud-hashing-inspire/v1/get/coupons/allocated/by/other/app',
 
   CREATE_EVENT_COUPON_FOR_OTHER_APP = '/cloud-hashing-inspire/v1/create/event/coupon/for/other/app',
-  GET_EVENT_COUPONS_BY_OTHER_APP = '/cloud-hashing-inspire/v1/get/event/coupons/by/other/app'
+  GET_EVENT_COUPONS_BY_OTHER_APP = '/cloud-hashing-inspire/v1/get/event/coupons/by/other/app',
+
+  CREATE_APP_COMMISSION_SETTING_FOR_OTHER_APP = '/cloud-hashing-inspire/v1/create/app/commission/setting/for/other/app',
+  UPDATE_APP_COMMISSION_SETTING = '/cloud-hashing-inspire/v1/update/app/commission/setting',
+  GET_APP_COMMISSION_SETTING_BY_OTHER_APP = '/cloud-hashing-inspire/v1/get/app/commission/setting/by/other/app',
+
+  CREATE_APP_INVITATION_SETTING_FOR_OTHER_APP = '/cloud-hashing-inspire/v1/create/app/invitation/setting/for/other/app',
+  UPDATE_APP_INVITATION_SETTING = '/cloud-hashing-inspire/v1/update/app/invitation/setting',
+  GET_APP_INVITATION_SETTINGS_BY_OTHER_APP = '/cloud-hashing-inspire/v1/get/app/invitation/settings/by/other/app',
+
+  CREATE_APP_PURCHASE_AMOUNT_SETTING_FOR_OTHER_APP = '/cloud-hashing-inspire/v1/create/app/purchase/amount/setting/for/other/app',
+  UPDATE_APP_PURCHASE_AMOUNT_SETTING = '/cloud-hashing-inspire/v1/update/app/purchase/amount/setting',
+  GET_APP_PURCHASE_AMOUNT_SETTINGS_BY_OTHER_APP = '/cloud-hashing-inspire/v1/get/app/purchase/amount/settings/by/other/app',
+
+  CREATE_APP_USER_INVITATION_SETTING_FOR_OTHER_APP = '/cloud-hashing-inspire/v1/create/app/user/invitation/setting/for/other/app',
+  UPDATE_APP_USER_INVITATION_SETTING = '/cloud-hashing-inspire/v1/update/app/user/invitation/setting',
+  GET_APP_USER_INVITATION_SETTINGS_BY_OTHER_APP = '/cloud-hashing-inspire/v1/get/app/user/invitation/settings/by/other/app',
+
+  CREATE_APP_USER_PURCHASE_AMOUNT_SETTING_FOR_OTHER_APP = '/cloud-hashing-inspire/v1/create/app/user/purchase/amount/setting/for/other/app',
+  UPDATE_APP_USER_PURCHASE_AMOUNT_SETTING = '/cloud-hashing-inspire/v1/update/app/user/purchase/amount/setting',
+  GET_APP_USER_PURCHASE_AMOUNT_SETTINGS_BY_OTHER_APP = '/cloud-hashing-inspire/v1/get/app/user/purchase/amount/settings/by/other/app'
 }
 
 export {

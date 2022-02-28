@@ -1,7 +1,20 @@
 import { MutationTree } from 'vuex'
 import { MutationTypes } from './mutation-types'
 import { InspiresState } from './state'
-import { Activity, CouponAllocated, CouponPool, DiscountPool, EventCoupon, UserInvitationCode, UserSpecialReduction } from './types'
+import {
+  Activity,
+  AppCommissionSetting,
+  AppInvitationSetting,
+  AppPurchaseAmountSetting,
+  AppUserInvitationSetting,
+  AppUserPurchaseAmountSetting,
+  CouponAllocated,
+  CouponPool,
+  DiscountPool,
+  EventCoupon,
+  UserInvitationCode,
+  UserSpecialReduction
+} from './types'
 
 type InspireMutations<S = InspiresState> = {
   [MutationTypes.SetUserInvitationCodes] (state: S, payload: Array<UserInvitationCode>): void
@@ -18,6 +31,15 @@ type InspireMutations<S = InspiresState> = {
   [MutationTypes.AppendCouponAllocated] (state: S, payload: CouponAllocated): void
   [MutationTypes.SetEventCoupons] (state: S, payload: Array<EventCoupon>): void
   [MutationTypes.AppendEventCoupon] (state: S, payload: EventCoupon): void
+  [MutationTypes.SetAppCommissionSetting] (state: S, payload: AppCommissionSetting): void
+  [MutationTypes.SetAppInvitationSettings] (state: S, payload: Array<AppInvitationSetting>): void
+  [MutationTypes.AppendAppInvitationSetting] (state: S, payload: AppInvitationSetting): void
+  [MutationTypes.SetAppPurchaseAmountSettings] (state: S, payload: Array<AppPurchaseAmountSetting>): void
+  [MutationTypes.AppendAppPurchaseAmountSetting] (state: S, payload: AppPurchaseAmountSetting): void
+  [MutationTypes.SetAppUserInvitationSettings] (state: S, payload: Array<AppUserInvitationSetting>): void
+  [MutationTypes.AppendAppUserInvitationSetting] (state: S, payload: AppUserInvitationSetting): void
+  [MutationTypes.SetAppUserPurchaseAmountSettings] (state: S, payload: Array<AppUserPurchaseAmountSetting>): void
+  [MutationTypes.AppendAppUserPurchaseAmountSetting] (state: S, payload: AppUserPurchaseAmountSetting): void
   [MutationTypes.SetInspireSelectedAppID] (state: S, payload: string): void
 }
 
@@ -112,6 +134,81 @@ const mutations: MutationTree<InspiresState> & InspireMutations = {
     }
     coupons.push(payload)
     state.EventCoupons.set(payload.AppID as string, coupons)
+  },
+  [MutationTypes.SetAppCommissionSetting] (state: InspiresState, payload: AppCommissionSetting): void {
+    state.AppCommissionSettings.set(payload.AppID, payload)
+  },
+  [MutationTypes.SetAppInvitationSettings] (state: InspiresState, payload: Array<AppInvitationSetting>): void {
+    if (payload.length > 0) {
+      state.AppInvitationSettings.set(payload[0].AppID, payload)
+    }
+  },
+  [MutationTypes.AppendAppInvitationSetting] (state: InspiresState, payload: AppInvitationSetting): void {
+    let settings = state.AppInvitationSettings.get(payload.AppID)
+    if (!settings) {
+      settings = [] as Array<AppInvitationSetting>
+    }
+    settings.push(payload)
+    state.AppInvitationSettings.set(payload.AppID, settings)
+  },
+  [MutationTypes.SetAppPurchaseAmountSettings] (state: InspiresState, payload: Array<AppPurchaseAmountSetting>): void {
+    if (payload.length > 0) {
+      state.AppPurchaseAmountSettings.set(payload[0].AppID, payload)
+    }
+  },
+  [MutationTypes.AppendAppPurchaseAmountSetting] (state: InspiresState, payload: AppPurchaseAmountSetting): void {
+    let settings = state.AppPurchaseAmountSettings.get(payload.AppID)
+    if (!settings) {
+      settings = [] as Array<AppPurchaseAmountSetting>
+    }
+    settings.push(payload)
+    state.AppPurchaseAmountSettings.set(payload.AppID, settings)
+  },
+  [MutationTypes.SetAppUserInvitationSettings] (state: InspiresState, payload: Array<AppUserInvitationSetting>): void {
+    if (payload.length > 0) {
+      let settings = state.AppUserInvitationSettings.get(payload[0].AppID)
+      if (!settings) {
+        settings = new Map<string, Array<AppUserInvitationSetting>>()
+      }
+      settings.set(payload[0].UserID, payload)
+      state.AppUserInvitationSettings.set(payload[0].AppID, settings)
+    }
+  },
+  [MutationTypes.AppendAppUserInvitationSetting] (state: InspiresState, payload: AppUserInvitationSetting): void {
+    let appSettings = state.AppUserInvitationSettings.get(payload.AppID)
+    if (!appSettings) {
+      appSettings = new Map<string, Array<AppUserInvitationSetting>>()
+    }
+    let userSettings = appSettings?.get(payload.UserID)
+    if (!userSettings) {
+      userSettings = [] as Array<AppUserInvitationSetting>
+    }
+    userSettings.push(payload)
+    appSettings.set(payload.UserID, userSettings)
+    state.AppUserInvitationSettings.set(payload.AppID, appSettings)
+  },
+  [MutationTypes.SetAppUserPurchaseAmountSettings] (state: InspiresState, payload: Array<AppUserPurchaseAmountSetting>): void {
+    if (payload.length > 0) {
+      let settings = state.AppUserPurchaseAmountSettings.get(payload[0].AppID)
+      if (!settings) {
+        settings = new Map<string, Array<AppUserPurchaseAmountSetting>>()
+      }
+      settings.set(payload[0].UserID, payload)
+      state.AppUserPurchaseAmountSettings.set(payload[0].AppID, settings)
+    }
+  },
+  [MutationTypes.AppendAppUserPurchaseAmountSetting] (state: InspiresState, payload: AppUserPurchaseAmountSetting): void {
+    let appSettings = state.AppUserPurchaseAmountSettings.get(payload.AppID)
+    if (!appSettings) {
+      appSettings = new Map<string, Array<AppUserPurchaseAmountSetting>>()
+    }
+    let userSettings = appSettings?.get(payload.UserID)
+    if (!userSettings) {
+      userSettings = [] as Array<AppUserPurchaseAmountSetting>
+    }
+    userSettings.push(payload)
+    appSettings.set(payload.UserID, userSettings)
+    state.AppUserPurchaseAmountSettings.set(payload.AppID, appSettings)
   },
   [MutationTypes.SetInspireSelectedAppID] (state: InspiresState, payload: string): void {
     state.SelectedAppID = payload

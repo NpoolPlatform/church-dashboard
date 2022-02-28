@@ -241,6 +241,203 @@ interface GetEventCouponsByOtherAppResponse {
   Infos: Array<EventCoupon>
 }
 
+interface AppCommissionSetting {
+  ID: string
+  AppID: string
+  Type: string
+  Level: number
+  InvitationDiscount: boolean
+  UniqueSetting: boolean
+}
+
+interface CreateAppCommissionSettingForOtherAppRequest {
+  TargetAppID: string
+  Info: AppCommissionSetting
+  Message: ReqMessage
+}
+
+interface CreateAppCommissionSettingForOtherAppResponse {
+  Info: AppCommissionSetting
+}
+
+interface GetAppCommissionSettingByOtherAppRequest {
+  TargetAppID: string
+  Message: ReqMessage
+}
+
+interface GetAppCommissionSettingByOtherAppResponse {
+  Info: AppCommissionSetting
+}
+
+interface UpdateAppCommissionSettingRequest {
+  Info: AppCommissionSetting
+  Message: ReqMessage
+}
+
+interface UpdateAppCommissionSettingResponse {
+  Info: AppCommissionSetting
+}
+
+interface AppInvitationSetting {
+  ID: string
+  AppID: string
+  Count: number
+  Discount: number
+  Title: string
+  BadgeLarge: string
+  BadgeSmall: string
+}
+
+interface CreateAppInvitationSettingForOtherAppRequest {
+  TargetAppID: string
+  Info: AppInvitationSetting
+  Message: ReqMessage
+}
+
+interface CreateAppInvitationSettingForOtherAppResponse {
+  Info: AppInvitationSetting
+}
+
+interface GetAppInvitationSettingsByOtherAppRequest {
+  TargetAppID: string
+  Message: ReqMessage
+}
+
+interface GetAppInvitationSettingsByOtherAppResponse {
+  Infos: Array<AppInvitationSetting>
+}
+
+interface UpdateAppInvitationSettingRequest {
+  Info: AppInvitationSetting
+  Message: ReqMessage
+}
+
+interface UpdateAppInvitationSettingResponse {
+  Info: AppInvitationSetting
+}
+
+interface AppPurchaseAmountSetting {
+  ID: string
+  AppID: string
+  Count: number
+  Percent: number
+  Title: string
+  BadgeLarge: string
+  BadgeSmall: string
+  Start: number
+  End: string
+}
+
+interface CreateAppPurchaseAmountSettingForOtherAppRequest {
+  TargetAppID: string
+  Info: AppPurchaseAmountSetting
+  Message: ReqMessage
+}
+
+interface CreateAppPurchaseAmountSettingForOtherAppResponse {
+  Info: AppPurchaseAmountSetting
+}
+
+interface GetAppPurchaseAmountSettingsByOtherAppRequest {
+  TargetAppID: string
+  Message: ReqMessage
+}
+
+interface GetAppPurchaseAmountSettingsByOtherAppResponse {
+  Infos: Array<AppPurchaseAmountSetting>
+}
+
+interface UpdateAppPurchaseAmountSettingRequest {
+  Info: AppPurchaseAmountSetting
+  Message: ReqMessage
+}
+
+interface UpdateAppPurchaseAmountSettingResponse {
+  Info: AppPurchaseAmountSetting
+}
+
+interface AppUserInvitationSetting {
+  ID: string
+  AppID: string
+  UserID: string
+  Count: number
+  Discount: number
+  Title: string
+  BadgeLarge: string
+  BadgeSmall: string
+}
+
+interface CreateAppUserInvitationSettingForOtherAppUserRequest {
+  TargetAppID: string
+  TargetUserID: string
+  Info: AppUserInvitationSetting
+  Message: ReqMessage
+}
+
+interface CreateAppUserInvitationSettingForOtherAppUserResponse {
+  Info: AppUserInvitationSetting
+}
+
+interface GetAppUserInvitationSettingsByOtherAppRequest {
+  TargetAppID: string
+  Message: ReqMessage
+}
+
+interface GetAppUserInvitationSettingsByOtherAppResponse {
+  Infos: Array<AppUserInvitationSetting>
+}
+
+interface UpdateAppUserInvitationSettingRequest {
+  Info: AppUserInvitationSetting
+  Message: ReqMessage
+}
+
+interface UpdateAppUserInvitationSettingResponse {
+  Info: AppUserInvitationSetting
+}
+
+interface AppUserPurchaseAmountSetting {
+  ID: string
+  AppID: string
+  UserID: string
+  Count: number
+  Percent: number
+  Title: string
+  BadgeLarge: string
+  BadgeSmall: string
+  Start: number
+  End: string
+}
+
+interface CreateAppUserPurchaseAmountSettingForOtherAppUserRequest {
+  TargetAppID: string
+  TargetUserID: string
+  Info: AppUserPurchaseAmountSetting
+  Message: ReqMessage
+}
+
+interface CreateAppUserPurchaseAmountSettingForOtherAppUserResponse {
+  Info: AppUserPurchaseAmountSetting
+}
+
+interface GetAppUserPurchaseAmountSettingsByOtherAppRequest {
+  TargetAppID: string
+  Message: ReqMessage
+}
+
+interface GetAppUserPurchaseAmountSettingsByOtherAppResponse {
+  Infos: Array<AppUserPurchaseAmountSetting>
+}
+
+interface UpdateAppUserPurchaseAmountSettingRequest {
+  Info: AppUserPurchaseAmountSetting
+  Message: ReqMessage
+}
+
+interface UpdateAppUserPurchaseAmountSettingResponse {
+  Info: AppUserPurchaseAmountSetting
+}
+
 export {
   UserInvitationCode,
   GetUserInvitationCodesByOtherAppRequest,
@@ -284,5 +481,40 @@ export {
   CreateEventCouponForOtherAppRequest,
   CreateEventCouponForOtherAppResponse,
   GetEventCouponsByOtherAppRequest,
-  GetEventCouponsByOtherAppResponse
+  GetEventCouponsByOtherAppResponse,
+  AppCommissionSetting,
+  CreateAppCommissionSettingForOtherAppRequest,
+  CreateAppCommissionSettingForOtherAppResponse,
+  GetAppCommissionSettingByOtherAppRequest,
+  GetAppCommissionSettingByOtherAppResponse,
+  UpdateAppCommissionSettingRequest,
+  UpdateAppCommissionSettingResponse,
+  AppInvitationSetting,
+  CreateAppInvitationSettingForOtherAppRequest,
+  CreateAppInvitationSettingForOtherAppResponse,
+  GetAppInvitationSettingsByOtherAppRequest,
+  GetAppInvitationSettingsByOtherAppResponse,
+  UpdateAppInvitationSettingRequest,
+  UpdateAppInvitationSettingResponse,
+  AppPurchaseAmountSetting,
+  CreateAppPurchaseAmountSettingForOtherAppRequest,
+  CreateAppPurchaseAmountSettingForOtherAppResponse,
+  GetAppPurchaseAmountSettingsByOtherAppRequest,
+  GetAppPurchaseAmountSettingsByOtherAppResponse,
+  UpdateAppPurchaseAmountSettingRequest,
+  UpdateAppPurchaseAmountSettingResponse,
+  AppUserInvitationSetting,
+  CreateAppUserInvitationSettingForOtherAppUserRequest,
+  CreateAppUserInvitationSettingForOtherAppUserResponse,
+  GetAppUserInvitationSettingsByOtherAppRequest,
+  GetAppUserInvitationSettingsByOtherAppResponse,
+  UpdateAppUserInvitationSettingRequest,
+  UpdateAppUserInvitationSettingResponse,
+  AppUserPurchaseAmountSetting,
+  CreateAppUserPurchaseAmountSettingForOtherAppUserRequest,
+  CreateAppUserPurchaseAmountSettingForOtherAppUserResponse,
+  GetAppUserPurchaseAmountSettingsByOtherAppRequest,
+  GetAppUserPurchaseAmountSettingsByOtherAppResponse,
+  UpdateAppUserPurchaseAmountSettingRequest,
+  UpdateAppUserPurchaseAmountSettingResponse
 }

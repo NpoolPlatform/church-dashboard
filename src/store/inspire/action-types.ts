@@ -22,5 +22,25 @@ export enum ActionTypes {
   GetCouponsAllocatedByOtherApp = 'GET_COUPONS_ALLOCATED_BY_OTHER_APP',
 
   CreateEventCouponForOtherApp = 'CREATE_EVENT_COUPON_FOR_OTHER_APP',
-  GetEventCouponsByOtherApp = 'GET_EVENT_COUPONS_BY_OTHER_APP'
+  GetEventCouponsByOtherApp = 'GET_EVENT_COUPONS_BY_OTHER_APP',
+
+  CreateAppCommissionSettingForOtherApp = 'CREATE_APP_COMMISSION_SETTING_FOR_OTHER_APP',
+  UpdateAppCommissionSetting = 'UPDATE_APP_COMMISSION_SETTING',
+  GetAppCommissionSettingByOtherApp = 'GET_APP_COMMISSION_SETTING_BY_OTHER_APP',
+
+  CreateAppInvitationSettingForOtherApp = 'CREATE_APP_INVITATION_SETTING_FOR_OTHER_APP',
+  UpdateAppInvitationSetting = 'UPDATE_APP_INVITATION_SETTING',
+  GetAppInvitationSettingsByOtherApp = 'GET_APP_INVITATION_SETTINGS_BY_OTHER_APP',
+
+  CreateAppPurchaseAmountSettingForOtherApp = 'CREATE_APP_PURCHASE_AMOUNT_SETTING_FOR_OTHER_APP',
+  UpdateAppPurchaseAmountSetting = 'UPDATE_APP_PURCHASE_AMOUNT_SETTING',
+  GetAppPurchaseAmountSettingsByOtherApp = 'GET_APP_PURCHASE_AMOUNT_SETTINGS_BY_OTHER_APP',
+
+  CreateAppUserInvitationSettingForOtherApp = 'CREATE_APP_USER_INVITATION_SETTING_FOR_OTHER_APP',
+  UpdateAppUserInvitationSetting = 'UPDATE_APP_USER_INVITATION_SETTING',
+  GetAppUserInvitationSettingsByOtherApp = 'GET_APP_USER_INVITATION_SETTINGS_BY_OTHER_APP',
+
+  CreateAppUserPurchaseAmountSettingForOtherApp = 'CREATE_APP_USER_PURCHASE_AMOUNT_SETTING_FOR_OTHER_APP',
+  UpdateAppUserPurchaseAmountSetting = 'UPDATE_APP_USER_PURCHASE_AMOUNT_SETTING',
+  GetAppUserPurchaseAmountSettingsByOtherApp = 'GET_APP_USER_PURCHASE_AMOUNT_SETTINGS_BY_OTHER_APP',
 }
