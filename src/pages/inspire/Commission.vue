@@ -11,7 +11,10 @@
     <template #top-right>
       <div class='row'>
         <q-space />
-        <q-btn :label='t("MSG_SET_AS_COMMISSION_COIN")' @click='onSetCommissionCoin' />
+        <div>
+          <q-btn :label='t("MSG_SET_AS_COMMISSION_COIN")' @click='onSetCommissionCoin' />
+          <q-item-label>{{ t('MSG_STABLE_COIN_ONLY') }}</q-item-label>
+        </div>
       </div>
     </template>
   </q-table>

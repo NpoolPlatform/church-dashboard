@@ -261,5 +261,6 @@ export default {
   MSG_CREATE_APP_USER_PURCHASE_AMOUNT_SETTING_FAIL: 'You failed to create app user purchase amount setting',
   MSG_SET_AS_COMMISSION_COIN: '设置为佣金结算币种',
   MSG_CREATE_COMMISSION_COIN_SETTING_FAIL: 'You failed to create commission coin setting',
-  MSG_GET_COMMISSION_COINS_FAIL: 'You failed to get commission coins'
+  MSG_GET_COMMISSION_COINS_FAIL: 'You failed to get commission coins',
+  MSG_STABLE_COIN_ONLY: '仅美元稳定币可供选择,否则佣金将出现混乱'
 }
