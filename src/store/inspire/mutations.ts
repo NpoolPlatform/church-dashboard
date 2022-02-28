@@ -7,6 +7,7 @@ import {
   AppInvitationSetting,
   AppPurchaseAmountSetting,
   AppUserPurchaseAmountSetting,
+  CommissionCoinSetting,
   CouponAllocated,
   CouponPool,
   DiscountPool,
@@ -37,6 +38,8 @@ type InspireMutations<S = InspiresState> = {
   [MutationTypes.AppendAppPurchaseAmountSetting] (state: S, payload: AppPurchaseAmountSetting): void
   [MutationTypes.SetAppUserPurchaseAmountSettings] (state: S, payload: Array<AppUserPurchaseAmountSetting>): void
   [MutationTypes.AppendAppUserPurchaseAmountSetting] (state: S, payload: AppUserPurchaseAmountSetting): void
+  [MutationTypes.SetCommissionCoins] (state: S, payload: Array<CommissionCoinSetting>): void
+  [MutationTypes.AppendCommissionCoin] (state: S, payload: CommissionCoinSetting): void
   [MutationTypes.SetInspireSelectedAppID] (state: S, payload: string): void
 }
 
@@ -183,6 +186,12 @@ const mutations: MutationTree<InspiresState> & InspireMutations = {
     userSettings.push(payload)
     appSettings.set(payload.UserID, userSettings)
     state.AppUserPurchaseAmountSettings.set(payload.AppID, appSettings)
+  },
+  [MutationTypes.SetCommissionCoins] (state: InspiresState, payload: Array<CommissionCoinSetting>): void {
+    state.CommissionCoins = payload
+  },
+  [MutationTypes.AppendCommissionCoin] (state: InspiresState, payload: CommissionCoinSetting): void {
+    state.CommissionCoins.push(payload)
   },
   [MutationTypes.SetInspireSelectedAppID] (state: InspiresState, payload: string): void {
     state.SelectedAppID = payload

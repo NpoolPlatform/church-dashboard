@@ -17,6 +17,8 @@ import {
   CreateAppPurchaseAmountSettingForOtherAppResponse,
   CreateAppUserPurchaseAmountSettingForOtherAppUserRequest,
   CreateAppUserPurchaseAmountSettingForOtherAppUserResponse,
+  CreateCommissionCoinSettingRequest,
+  CreateCommissionCoinSettingResponse,
   CreateCouponAllocatedForOtherAppUserRequest,
   CreateCouponAllocatedForOtherAppUserResponse,
   CreateCouponPoolForOtherAppRequest,
@@ -39,6 +41,8 @@ import {
   GetAppPurchaseAmountSettingsByOtherAppResponse,
   GetAppUserPurchaseAmountSettingsByOtherAppRequest,
   GetAppUserPurchaseAmountSettingsByOtherAppResponse,
+  GetCommissionCoinSettingsRequest,
+  GetCommissionCoinSettingsResponse,
   GetCouponPoolsByOtherAppRequest,
   GetCouponPoolsByOtherAppResponse,
   GetCouponsAllocatedByOtherAppRequest,
@@ -297,7 +301,7 @@ interface InspireActions {
   [ActionTypes.UpdateAppUserPurchaseAmountSetting]({
     commit
   }: AugmentedActionContext<
-  InspiresState,
+    InspiresState,
     RootState,
     InspireMutations<InspiresState>>,
     req: UpdateAppUserPurchaseAmountSettingRequest): void
@@ -305,10 +309,26 @@ interface InspireActions {
   [ActionTypes.GetAppUserPurchaseAmountSettingsByOtherApp]({
     commit
   }: AugmentedActionContext<
-  InspiresState,
+    InspiresState,
     RootState,
     InspireMutations<InspiresState>>,
     req: GetAppUserPurchaseAmountSettingsByOtherAppRequest): void
+
+  [ActionTypes.GetCommissionCoinSettings]({
+    commit
+  }: AugmentedActionContext<
+    InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: GetCommissionCoinSettingsRequest): void
+
+  [ActionTypes.CreateCommissionCoinSetting]({
+    commit
+  }: AugmentedActionContext<
+    InspiresState,
+    RootState,
+    InspireMutations<InspiresState>>,
+    req: CreateCommissionCoinSettingRequest): void
 }
 
 const actions: ActionTree<InspiresState, RootState> = {
@@ -510,8 +530,6 @@ const actions: ActionTree<InspiresState, RootState> = {
       })
   },
 
-  // ---------------------------------------------------------------------------------------
-
   [ActionTypes.CreateAppCommissionSettingForOtherApp] ({ commit }, req: CreateAppCommissionSettingForOtherAppRequest) {
     doAction<CreateAppCommissionSettingForOtherAppRequest, CreateAppCommissionSettingForOtherAppResponse>(
       commit,
@@ -641,6 +659,28 @@ const actions: ActionTree<InspiresState, RootState> = {
       req.Message,
       (resp: GetAppUserPurchaseAmountSettingsByOtherAppResponse): void => {
         commit(MutationTypes.SetAppUserPurchaseAmountSettings, resp.Infos)
+      })
+  },
+
+  [ActionTypes.CreateCommissionCoinSetting] ({ commit }, req: CreateCommissionCoinSettingRequest) {
+    doAction<CreateCommissionCoinSettingRequest, CreateCommissionCoinSettingResponse>(
+      commit,
+      API.CREATE_COMMISSION_COIN_SETTING,
+      req,
+      req.Message,
+      (resp: CreateCommissionCoinSettingResponse): void => {
+        commit(MutationTypes.AppendCommissionCoin, resp.Info)
+      })
+  },
+
+  [ActionTypes.GetCommissionCoinSettings] ({ commit }, req: GetCommissionCoinSettingsRequest) {
+    doAction<GetCommissionCoinSettingsRequest, GetCommissionCoinSettingsResponse>(
+      commit,
+      API.GET_COMMISSION_COINS_SETTINGS,
+      req,
+      req.Message,
+      (resp: GetCommissionCoinSettingsResponse): void => {
+        commit(MutationTypes.SetCommissionCoins, resp.Infos)
       })
   }
 }

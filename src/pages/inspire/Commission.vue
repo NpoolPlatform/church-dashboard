@@ -1,6 +1,26 @@
 <template>
   <ApplicationSelector v-model:selected-app-id='selectedAppID' />
   <q-table
+    v-model:selected='selectedCoin'
+    flat
+    dense
+    :rows='coins'
+    selection='single'
+    row-key='ID'
+  >
+    <template #top-right>
+      <div class='row'>
+        <q-space />
+        <q-btn :label='t("MSG_SET_AS_COMMISSION_COIN")' @click='onSetCommissionCoin' />
+      </div>
+    </template>
+  </q-table>
+  <q-table
+    flat
+    dense
+    :rows='commissionCoins'
+  />
+  <q-table
     v-model:selected='selectedUser'
     flat
     dense
@@ -117,6 +137,7 @@ import { FunctionVoid } from 'src/types/types'
 import { MutationTypes as InspireMutationTypes } from 'src/store/inspire/mutation-types'
 import { ActionTypes as ApplicationActionTypes } from 'src/store/applications/action-types'
 import { ActionTypes as UserActionTypes } from 'src/store/user-helper/action-types'
+import { ActionTypes as CoinActionTypes } from 'src/store/coins/action-types'
 import {
   AppCommissionSetting,
   AppInvitationSetting,
@@ -124,6 +145,7 @@ import {
   AppUserPurchaseAmountSetting
 } from 'src/store/inspire/types'
 import { AppUser } from 'src/store/user-helper/types'
+import { Coin } from 'src/store/coins/types'
 
 const ApplicationSelector = defineAsyncComponent(() => import('src/components/dropdown/ApplicationSelector.vue'))
 const CreateAppCommissionSetting = defineAsyncComponent(() => import('src/components/inspire/CreateAppCommissionSetting.vue'))
@@ -171,12 +193,16 @@ const selectedUserID = computed(() => {
 })
 const editUser = ref(selectedUser.value.length > 0 ? selectedUser.value[0] : undefined as unknown as AppUser)
 
+const coins = computed(() => store.getters.getCoins)
+const selectedCoin = ref([] as Array<Coin>)
+
 const appCommissionSetting = computed(() => store.getters.getAppCommissionSettingByAppID(selectedAppID.value))
 const selectedAppCommissionSetting = ref(undefined as unknown as AppCommissionSetting)
 
 const appInvitationSettings = computed(() => store.getters.getAppInvitationSettingsByAppID(selectedAppID.value))
 const appPurchaseAmountSettings = computed(() => store.getters.getAppPurchaseAmountSettingsByAppID(selectedAppID.value))
 const appUserPurchaseAmountSettings = computed(() => store.getters.getAppUserPurchaseAmountSettingsByAppUser(selectedAppID.value, selectedUserID.value as string))
+const commissionCoins = computed(() => store.getters.getCommissionCoins)
 
 const loading = ref(false)
 
@@ -246,6 +272,17 @@ watch(selectedAppID, () => {
 })
 
 onMounted(() => {
+  store.dispatch(CoinActionTypes.GetCoins, {
+    Message: {
+      ModuleKey: ModuleKey.ModuleInspire,
+      Error: {
+        Title: t('MSG_GET_COINS_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+  })
+
   store.dispatch(ApplicationActionTypes.GetApplications, {
     Message: {
       ModuleKey: ModuleKey.ModuleInspire,
@@ -257,9 +294,33 @@ onMounted(() => {
     }
   })
 
+  store.dispatch(InspireActionTypes.GetCommissionCoinSettings, {
+    Message: {
+      ModuleKey: ModuleKey.ModuleInspire,
+      Error: {
+        Title: t('MSG_GET_COMMISSION_COINS_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+  })
+
   unsubscribe.value = store.subscribe((mutation) => {
     if (mutation.type === InspireMutationTypes.SetAppInvitationSettings) {
       loading.value = false
+    }
+
+    if (mutation.type === InspireMutationTypes.AppendCommissionCoin) {
+      store.dispatch(InspireActionTypes.GetCommissionCoinSettings, {
+        Message: {
+          ModuleKey: ModuleKey.ModuleInspire,
+          Error: {
+            Title: t('MSG_GET_COMMISSION_COINS_FAIL'),
+            Popup: true,
+            Type: NotificationType.Error
+          }
+        }
+      })
     }
   })
 })
@@ -341,6 +402,25 @@ const onAppUserPurchaseAmountSettingClick = (setting: AppUserPurchaseAmountSetti
   addingType.value = AddingType.AddingTypeAppUserPurchaseAmountSetting
   updating.value = true
   modifying.value = true
+}
+
+const onSetCommissionCoin = () => {
+  selectedCoin.value.forEach((coin) => {
+    store.dispatch(InspireActionTypes.CreateCommissionCoinSetting, {
+      Info: {
+        CoinTypeID: coin.ID as string,
+        Using: true
+      },
+      Message: {
+        ModuleKey: ModuleKey.ModuleInspire,
+        Error: {
+          Title: t('MSG_CREATE_COMMISSION_COIN_SETTING_FAIL'),
+          Popup: true,
+          Type: NotificationType.Error
+        }
+      }
+    })
+  })
 }
 
 const onMenuHide = () => {

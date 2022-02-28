@@ -5,6 +5,7 @@ import {
   AppInvitationSetting,
   AppPurchaseAmountSetting,
   AppUserPurchaseAmountSetting,
+  CommissionCoinSetting,
   CouponAllocated,
   CouponPool,
   DiscountPool,
@@ -24,7 +25,8 @@ interface InspiresState {
   AppCommissionSettings: Map<string, AppCommissionSetting>
   AppInvitationSettings: Map<string, Array<AppInvitationSetting>>
   AppPurchaseAmountSettings: Map<string, Array<AppPurchaseAmountSetting>>
-  AppUserPurchaseAmountSettings: Map<string, Map<string, Array<AppUserPurchaseAmountSetting>>>
+  AppUserPurchaseAmountSettings: Map<string, Map<string, Array<AppUserPurchaseAmountSetting>>>,
+  CommissionCoins: Array<CommissionCoinSetting>
   SelectedAppID: string
 }
 
@@ -41,6 +43,7 @@ function state (): InspiresState {
     AppInvitationSettings: new Map<string, Array<AppInvitationSetting>>(),
     AppPurchaseAmountSettings: new Map<string, Array<AppPurchaseAmountSetting>>(),
     AppUserPurchaseAmountSettings: new Map<string, Map<string, Array<AppUserPurchaseAmountSetting>>>(),
+    CommissionCoins: [],
     SelectedAppID: AppID
   }
 }

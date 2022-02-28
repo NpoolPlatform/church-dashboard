@@ -398,6 +398,29 @@ interface UpdateAppUserPurchaseAmountSettingResponse {
   Info: AppUserPurchaseAmountSetting
 }
 
+interface CommissionCoinSetting {
+  ID?: string
+  CoinTypeID: string
+  Using: boolean
+}
+
+interface GetCommissionCoinSettingsRequest {
+  Message: ReqMessage
+}
+
+interface GetCommissionCoinSettingsResponse {
+  Infos: Array<CommissionCoinSetting>
+}
+
+interface CreateCommissionCoinSettingRequest {
+  Info: CommissionCoinSetting
+  Message: ReqMessage
+}
+
+interface CreateCommissionCoinSettingResponse {
+  Info: CommissionCoinSetting
+}
+
 export {
   UserInvitationCode,
   GetUserInvitationCodesByOtherAppRequest,
@@ -469,5 +492,10 @@ export {
   GetAppUserPurchaseAmountSettingsByOtherAppRequest,
   GetAppUserPurchaseAmountSettingsByOtherAppResponse,
   UpdateAppUserPurchaseAmountSettingRequest,
-  UpdateAppUserPurchaseAmountSettingResponse
+  UpdateAppUserPurchaseAmountSettingResponse,
+  CommissionCoinSetting,
+  GetCommissionCoinSettingsRequest,
+  GetCommissionCoinSettingsResponse,
+  CreateCommissionCoinSettingRequest,
+  CreateCommissionCoinSettingResponse
 }

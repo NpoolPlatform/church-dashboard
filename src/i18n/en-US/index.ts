@@ -258,5 +258,8 @@ export default {
   MSG_CREATE_APP_USER_PURCHASE_AMOUNT_SETTING: '创建APP用户购买设置',
   MSG_APP_USER_PURCHASE_AMOUNT_SETTING: 'APP用户购买设置',
   MSG_CREATE_APP_PURCHASE_AMOUNT_SETTING_FAIL: 'You failed to create app purchase amount setting',
-  MSG_CREATE_APP_USER_PURCHASE_AMOUNT_SETTING_FAIL: 'You failed to create app user purchase amount setting'
+  MSG_CREATE_APP_USER_PURCHASE_AMOUNT_SETTING_FAIL: 'You failed to create app user purchase amount setting',
+  MSG_SET_AS_COMMISSION_COIN: '设置为佣金结算币种',
+  MSG_CREATE_COMMISSION_COIN_SETTING_FAIL: 'You failed to create commission coin setting',
+  MSG_GET_COMMISSION_COINS_FAIL: 'You failed to get commission coins'
 }

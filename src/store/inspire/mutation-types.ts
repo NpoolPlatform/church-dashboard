@@ -34,5 +34,8 @@ export enum MutationTypes {
   SetAppUserPurchaseAmountSettings = 'SET_APP_USER_PURCHASE_AMOUNT_SETTINGS',
   AppendAppUserPurchaseAmountSetting = 'APPEND_APP_USER_PURCHASE_AMOUNT_SETTING',
 
+  SetCommissionCoins = 'SET_COMMISSION_COINS',
+  AppendCommissionCoin = 'APPEND_COMMISSION_COIN',
+
   SetInspireSelectedAppID = 'SET_INSPIRE_SELECTED_APP_ID'
 }
