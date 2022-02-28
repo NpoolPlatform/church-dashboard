@@ -36,11 +36,7 @@ enum API {
   UPDATE_APP_PURCHASE_AMOUNT_SETTING = '/cloud-hashing-inspire/v1/update/app/purchase/amount/setting',
   GET_APP_PURCHASE_AMOUNT_SETTINGS_BY_OTHER_APP = '/cloud-hashing-inspire/v1/get/app/purchase/amount/settings/by/other/app',
 
-  CREATE_APP_USER_INVITATION_SETTING_FOR_OTHER_APP = '/cloud-hashing-inspire/v1/create/app/user/invitation/setting/for/other/app',
-  UPDATE_APP_USER_INVITATION_SETTING = '/cloud-hashing-inspire/v1/update/app/user/invitation/setting',
-  GET_APP_USER_INVITATION_SETTINGS_BY_OTHER_APP = '/cloud-hashing-inspire/v1/get/app/user/invitation/settings/by/other/app',
-
-  CREATE_APP_USER_PURCHASE_AMOUNT_SETTING_FOR_OTHER_APP = '/cloud-hashing-inspire/v1/create/app/user/purchase/amount/setting/for/other/app',
+  CREATE_APP_USER_PURCHASE_AMOUNT_SETTING_FOR_OTHER_APP_USER = '/cloud-hashing-inspire/v1/create/app/user/purchase/amount/setting/for/other/app/user',
   UPDATE_APP_USER_PURCHASE_AMOUNT_SETTING = '/cloud-hashing-inspire/v1/update/app/user/purchase/amount/setting',
   GET_APP_USER_PURCHASE_AMOUNT_SETTINGS_BY_OTHER_APP = '/cloud-hashing-inspire/v1/get/app/user/purchase/amount/settings/by/other/app'
 }

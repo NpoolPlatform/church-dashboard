@@ -356,51 +356,11 @@ interface UpdateAppPurchaseAmountSettingResponse {
   Info: AppPurchaseAmountSetting
 }
 
-interface AppUserInvitationSetting {
-  ID: string
-  AppID: string
-  UserID: string
-  Count: number
-  Discount: number
-  Title: string
-  BadgeLarge: string
-  BadgeSmall: string
-}
-
-interface CreateAppUserInvitationSettingForOtherAppUserRequest {
-  TargetAppID: string
-  TargetUserID: string
-  Info: AppUserInvitationSetting
-  Message: ReqMessage
-}
-
-interface CreateAppUserInvitationSettingForOtherAppUserResponse {
-  Info: AppUserInvitationSetting
-}
-
-interface GetAppUserInvitationSettingsByOtherAppRequest {
-  TargetAppID: string
-  Message: ReqMessage
-}
-
-interface GetAppUserInvitationSettingsByOtherAppResponse {
-  Infos: Array<AppUserInvitationSetting>
-}
-
-interface UpdateAppUserInvitationSettingRequest {
-  Info: AppUserInvitationSetting
-  Message: ReqMessage
-}
-
-interface UpdateAppUserInvitationSettingResponse {
-  Info: AppUserInvitationSetting
-}
-
 interface AppUserPurchaseAmountSetting {
   ID: string
   AppID: string
   UserID: string
-  Count: number
+  Amount: number
   Percent: number
   Title: string
   BadgeLarge: string
@@ -503,13 +463,6 @@ export {
   GetAppPurchaseAmountSettingsByOtherAppResponse,
   UpdateAppPurchaseAmountSettingRequest,
   UpdateAppPurchaseAmountSettingResponse,
-  AppUserInvitationSetting,
-  CreateAppUserInvitationSettingForOtherAppUserRequest,
-  CreateAppUserInvitationSettingForOtherAppUserResponse,
-  GetAppUserInvitationSettingsByOtherAppRequest,
-  GetAppUserInvitationSettingsByOtherAppResponse,
-  UpdateAppUserInvitationSettingRequest,
-  UpdateAppUserInvitationSettingResponse,
   AppUserPurchaseAmountSetting,
   CreateAppUserPurchaseAmountSettingForOtherAppUserRequest,
   CreateAppUserPurchaseAmountSettingForOtherAppUserResponse,

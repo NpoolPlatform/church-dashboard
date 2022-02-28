@@ -53,21 +53,20 @@
     </template>
   </q-table>
   <q-table
-    v-model:selected='selectedAppUserInvitationSetting'
-    flat
-    dense
-    :rows='appUserInvitationSettings ? appUserInvitationSettings : []'
-    selection='single'
-    row-key='ID'
-  />
-  <q-table
     v-model:selected='selectedAppUserPurchaseAmountSetting'
     flat
     dense
     :rows='appUserPurchaseAmountSettings ? appUserPurchaseAmountSettings : []'
-    selection='single'
-    row-key='ID'
-  />
+    :title='t("MSG_APP_USER_PURCHASE_AMOUNT_SETTING")'
+    @row-click='(evt, row, index) => onAppUserPurchaseAmountSettingClick(row as AppUserPurchaseAmountSetting)'
+  >
+    <template #top-right>
+      <div class='row'>
+        <q-space />
+        <q-btn :label='t("MSG_CREATE")' @click='onCreateAppUserPurchaseAmountSetting' />
+      </div>
+    </template>
+  </q-table>
   <q-dialog
     v-model='modifying'
     position='right'
@@ -91,11 +90,19 @@
       @submit='onSubmitAppInvitationSetting'
     />
     <CreateAppPurchaseAmountSetting
-      v-if='addingType === AddingType.AddingTypePurchaseAmountSetting'
+      v-if='addingType === AddingType.AddingTypeAppPurchaseAmountSetting'
       v-model:edit-setting='editAppPurchaseAmountSetting'
       v-model:selected-app='selectedApp'
       @update='onUpdateAppPurchaseAmountSetting'
       @submit='onSubmitAppPurchaseAmountSetting'
+    />
+    <CreateAppUserPurchaseAmountSetting
+      v-if='addingType === AddingType.AddingTypeAppUserPurchaseAmountSetting'
+      v-model:edit-setting='editAppUserPurchaseAmountSetting'
+      v-model:selected-app='selectedApp'
+      v-model:selected-user='editUser'
+      @update='onUpdateAppUserPurchaseAmountSetting'
+      @submit='onSubmitAppUserPurchaseAmountSetting'
     />
   </q-dialog>
 </template>
@@ -114,7 +121,6 @@ import {
   AppCommissionSetting,
   AppInvitationSetting,
   AppPurchaseAmountSetting,
-  AppUserInvitationSetting,
   AppUserPurchaseAmountSetting
 } from 'src/store/inspire/types'
 import { AppUser } from 'src/store/user-helper/types'
@@ -123,8 +129,7 @@ const ApplicationSelector = defineAsyncComponent(() => import('src/components/dr
 const CreateAppCommissionSetting = defineAsyncComponent(() => import('src/components/inspire/CreateAppCommissionSetting.vue'))
 const CreateAppInvitationSetting = defineAsyncComponent(() => import('src/components/inspire/CreateAppInvitationSetting.vue'))
 const CreateAppPurchaseAmountSetting = defineAsyncComponent(() => import('src/components/inspire/CreateAppPurchaseAmountSetting.vue'))
-// const CreateAppUserInvitationSetting = defineAsyncComponent(() => import('src/components/inspire/CreateAppUserInvitationSetting.vue'))
-// const CreateAppUserPurchaseAmountSetting = defineAsyncComponent(() => import('src/components/inspire/CreateAppUserPurchaseAmountSetting.vue'))
+const CreateAppUserPurchaseAmountSetting = defineAsyncComponent(() => import('src/components/inspire/CreateAppUserPurchaseAmountSetting.vue'))
 
 const store = useStore()
 // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -144,8 +149,8 @@ const editAppInvitationSetting = ref(undefined as unknown as AppInvitationSettin
 const selectedAppPurchaseAmountSetting = ref([] as Array<AppPurchaseAmountSetting>)
 const editAppPurchaseAmountSetting = ref(undefined as unknown as AppPurchaseAmountSetting)
 
-const selectedAppUserInvitationSetting = ref([] as Array<AppUserInvitationSetting>)
 const selectedAppUserPurchaseAmountSetting = ref([] as Array<AppUserPurchaseAmountSetting>)
+const editAppUserPurchaseAmountSetting = ref(undefined as unknown as AppUserPurchaseAmountSetting)
 
 const users = computed(() => store.getters.getAppUserInfosByAppID(selectedAppID.value))
 const myUsers = computed(() => {
@@ -164,13 +169,13 @@ const selectedUserID = computed(() => {
   }
   return undefined
 })
+const editUser = computed(() => selectedUser.value.length > 0 ? selectedUser.value[0] : undefined as unknown as AppUser)
 
 const appCommissionSetting = computed(() => store.getters.getAppCommissionSettingByAppID(selectedAppID.value))
 const selectedAppCommissionSetting = ref(undefined as unknown as AppCommissionSetting)
 
 const appInvitationSettings = computed(() => store.getters.getAppInvitationSettingsByAppID(selectedAppID.value))
 const appPurchaseAmountSettings = computed(() => store.getters.getAppPurchaseAmountSettingsByAppID(selectedAppID.value))
-const appUserInvitationSettings = computed(() => store.getters.getAppUserInvitationSettingsByAppUser(selectedAppID.value, selectedUserID.value as string))
 const appUserPurchaseAmountSettings = computed(() => store.getters.getAppUserPurchaseAmountSettingsByAppUser(selectedAppID.value, selectedUserID.value as string))
 
 const loading = ref(false)
@@ -227,18 +232,6 @@ watch(selectedAppID, () => {
     }
   })
 
-  store.dispatch(InspireActionTypes.GetAppUserInvitationSettingsByOtherApp, {
-    TargetAppID: selectedAppID.value,
-    Message: {
-      ModuleKey: ModuleKey.ModuleInspire,
-      Error: {
-        Title: t('MSG_GET_APP_USER_INVITATION_SETTINGS_FAIL'),
-        Popup: true,
-        Type: NotificationType.Error
-      }
-    }
-  })
-
   store.dispatch(InspireActionTypes.GetAppUserPurchaseAmountSettingsByOtherApp, {
     TargetAppID: selectedAppID.value,
     Message: {
@@ -283,7 +276,8 @@ enum AddingType {
   AddingNone = 'none',
   AddingAppCommissionSetting = 'app-commission-setting',
   AddingAppInvitationSetting = 'app-invitation-setting',
-  AddingTypePurchaseAmountSetting = 'app-purchase-amount-setting'
+  AddingTypeAppPurchaseAmountSetting = 'app-purchase-amount-setting',
+  AddingTypeAppUserPurchaseAmountSetting = 'app-user-purchase-amount-setting'
 }
 const addingType = ref(AddingType.AddingNone)
 
@@ -314,14 +308,31 @@ const onAppInvitationSettingClick = (setting: AppInvitationSetting) => {
 }
 
 const onCreateAppPurchaseAmountSetting = () => {
-  addingType.value = AddingType.AddingTypePurchaseAmountSetting
+  addingType.value = AddingType.AddingTypeAppPurchaseAmountSetting
   adding.value = true
   modifying.value = true
 }
 
 const onAppPurchaseAmountSettingClick = (setting: AppPurchaseAmountSetting) => {
   editAppPurchaseAmountSetting.value = setting
-  addingType.value = AddingType.AddingTypePurchaseAmountSetting
+  addingType.value = AddingType.AddingTypeAppPurchaseAmountSetting
+  updating.value = true
+  modifying.value = true
+}
+
+const onCreateAppUserPurchaseAmountSetting = () => {
+  if (!editUser.value) {
+    return
+  }
+
+  addingType.value = AddingType.AddingTypeAppUserPurchaseAmountSetting
+  adding.value = true
+  modifying.value = true
+}
+
+const onAppUserPurchaseAmountSettingClick = (setting: AppUserPurchaseAmountSetting) => {
+  editAppUserPurchaseAmountSetting.value = setting
+  addingType.value = AddingType.AddingTypeAppUserPurchaseAmountSetting
   updating.value = true
   modifying.value = true
 }
@@ -334,6 +345,8 @@ const onMenuHide = () => {
 
   selectedAppCommissionSetting.value = undefined as unknown as AppCommissionSetting
   editAppInvitationSetting.value = undefined as unknown as AppInvitationSetting
+  editAppPurchaseAmountSetting.value = undefined as unknown as AppPurchaseAmountSetting
+  editAppUserPurchaseAmountSetting.value = undefined as unknown as AppUserPurchaseAmountSetting
 }
 
 const onUpdateAppCommissionSetting = (setting: AppCommissionSetting) => {
@@ -378,7 +391,7 @@ const onSubmitAppInvitationSetting = (setting: AppInvitationSetting) => {
     Message: {
       ModuleKey: ModuleKey.ModuleInspire,
       Error: {
-        Title: t('MSG_CREATE_APP_COMMISSION_SETTING_FAIL'),
+        Title: t('MSG_CREATE_APP_INVITATION_SETTING_FAIL'),
         Popup: true,
         Type: NotificationType.Error
       }
@@ -404,7 +417,34 @@ const onSubmitAppPurchaseAmountSetting = (setting: AppPurchaseAmountSetting) => 
     Message: {
       ModuleKey: ModuleKey.ModuleInspire,
       Error: {
-        Title: t('MSG_CREATE_APP_COMMISSION_SETTING_FAIL'),
+        Title: t('MSG_CREATE_APP_PURCHASE_AMOUNT_SETTING_FAIL'),
+        Popup: true,
+        Type: NotificationType.Error
+      }
+    }
+  })
+
+  onMenuHide()
+}
+
+const onUpdateAppUserPurchaseAmountSetting = (setting: AppUserPurchaseAmountSetting) => {
+  console.log(setting)
+}
+
+const onSubmitAppUserPurchaseAmountSetting = (setting: AppUserPurchaseAmountSetting) => {
+  let action = InspireActionTypes.CreateAppUserPurchaseAmountSettingForOtherAppUser
+  if (updating.value) {
+    action = InspireActionTypes.UpdateAppUserPurchaseAmountSetting
+  }
+
+  store.dispatch(action, {
+    TargetAppID: selectedAppID.value,
+    TargetUserID: editUser.value.ID,
+    Info: setting,
+    Message: {
+      ModuleKey: ModuleKey.ModuleInspire,
+      Error: {
+        Title: t('MSG_CREATE_APP_USER_PURCHASE_AMOUNT_SETTING_FAIL'),
         Popup: true,
         Type: NotificationType.Error
       }

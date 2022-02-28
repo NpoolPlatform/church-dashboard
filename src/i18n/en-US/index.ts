@@ -254,5 +254,9 @@ export default {
   MSG_COMMISSION_PERCENT: '佣金百分比率',
   MSG_CREATE_APP_PURCHASE_AMOUNT_SETTING: '创建APP购买金额设置',
   MSG_APP_PURCHASE_AMOUNT_SETTING: 'APP购买金额设置',
-  MSG_PURCHASE_AMOUNT: '购买总金额'
+  MSG_PURCHASE_AMOUNT: '购买总金额',
+  MSG_CREATE_APP_USER_PURCHASE_AMOUNT_SETTING: '创建APP用户购买设置',
+  MSG_APP_USER_PURCHASE_AMOUNT_SETTING: 'APP用户购买设置',
+  MSG_CREATE_APP_PURCHASE_AMOUNT_SETTING_FAIL: 'You failed to create app purchase amount setting',
+  MSG_CREATE_APP_USER_PURCHASE_AMOUNT_SETTING_FAIL: 'You failed to create app user purchase amount setting'
 }

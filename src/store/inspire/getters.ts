@@ -6,7 +6,6 @@ import {
   AppCommissionSetting,
   AppInvitationSetting,
   AppPurchaseAmountSetting,
-  AppUserInvitationSetting,
   AppUserPurchaseAmountSetting,
   CouponAllocated,
   CouponPool,
@@ -27,7 +26,6 @@ type InspireGetters = {
   getAppCommissionSettingByAppID (state: InspiresState): (appID: string) => AppCommissionSetting
   getAppInvitationSettingsByAppID (state: InspiresState): (appID: string) => Array<AppInvitationSetting>
   getAppPurchaseAmountSettingsByAppID (state: InspiresState): (appID: string) => Array<AppPurchaseAmountSetting>
-  getAppUserInvitationSettingsByAppUser (state: InspiresState): (appID: string, userID: string) => Array<AppUserInvitationSetting>
   getAppUserPurchaseAmountSettingsByAppUser (state: InspiresState): (appID: string, userID: string) => Array<AppUserPurchaseAmountSetting>
   getInspireSelectedAppID (state: InspiresState): string
 }
@@ -81,11 +79,6 @@ const getters: GetterTree<InspiresState, RootState> & InspireGetters = {
   getAppPurchaseAmountSettingsByAppID: (state: InspiresState): (appID: string) => Array<AppPurchaseAmountSetting> => {
     return (appID: string) => {
       return state.AppPurchaseAmountSettings.get(appID) as Array<AppPurchaseAmountSetting>
-    }
-  },
-  getAppUserInvitationSettingsByAppUser: (state: InspiresState): (appID: string, userID: string) => Array<AppUserInvitationSetting> => {
-    return (appID: string, userID: string) => {
-      return state.AppUserInvitationSettings.get(appID)?.get(userID) as Array<AppUserInvitationSetting>
     }
   },
   getAppUserPurchaseAmountSettingsByAppUser: (state: InspiresState): (appID: string, userID: string) => Array<AppUserPurchaseAmountSetting> => {

@@ -36,11 +36,7 @@ export enum ActionTypes {
   UpdateAppPurchaseAmountSetting = 'UPDATE_APP_PURCHASE_AMOUNT_SETTING',
   GetAppPurchaseAmountSettingsByOtherApp = 'GET_APP_PURCHASE_AMOUNT_SETTINGS_BY_OTHER_APP',
 
-  CreateAppUserInvitationSettingForOtherApp = 'CREATE_APP_USER_INVITATION_SETTING_FOR_OTHER_APP',
-  UpdateAppUserInvitationSetting = 'UPDATE_APP_USER_INVITATION_SETTING',
-  GetAppUserInvitationSettingsByOtherApp = 'GET_APP_USER_INVITATION_SETTINGS_BY_OTHER_APP',
-
-  CreateAppUserPurchaseAmountSettingForOtherApp = 'CREATE_APP_USER_PURCHASE_AMOUNT_SETTING_FOR_OTHER_APP',
+  CreateAppUserPurchaseAmountSettingForOtherAppUser = 'CREATE_APP_USER_PURCHASE_AMOUNT_SETTING_FOR_OTHER_APP_USER',
   UpdateAppUserPurchaseAmountSetting = 'UPDATE_APP_USER_PURCHASE_AMOUNT_SETTING',
   GetAppUserPurchaseAmountSettingsByOtherApp = 'GET_APP_USER_PURCHASE_AMOUNT_SETTINGS_BY_OTHER_APP',
 }
