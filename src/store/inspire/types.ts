@@ -319,7 +319,7 @@ interface UpdateAppInvitationSettingResponse {
 interface AppPurchaseAmountSetting {
   ID: string
   AppID: string
-  Count: number
+  Amount: number
   Percent: number
   Title: string
   BadgeLarge: string

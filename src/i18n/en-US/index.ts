@@ -243,5 +243,16 @@ export default {
   MSG_LEVEL: '级别',
   MSG_CREATE_APP_COMMISSION_SETTING: '创建APP佣金设置',
   MSG_APP_COMMISSION_SETTING: 'APP佣金设置',
-  MSG_CREATE_APP_COMMISSION_SETTING_FAIL: 'You failed to create app commission setting'
+  MSG_CREATE_APP_COMMISSION_SETTING_FAIL: 'You failed to create app commission setting',
+  MSG_CREATE_APP_INVITATION_SETTING_FAIL: 'You failed to create app invitation setting',
+  MSG_INVITATION_COUNT: '邀请人数',
+  MSG_USER_TITLE: '头衔',
+  MSG_BADGE_LARGE: '大徽章',
+  MSG_BADGE_SMALL: '小徽章',
+  MSG_CREATE_APP_INVITATION_SETTING: '创建APP邀请设置',
+  MSG_APP_INVITATION_SETTING: 'APP邀请设置',
+  MSG_COMMISSION_PERCENT: '佣金百分比率',
+  MSG_CREATE_APP_PURCHASE_AMOUNT_SETTING: '创建APP购买金额设置',
+  MSG_APP_PURCHASE_AMOUNT_SETTING: 'APP购买金额设置',
+  MSG_PURCHASE_AMOUNT: '购买总金额'
 }

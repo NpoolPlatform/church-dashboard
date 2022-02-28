@@ -1,55 +1,47 @@
 <template>
   <q-card class='container'>
     <q-card-section>
-      <q-item-label>{{ $t('MSG_CREATE_COUPON_POOL') }}</q-item-label>
+      <q-item-label>{{ $t('MSG_CREATE_APP_INVITATION_SETTING') }}</q-item-label>
     </q-card-section>
     <q-item-section>
       <q-item>
         <q-item-label>{{ $t('MSG_APP_NAME') }}: {{ selectedApp?.App.Name }}</q-item-label>
       </q-item>
       <q-input
-        v-model='myName'
-        :label='$t("MSG_NAME")'
+        v-model='count'
+        :label='$t("MSG_INVITATION_COUNT")'
       >
         <template #prepend>
           <q-icon name='window' />
         </template>
       </q-input>
       <q-input
-        v-model='startTime'
-        :label='$t("MSG_START_TIME")'
+        v-model='discount'
+        :label='$t("MSG_DISCOUNT")'
       >
         <template #prepend>
           <q-icon name='window' />
         </template>
       </q-input>
       <q-input
-        v-model='durationDays'
-        :label='$t("MSG_DURATION_DAYS")'
+        v-model='title'
+        :label='$t("MSG_USER_TITLE")'
       >
         <template #prepend>
           <q-icon name='window' />
         </template>
       </q-input>
       <q-input
-        v-model='denomination'
-        :label='$t("MSG_DENOMINATION")'
+        v-model='badgeLarge'
+        :label='$t("MSG_BADGE_LARGE")'
       >
         <template #prepend>
           <q-icon name='window' />
         </template>
       </q-input>
       <q-input
-        v-model='circulation'
-        :label='$t("MSG_CIRCULATION")'
-      >
-        <template #prepend>
-          <q-icon name='window' />
-        </template>
-      </q-input>
-      <q-input
-        v-model='message'
-        :label='$t("MSG_MESSAGE")'
+        v-model='badgeSmall'
+        :label='$t("MSG_BADGE_SMALL")'
       >
         <template #prepend>
           <q-icon name='window' />
@@ -69,81 +61,70 @@
 <script setup lang='ts'>
 import { defineProps, toRef, computed, defineEmits, watch, ref } from 'vue'
 import { Application } from 'src/store/applications/types'
-import { CouponPool } from 'src/store/inspire/types'
-import { useStore } from 'src/store'
+import { AppInvitationSetting } from 'src/store/inspire/types'
 
 interface Props {
   selectedApp?: Application
-  editCouponPool?: CouponPool
+  editSetting?: AppInvitationSetting
 }
 
 const props = defineProps<Props>()
 
 const selectedApp = toRef(props, 'selectedApp')
-const editCouponPool = toRef(props, 'editCouponPool')
+const editSetting = toRef(props, 'editSetting')
 
-const editDenomination = computed(() => {
-  return editCouponPool.value ? editCouponPool.value.Denomination : 10
+const editCount = computed(() => {
+  return editSetting.value ? editSetting.value.Count : 0
 })
-const denomination = ref(editDenomination.value)
+const count = ref(editCount.value)
 
-const editCirculation = computed(() => {
-  return editCouponPool.value ? editCouponPool.value.Circulation : 10
+const editDiscount = computed(() => {
+  return editSetting.value ? editSetting.value.Discount : 1
 })
-const circulation = ref(editCirculation.value)
+const discount = ref(editDiscount.value)
 
-const editStart = computed(() => {
-  return editCouponPool.value ? editCouponPool.value.Start : (new Date().getTime() / 1000 + 24 * 60 * 60).toFixed(0)
+const editTitle = computed(() => {
+  return editSetting.value ? editSetting.value.Title : 'NOT SET'
 })
-const startTime = ref(editStart.value)
+const title = ref(editTitle.value)
 
-const editDurationDays = computed(() => {
-  return editCouponPool.value ? editCouponPool.value.DurationDays : 60
+const editBadgeLarge = computed(() => {
+  return editSetting.value ? editSetting.value.BadgeLarge : 'NOT SET'
 })
-const durationDays = ref(editDurationDays.value)
+const badgeLarge = ref(editBadgeLarge.value)
 
-const editMessage = computed(() => {
-  return editCouponPool.value ? editCouponPool.value.Message : ''
+const editBadgeSmall = computed(() => {
+  return editSetting.value ? editSetting.value.BadgeSmall : 'NOT SET'
 })
-const message = ref(editMessage.value)
+const badgeSmall = ref(editBadgeSmall.value)
 
-const editName = computed(() => {
-  return editCouponPool.value ? editCouponPool.value.Name : ''
+const editID = computed(() => {
+  return editSetting.value ? editSetting.value.ID : undefined
 })
-const myName = ref(editName.value)
+const id = ref(editID.value)
 
-const editCouponPoolID = computed(() => {
-  return editCouponPool.value ? editCouponPool.value.ID : undefined
-})
-const id = ref(editCouponPoolID.value)
-
-const store = useStore()
-const userID = computed(() => store.getters.getLoginedUser.User?.ID)
-
-const couponPool = computed(() => {
+const setting = computed(() => {
   return {
     ID: id.value as string,
     AppID: selectedApp.value?.App.ID,
-    ReleaseByUserID: userID.value,
-    Name: myName.value,
-    Message: message.value,
-    Start: startTime.value,
-    DurationDays: durationDays.value,
-    Denomination: denomination.value,
-    Circulation: circulation.value
-  } as CouponPool
+    Count: count.value,
+    Discount: discount.value,
+    Title: title.value,
+    BadgeLarge: badgeLarge.value,
+    BadgeSmall: badgeSmall.value
+  } as AppInvitationSetting
 })
 
-watch(couponPool, () => {
-  emit('update', couponPool.value)
+watch(setting, () => {
+  emit('update', setting.value)
 })
 
-const emit = defineEmits<{(e: 'submit', info: CouponPool): void,
-  (e: 'update', info: CouponPool): void
+const emit = defineEmits<{(e: 'submit', info: AppInvitationSetting): void,
+  (e: 'update', info: AppInvitationSetting): void
 }>()
 
 const onSubmit = () => {
-  emit('submit', couponPool.value)
+  emit('submit', setting.value)
 }
 
 </script>
