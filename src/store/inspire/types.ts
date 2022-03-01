@@ -325,7 +325,7 @@ interface AppPurchaseAmountSetting {
   BadgeLarge: string
   BadgeSmall: string
   Start: number
-  End: string
+  End: number
 }
 
 interface CreateAppPurchaseAmountSettingForOtherAppRequest {
@@ -347,15 +347,6 @@ interface GetAppPurchaseAmountSettingsByOtherAppResponse {
   Infos: Array<AppPurchaseAmountSetting>
 }
 
-interface UpdateAppPurchaseAmountSettingRequest {
-  Info: AppPurchaseAmountSetting
-  Message: ReqMessage
-}
-
-interface UpdateAppPurchaseAmountSettingResponse {
-  Info: AppPurchaseAmountSetting
-}
-
 interface AppUserPurchaseAmountSetting {
   ID: string
   AppID: string
@@ -366,7 +357,7 @@ interface AppUserPurchaseAmountSetting {
   BadgeLarge: string
   BadgeSmall: string
   Start: number
-  End: string
+  End: number
 }
 
 interface CreateAppUserPurchaseAmountSettingForOtherAppUserRequest {
@@ -388,15 +379,6 @@ interface GetAppUserPurchaseAmountSettingsByOtherAppUserRequest {
 
 interface GetAppUserPurchaseAmountSettingsByOtherAppUserResponse {
   Infos: Array<AppUserPurchaseAmountSetting>
-}
-
-interface UpdateAppUserPurchaseAmountSettingRequest {
-  Info: AppUserPurchaseAmountSetting
-  Message: ReqMessage
-}
-
-interface UpdateAppUserPurchaseAmountSettingResponse {
-  Info: AppUserPurchaseAmountSetting
 }
 
 interface CommissionCoinSetting {
@@ -485,15 +467,11 @@ export {
   CreateAppPurchaseAmountSettingForOtherAppResponse,
   GetAppPurchaseAmountSettingsByOtherAppRequest,
   GetAppPurchaseAmountSettingsByOtherAppResponse,
-  UpdateAppPurchaseAmountSettingRequest,
-  UpdateAppPurchaseAmountSettingResponse,
   AppUserPurchaseAmountSetting,
   CreateAppUserPurchaseAmountSettingForOtherAppUserRequest,
   CreateAppUserPurchaseAmountSettingForOtherAppUserResponse,
   GetAppUserPurchaseAmountSettingsByOtherAppUserRequest,
   GetAppUserPurchaseAmountSettingsByOtherAppUserResponse,
-  UpdateAppUserPurchaseAmountSettingRequest,
-  UpdateAppUserPurchaseAmountSettingResponse,
   CommissionCoinSetting,
   GetCommissionCoinSettingsRequest,
   GetCommissionCoinSettingsResponse,

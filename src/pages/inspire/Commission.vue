@@ -74,6 +74,7 @@
     </template>
   </q-table>
   <q-table
+    class='bottom-table'
     flat
     dense
     :rows='appUserPurchaseAmountSettings ? appUserPurchaseAmountSettings : []'
@@ -494,12 +495,7 @@ const onUpdateAppPurchaseAmountSetting = (setting: AppPurchaseAmountSetting) => 
 }
 
 const onSubmitAppPurchaseAmountSetting = (setting: AppPurchaseAmountSetting) => {
-  let action = InspireActionTypes.CreateAppPurchaseAmountSettingForOtherApp
-  if (updating.value) {
-    action = InspireActionTypes.UpdateAppPurchaseAmountSetting
-  }
-
-  store.dispatch(action, {
+  store.dispatch(InspireActionTypes.CreateAppPurchaseAmountSettingForOtherApp, {
     TargetAppID: selectedAppID.value,
     Info: setting,
     Message: {
@@ -520,20 +516,15 @@ const onUpdateAppUserPurchaseAmountSetting = (setting: AppUserPurchaseAmountSett
 }
 
 const onSubmitAppUserPurchaseAmountSetting = (setting: AppUserPurchaseAmountSetting) => {
-  let action = InspireActionTypes.CreateAppUserPurchaseAmountSettingForOtherAppUser
-  if (updating.value) {
-    action = InspireActionTypes.UpdateAppUserPurchaseAmountSetting
-  }
-
   if (selectedUser.value.length === 0) {
     return
   }
 
   editUser.value = selectedUser.value[0]
 
-  store.dispatch(action, {
+  store.dispatch(InspireActionTypes.CreateAppUserPurchaseAmountSettingForOtherAppUser, {
     TargetAppID: selectedAppID.value,
-    TargetUserID: editUser.value.ID,
+    TargetUserID: editUser.value.ID as string,
     Info: setting,
     Message: {
       ModuleKey: ModuleKey.ModuleInspire,
@@ -549,3 +540,8 @@ const onSubmitAppUserPurchaseAmountSetting = (setting: AppUserPurchaseAmountSett
 }
 
 </script>
+
+<style lang='sass' scoped>
+.bottom-table
+  margin-bottom: 200px
+</style>

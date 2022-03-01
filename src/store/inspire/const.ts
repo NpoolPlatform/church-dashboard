@@ -33,11 +33,9 @@ enum API {
   GET_APP_INVITATION_SETTINGS_BY_OTHER_APP = '/cloud-hashing-inspire/v1/get/app/invitation/settings/by/other/app',
 
   CREATE_APP_PURCHASE_AMOUNT_SETTING_FOR_OTHER_APP = '/cloud-hashing-inspire/v1/create/app/purchase/amount/setting/for/other/app',
-  UPDATE_APP_PURCHASE_AMOUNT_SETTING = '/cloud-hashing-inspire/v1/update/app/purchase/amount/setting',
   GET_APP_PURCHASE_AMOUNT_SETTINGS_BY_OTHER_APP = '/cloud-hashing-inspire/v1/get/app/purchase/amount/settings/by/other/app',
 
   CREATE_APP_USER_PURCHASE_AMOUNT_SETTING_FOR_OTHER_APP_USER = '/cloud-hashing-inspire/v1/create/app/user/purchase/amount/setting/for/other/app/user',
-  UPDATE_APP_USER_PURCHASE_AMOUNT_SETTING = '/cloud-hashing-inspire/v1/update/app/user/purchase/amount/setting',
   GET_APP_USER_PURCHASE_AMOUNT_SETTINGS_BY_OTHER_APP_USER = '/cloud-hashing-inspire/v1/get/app/user/purchase/amount/settings/by/other/app/user',
 
   GET_COMMISSION_COINS_SETTINGS = '/cloud-hashing-inspire/v1/get/commission/coin/settings',

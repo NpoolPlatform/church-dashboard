@@ -47,6 +47,22 @@
           <q-icon name='window' />
         </template>
       </q-input>
+      <q-input
+        v-model='start'
+        :label='$t("MSG_START_TIME")'
+      >
+        <template #prepend>
+          <q-icon name='window' />
+        </template>
+      </q-input>
+      <q-input
+        v-model='end'
+        :label='$t("MSG_END_TIME")'
+      >
+        <template #prepend>
+          <q-icon name='window' />
+        </template>
+      </q-input>
     </q-item-section>
     <q-item-section>
       <q-btn
@@ -98,6 +114,16 @@ const editBadgeSmall = computed(() => {
 })
 const badgeSmall = ref(editBadgeSmall.value)
 
+const editStart = computed(() => {
+  return editSetting.value && editSetting.value.Start ? editSetting.value.Start : (new Date().getTime() / 1000 + 60).toFixed(0)
+})
+const start = ref(editStart.value)
+
+const editEnd = computed(() => {
+  return editSetting.value && editSetting.value.End ? editSetting.value.End : (new Date().getTime() / 1000 + 60 * 24 * 60 * 60).toFixed(0)
+})
+const end = ref(editEnd.value)
+
 const editID = computed(() => {
   return editSetting.value ? editSetting.value.ID : undefined
 })
@@ -111,7 +137,9 @@ const setting = computed(() => {
     Percent: percent.value,
     Title: title.value,
     BadgeLarge: badgeLarge.value,
-    BadgeSmall: badgeSmall.value
+    BadgeSmall: badgeSmall.value,
+    Start: start.value,
+    End: end.value
   } as AppPurchaseAmountSetting
 })
 
