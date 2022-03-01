@@ -380,12 +380,13 @@ interface CreateAppUserPurchaseAmountSettingForOtherAppUserResponse {
   Info: AppUserPurchaseAmountSetting
 }
 
-interface GetAppUserPurchaseAmountSettingsByOtherAppRequest {
+interface GetAppUserPurchaseAmountSettingsByOtherAppUserRequest {
   TargetAppID: string
+  TargetUserID: string
   Message: ReqMessage
 }
 
-interface GetAppUserPurchaseAmountSettingsByOtherAppResponse {
+interface GetAppUserPurchaseAmountSettingsByOtherAppUserResponse {
   Infos: Array<AppUserPurchaseAmountSetting>
 }
 
@@ -489,8 +490,8 @@ export {
   AppUserPurchaseAmountSetting,
   CreateAppUserPurchaseAmountSettingForOtherAppUserRequest,
   CreateAppUserPurchaseAmountSettingForOtherAppUserResponse,
-  GetAppUserPurchaseAmountSettingsByOtherAppRequest,
-  GetAppUserPurchaseAmountSettingsByOtherAppResponse,
+  GetAppUserPurchaseAmountSettingsByOtherAppUserRequest,
+  GetAppUserPurchaseAmountSettingsByOtherAppUserResponse,
   UpdateAppUserPurchaseAmountSettingRequest,
   UpdateAppUserPurchaseAmountSettingResponse,
   CommissionCoinSetting,

@@ -46,7 +46,6 @@
     </template>
   </q-table>
   <q-table
-    v-model:selected='selectedAppInvitationSetting'
     flat
     dense
     :rows='appInvitationSettings ? appInvitationSettings : []'
@@ -61,7 +60,6 @@
     </template>
   </q-table>
   <q-table
-    v-model:selected='selectedAppPurchaseAmountSetting'
     flat
     dense
     :rows='appPurchaseAmountSettings ? appPurchaseAmountSettings : []'
@@ -76,7 +74,6 @@
     </template>
   </q-table>
   <q-table
-    v-model:selected='selectedAppUserPurchaseAmountSetting'
     flat
     dense
     :rows='appUserPurchaseAmountSettings ? appUserPurchaseAmountSettings : []'
@@ -168,13 +165,8 @@ const selectedAppID = computed({
 })
 const selectedApp = computed(() => store.getters.getApplicationByID(selectedAppID.value))
 
-const selectedAppInvitationSetting = ref([] as Array<AppInvitationSetting>)
 const editAppInvitationSetting = ref(undefined as unknown as AppInvitationSetting)
-
-const selectedAppPurchaseAmountSetting = ref([] as Array<AppPurchaseAmountSetting>)
 const editAppPurchaseAmountSetting = ref(undefined as unknown as AppPurchaseAmountSetting)
-
-const selectedAppUserPurchaseAmountSetting = ref([] as Array<AppUserPurchaseAmountSetting>)
 const editAppUserPurchaseAmountSetting = ref(undefined as unknown as AppUserPurchaseAmountSetting)
 
 const users = computed(() => store.getters.getAppUserInfosByAppID(selectedAppID.value))
@@ -260,9 +252,16 @@ watch(selectedAppID, () => {
       }
     }
   })
+})
 
-  store.dispatch(InspireActionTypes.GetAppUserPurchaseAmountSettingsByOtherApp, {
+watch(selectedUserID, () => {
+  if (!selectedUserID.value) {
+    return
+  }
+
+  store.dispatch(InspireActionTypes.GetAppUserPurchaseAmountSettingsByOtherAppUser, {
     TargetAppID: selectedAppID.value,
+    TargetUserID: selectedUserID.value,
     Message: {
       ModuleKey: ModuleKey.ModuleInspire,
       Error: {
@@ -525,6 +524,12 @@ const onSubmitAppUserPurchaseAmountSetting = (setting: AppUserPurchaseAmountSett
   if (updating.value) {
     action = InspireActionTypes.UpdateAppUserPurchaseAmountSetting
   }
+
+  if (selectedUser.value.length === 0) {
+    return
+  }
+
+  editUser.value = selectedUser.value[0]
 
   store.dispatch(action, {
     TargetAppID: selectedAppID.value,

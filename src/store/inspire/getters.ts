@@ -85,6 +85,7 @@ const getters: GetterTree<InspiresState, RootState> & InspireGetters = {
   },
   getAppUserPurchaseAmountSettingsByAppUser: (state: InspiresState): (appID: string, userID: string) => Array<AppUserPurchaseAmountSetting> => {
     return (appID: string, userID: string) => {
+      console.log(appID, userID, state.AppUserPurchaseAmountSettings)
       return state.AppUserPurchaseAmountSettings.get(appID)?.get(userID) as Array<AppUserPurchaseAmountSetting>
     }
   },

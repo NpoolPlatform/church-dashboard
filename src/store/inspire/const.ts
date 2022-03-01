@@ -38,7 +38,7 @@ enum API {
 
   CREATE_APP_USER_PURCHASE_AMOUNT_SETTING_FOR_OTHER_APP_USER = '/cloud-hashing-inspire/v1/create/app/user/purchase/amount/setting/for/other/app/user',
   UPDATE_APP_USER_PURCHASE_AMOUNT_SETTING = '/cloud-hashing-inspire/v1/update/app/user/purchase/amount/setting',
-  GET_APP_USER_PURCHASE_AMOUNT_SETTINGS_BY_OTHER_APP = '/cloud-hashing-inspire/v1/get/app/user/purchase/amount/settings/by/other/app',
+  GET_APP_USER_PURCHASE_AMOUNT_SETTINGS_BY_OTHER_APP_USER = '/cloud-hashing-inspire/v1/get/app/user/purchase/amount/settings/by/other/app/user',
 
   GET_COMMISSION_COINS_SETTINGS = '/cloud-hashing-inspire/v1/get/commission/coin/settings',
   CREATE_COMMISSION_COIN_SETTING = '/cloud-hashing-inspire/v1/create/commission/coin/setting'
