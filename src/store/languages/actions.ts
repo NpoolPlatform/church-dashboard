@@ -5,12 +5,16 @@ import {
   AddLanguageResponse,
   CreateAppLanguageRequest,
   CreateAppLanguageResponse,
+  CreateMessageForOtherAppRequest,
+  CreateMessageForOtherAppResponse,
   GetAppLangInfosByAppRequest,
   GetAppLangInfosByAppResponse,
   GetAppLangInfosByOtherAppRequest,
   GetAppLangInfosByOtherAppResponse,
   GetLanguagesRequest,
-  GetLanguagesResponse
+  GetLanguagesResponse,
+  GetMessagesByOtherAppLangRequest,
+  GetMessagesByOtherAppLangResponse
 } from './types'
 import { LanguagesState } from './state'
 import { ActionTree } from 'vuex'
@@ -59,6 +63,22 @@ interface LanguageActions {
     RootState,
     LanguageMutations<LanguagesState>>,
     req: CreateAppLanguageRequest): void
+
+  [ActionTypes.GetMessagesByOtherAppLang]({
+    commit
+  }: AugmentedActionContext<
+    LanguagesState,
+    RootState,
+    LanguageMutations<LanguagesState>>,
+    req: GetMessagesByOtherAppLangRequest): void
+
+  [ActionTypes.CreateMessageForOtherApp]({
+    commit
+  }: AugmentedActionContext<
+    LanguagesState,
+    RootState,
+    LanguageMutations<LanguagesState>>,
+    req: CreateMessageForOtherAppRequest): void
 }
 
 const actions: ActionTree<LanguagesState, RootState> = {
@@ -117,6 +137,28 @@ const actions: ActionTree<LanguagesState, RootState> = {
       req.Message,
       (resp: CreateAppLanguageResponse): void => {
         commit(MutationTypes.SetAppLanguage, resp.Info)
+      })
+  },
+
+  [ActionTypes.GetMessagesByOtherAppLang] ({ commit }, req: GetMessagesByOtherAppLangRequest) {
+    doAction<GetMessagesByOtherAppLangRequest, GetMessagesByOtherAppLangResponse>(
+      commit,
+      API.GET_MESSAGES_BY_OTHER_APP_LANG,
+      req,
+      req.Message,
+      (resp: GetMessagesByOtherAppLangResponse): void => {
+        commit(MutationTypes.SetMyMessages, resp.Infos)
+      })
+  },
+
+  [ActionTypes.CreateMessageForOtherApp] ({ commit }, req: CreateMessageForOtherAppRequest) {
+    doAction<CreateMessageForOtherAppRequest, CreateMessageForOtherAppResponse>(
+      commit,
+      API.CREATE_MESSAGE_FOR_OTHER_APP,
+      req,
+      req.Message,
+      (resp: CreateMessageForOtherAppResponse): void => {
+        commit(MutationTypes.SetMyMessages, [resp.Info])
       })
   }
 }

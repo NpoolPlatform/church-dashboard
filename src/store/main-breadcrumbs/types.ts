@@ -1,5 +1,5 @@
 interface MainBreadcrumbs {
-  menuId: number
+  menuId: string
   icon: string
   label: string
   target: string

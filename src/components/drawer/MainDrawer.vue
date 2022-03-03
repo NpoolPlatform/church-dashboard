@@ -84,7 +84,7 @@ onUnmounted(() => {
   unsubscribe.value?.()
 })
 
-const drawerItems: Array<MenuItem> = MainDrawerMenus
+const drawerItems: Array<MenuItem> = MainDrawerMenus as Array<MenuItem>
 
 </script>
 <style lang='sass' scoped>

@@ -63,6 +63,35 @@ interface CreateAppLanguageResponse {
   Info: AppLanguage
 }
 
+interface Message {
+  ID: string
+  AppID: string
+  LangID: string
+  MessageID: string
+  Message: string
+  BatchGet: boolean
+}
+
+interface GetMessagesByOtherAppLangRequest {
+  TargetAppID: string
+  LangID: string
+  Message: ReqMessage
+}
+
+interface GetMessagesByOtherAppLangResponse {
+  Infos: Array<Message>
+}
+
+interface CreateMessageForOtherAppRequest {
+  TargetAppID: string
+  Info: Message
+  Message: ReqMessage
+}
+
+interface CreateMessageForOtherAppResponse {
+  Info: Message
+}
+
 export {
   Language,
   GetLanguagesRequest,
@@ -76,5 +105,10 @@ export {
   AddLanguageResponse,
   AppLanguage,
   CreateAppLanguageRequest,
-  CreateAppLanguageResponse
+  CreateAppLanguageResponse,
+  Message,
+  GetMessagesByOtherAppLangRequest,
+  GetMessagesByOtherAppLangResponse,
+  CreateMessageForOtherAppRequest,
+  CreateMessageForOtherAppResponse
 }

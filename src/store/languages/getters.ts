@@ -2,7 +2,7 @@ import { LocaleMessages, VueMessageType } from 'vue-i18n'
 import { GetterTree } from 'vuex'
 import { RootState } from '../index'
 import { LanguagesState } from './state'
-import { Language } from './types'
+import { Language, Message } from './types'
 
 type LanguageGetters = {
   getLanguage (state: LanguagesState): Language
@@ -11,6 +11,7 @@ type LanguageGetters = {
   getMessages (state: LanguagesState): LocaleMessages<VueMessageType>
   getLanguageSelectedAppID (state: LanguagesState): string
   getAppLangInfosByApp (state: LanguagesState): (appID: string) => Array<Language>
+  getMessagesByApp (state: LanguagesState): (appID: string) => Array<Message>
 }
 
 const getters: GetterTree<LanguagesState, RootState> & LanguageGetters = {
@@ -33,6 +34,11 @@ const getters: GetterTree<LanguagesState, RootState> & LanguageGetters = {
         languages.push(info.Lang)
       })
       return languages
+    }
+  },
+  getMessagesByApp: (state: LanguagesState): (appID: string) => Array<Message> => {
+    return (appID: string) => {
+      return state.MyMessages.get(appID) as Array<Message>
     }
   }
 }
