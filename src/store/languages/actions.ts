@@ -14,7 +14,9 @@ import {
   GetLanguagesRequest,
   GetLanguagesResponse,
   GetMessagesByOtherAppLangRequest,
-  GetMessagesByOtherAppLangResponse
+  GetMessagesByOtherAppLangResponse,
+  UpdateMessageRequest,
+  UpdateMessageResponse
 } from './types'
 import { LanguagesState } from './state'
 import { ActionTree } from 'vuex'
@@ -79,6 +81,14 @@ interface LanguageActions {
     RootState,
     LanguageMutations<LanguagesState>>,
     req: CreateMessageForOtherAppRequest): void
+
+  [ActionTypes.UpdateMessage]({
+    commit
+  }: AugmentedActionContext<
+    LanguagesState,
+    RootState,
+    LanguageMutations<LanguagesState>>,
+    req: UpdateMessageRequest): void
 }
 
 const actions: ActionTree<LanguagesState, RootState> = {
@@ -158,6 +168,17 @@ const actions: ActionTree<LanguagesState, RootState> = {
       req,
       req.Message,
       (resp: CreateMessageForOtherAppResponse): void => {
+        commit(MutationTypes.SetMyMessages, [resp.Info])
+      })
+  },
+
+  [ActionTypes.UpdateMessage] ({ commit }, req: UpdateMessageRequest) {
+    doAction<UpdateMessageRequest, UpdateMessageResponse>(
+      commit,
+      API.UPDATE_MESSAGE,
+      req,
+      req.Message,
+      (resp: UpdateMessageResponse): void => {
         commit(MutationTypes.SetMyMessages, [resp.Info])
       })
   }

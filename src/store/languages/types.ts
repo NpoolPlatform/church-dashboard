@@ -92,6 +92,15 @@ interface CreateMessageForOtherAppResponse {
   Info: Message
 }
 
+interface UpdateMessageRequest {
+  Info: Message
+  Message: ReqMessage
+}
+
+interface UpdateMessageResponse {
+  Info: Message
+}
+
 export {
   Language,
   GetLanguagesRequest,
@@ -110,5 +119,7 @@ export {
   GetMessagesByOtherAppLangRequest,
   GetMessagesByOtherAppLangResponse,
   CreateMessageForOtherAppRequest,
-  CreateMessageForOtherAppResponse
+  CreateMessageForOtherAppResponse,
+  UpdateMessageRequest,
+  UpdateMessageResponse
 }

@@ -6,6 +6,7 @@
   />
   <q-table
     v-model:selected='selectedLang'
+    row-key='ID'
     flat
     dense
     :loading='loading'
@@ -44,6 +45,7 @@
     full-width
     square
     no-shake
+    @hide='onMenuHide'
   >
     <CreateAppLanguage
       v-if='addingType === AddingType.AddingAppLang'
@@ -124,9 +126,10 @@ const onCreateMessage = () => {
 
 const editMessage = ref(undefined as unknown as LangMessage)
 const onMessageClick = (message: LangMessage) => {
+  editMessage.value = message
   updating.value = true
   modifying.value = true
-  editMessage.value = message
+  addingType.value = AddingType.AddingMessage
 }
 
 const onUpdateAppLanguage = (appLanguage: AppLanguage) => {
@@ -157,7 +160,13 @@ const onUpdateMessage = (message: LangMessage) => {
 
 const onSubmitMessage = (message: LangMessage) => {
   modifying.value = false
-  store.dispatch(LangActionTypes.CreateMessageForOtherApp, {
+
+  let action = LangActionTypes.CreateMessageForOtherApp
+  if (updating.value) {
+    action = LangActionTypes.UpdateMessage
+  }
+
+  store.dispatch(action, {
     TargetAppID: selectedApp.value.App.ID,
     Info: message,
     Message: {
@@ -243,5 +252,13 @@ onMounted(() => {
     }
   })
 })
+
+const onMenuHide = () => {
+  adding.value = false
+  updating.value = false
+  addingType.value = AddingType.AddingNone
+
+  editMessage.value = undefined as unknown as LangMessage
+}
 
 </script>
