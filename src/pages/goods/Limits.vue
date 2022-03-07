@@ -331,6 +331,7 @@ const { t } = useI18n({ useScope: 'global' })
 
 const onCreatePlatformSettingClick = () => {
   store.commit(SettingMutationTypes.SetPlatformSetting, {
+    ID: DefaultID,
     WarmAccountUSDAmount: 0,
     PaymentAccountUSDAmount: 0,
     WithdrawAutoReviewUSDAmount: 0
