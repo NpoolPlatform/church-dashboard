@@ -46,6 +46,16 @@
         v-model='coinForPay'
         :label='$t("MSG_COIN_FOR_PAY")'
       />
+      <div>
+        <q-btn-toggle
+          v-model='coinEnv'
+          no-caps
+          rounded
+          unelevated
+          class='toggle-btn'
+          :options='envs'
+        />
+      </div>
     </q-item-section>
     <q-item-section>
       <q-btn
@@ -73,6 +83,17 @@ const coinLogo = ref(editCoin.value?.Logo)
 const coinPresale = ref(editCoin.value?.PreSale)
 const coinForPay = ref(editCoin.value?.ForPay)
 const coinReservedAmount = ref(editCoin.value?.ReservedAmount)
+const coinEnv = ref(editCoin.value?.ENV)
+
+const envs = [
+  {
+    label: 'main',
+    value: 'main'
+  }, {
+    label: 'test',
+    value: 'test'
+  }
+]
 
 const coin = computed(() => {
   return {
@@ -83,7 +104,7 @@ const coin = computed(() => {
     PreSale: coinPresale.value,
     ForPay: coinForPay.value,
     ReservedAmount: coinReservedAmount.value,
-    ENV: editCoin.value?.ENV
+    ENV: coinEnv.value
   } as Coin
 })
 
@@ -106,4 +127,7 @@ watch(coin, function () {
   margin-top: 24px
   background-color: $blue-6
   color: white
+
+.toggle-btn
+  border: 1px solid #027be3
 </style>
