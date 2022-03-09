@@ -99,7 +99,7 @@
         >
           <q-list>
             <q-item
-              v-for='(priceCurrency, index) in priceCurrencys.filter((coin) => coin.Name.includes("USDT"))'
+              v-for='(priceCurrency, index) in priceCurrencys'
               :key='index'
               v-close-popup
               clickable
@@ -218,7 +218,7 @@ const devices = computed(() => store.getters.getAllDevices)
 const vendorLocations = computed(() => store.getters.getAllVendorLocations)
 const coins = computed(() => store.getters.getCoins)
 const feeTypes = computed(() => store.getters.getAllFeeTypes)
-const priceCurrencys = computed(() => store.getters.getAllPriceCurrencys)
+const priceCurrencys = computed(() => store.getters.getAllPriceCurrencys.filter((coin) => coin.Name.includes('USDT')))
 
 const coinIndex = computed(() => {
   for (let i = 0; i < coins.value.length; i++) {
