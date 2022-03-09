@@ -99,7 +99,7 @@
         >
           <q-list>
             <q-item
-              v-for='(priceCurrency, index) in priceCurrencys'
+              v-for='(priceCurrency, index) in priceCurrencys.filter((coin) => coin.Name.includes("USDT"))'
               :key='index'
               v-close-popup
               clickable
@@ -171,6 +171,14 @@
       <q-input
         v-model='myDurationDays'
         :label='$t("MSG_GOOD_DURATION_DAYS")'
+      >
+        <template #prepend>
+          <q-icon name='window' />
+        </template>
+      </q-input>
+      <q-input
+        v-model='myDeliveryAt'
+        :label='$t("MSG_START_TIME")'
       >
         <template #prepend>
           <q-icon name='window' />
@@ -258,6 +266,7 @@ const myTotal = ref(editGood.value?.Total)
 const myPrice = ref(editGood.value?.Price)
 const myDurationDays = ref(editGood.value?.DurationDays)
 const myUnitPower = ref(editGood.value?.UnitPower)
+const myDeliveryAt = ref(editGood.value?.DeliveryAt)
 
 const currencyIndex = computed(() => {
   for (let i = 0; i < priceCurrencys.value.length; i++) {
@@ -271,7 +280,6 @@ const selectedPriceCurrencyIndex = ref(currencyIndex.value)
 const priceCurrencyType = computed(() => priceCurrencys.value[selectedPriceCurrencyIndex.value]?.Name)
 const priceCurrencyID = computed(() => priceCurrencys.value[selectedPriceCurrencyIndex.value]?.ID)
 
-const myDeliveryAt = ref(0)
 const myUnit = ref(editGood.value?.Unit ? editGood.value?.Unit : 'TiB')
 
 interface MyFeeType {
