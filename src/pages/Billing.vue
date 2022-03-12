@@ -18,6 +18,7 @@
   />
   <q-table
     :selected='selectedTransaction'
+    row-key='ID'
     flat
     dense
     :rows='transactions'
