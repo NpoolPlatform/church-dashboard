@@ -4,5 +4,6 @@ export enum MutationTypes {
   SetCoinAccountTransactions = 'SET_COIN_ACCOUNT_TRANSACTIONS',
   SetUserWithdrawItems = 'SET_USER_WITHDRAW_ITEMS',
   SetPayments = 'SET_PAYMENTS',
-  SetUserPaymentBalances = 'SET_USER_PAYMENT_BALANCES'
+  SetUserPaymentBalances = 'SET_USER_PAYMENT_BALANCES',
+  UpdateCoinAccountTransaction = 'UPDATE_COIN_ACCOUNT_TRANSACTION'
 }

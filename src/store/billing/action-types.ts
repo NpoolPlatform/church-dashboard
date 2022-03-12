@@ -5,5 +5,6 @@ export enum ActionTypes {
   GetUserWithdrawItems = 'GET_USER_WITHDRAW_ITEMS',
   GetPayments = 'GET_PAYMENTS',
   CreateUserPaymentBalanceForOtherAppUser = 'CREATE_USER_PAYMENT_BALANCE_FOR_OTHER_APP_USER',
-  GetUserPaymentBalancesByOtherApp = 'GET_USER_PAYMENT_BALANCES_BY_OTHER_APP'
+  GetUserPaymentBalancesByOtherApp = 'GET_USER_PAYMENT_BALANCES_BY_OTHER_APP',
+  UpdateCoinAccountTransaction = 'UPDATE_COIN_ACCOUNT_TRANSACTION'
 }

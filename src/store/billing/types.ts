@@ -48,6 +48,7 @@ interface CoinAccountTransaction {
   CreateAt: number
   State: string
   ChainTransactionID: string
+  FailHold: boolean
 }
 
 interface GetCoinAccountTransactionsRequest {
@@ -56,6 +57,15 @@ interface GetCoinAccountTransactionsRequest {
 
 interface GetCoinAccountTransactionsResponse {
   Infos: Array<CoinAccountTransaction>
+}
+
+interface UpdateCoinAccountTransactionRequest {
+  Info: CoinAccountTransaction
+  Message: ReqMessage
+}
+
+interface UpdateCoinAccountTransactionResponse {
+  Info: CoinAccountTransaction
 }
 
 interface UserBenefit {
@@ -142,6 +152,8 @@ export {
   CoinAccountTransaction,
   GetCoinAccountTransactionsRequest,
   GetCoinAccountTransactionsResponse,
+  UpdateCoinAccountTransactionRequest,
+  UpdateCoinAccountTransactionResponse,
   UserBenefit,
   GetUserBenefitsRequest,
   GetUserBenefitsResponse,

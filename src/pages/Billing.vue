@@ -17,10 +17,19 @@
     :rows='userBenefits'
   />
   <q-table
+    :selected='selectedTransaction'
     flat
     dense
     :rows='transactions'
-  />
+    selection='single'
+  >
+    <template #top-right>
+      <div class='row'>
+        <q-space />
+        <q-btn :label='$t("MSG_UNHOLD_FAIL_TRANSACTION")' @click='onUnholdFailTransactionClick' />
+      </div>
+    </template>
+  </q-table>
   <q-table
     flat
     dense
@@ -41,6 +50,7 @@ import { ActionTypes as GoodActionTypes } from 'src/store/goods/action-types'
 import { ActionTypes as BillingActionTypes } from 'src/store/billing/action-types'
 import { useI18n } from 'vue-i18n'
 import { GoodBase } from 'src/store/goods/types'
+import { CoinAccountTransaction } from 'src/store/billing/types'
 
 const store = useStore()
 // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -71,8 +81,27 @@ const selectedGood = ref([] as Array<GoodBase>)
 const platformBenefits = computed(() => store.getters.getPlatformBenefits)
 const userBenefits = computed(() => store.getters.getUserBenefits)
 const transactions = computed(() => store.getters.getCoinAccountTransactions)
+const selectedTransaction = ref([] as Array<CoinAccountTransaction>)
+
 const userWithdraws = computed(() => store.getters.getUserWithdraws)
 const payments = computed(() => store.getters.getPayments)
+
+const onUnholdFailTransactionClick = () => {
+  selectedTransaction.value.forEach((tx) => {
+    tx.FailHold = false
+    store.dispatch(BillingActionTypes.UpdateCoinAccountTransaction, {
+      Info: tx,
+      Message: {
+        ModuleKey: ModuleKey.ModuleBilling,
+        Error: {
+          Title: t('MSG_UPDATE_TRANSACTION_FAIL'),
+          Popup: true,
+          Type: NotificationType.Error
+        }
+      }
+    })
+  })
+}
 
 onMounted(() => {
   store.dispatch(GoodActionTypes.GetAllGoods, {

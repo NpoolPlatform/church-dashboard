@@ -20,7 +20,9 @@ import {
   GetUserPaymentBalancesByOtherAppRequest,
   GetUserPaymentBalancesByOtherAppResponse,
   GetUserWithdrawsRequest,
-  GetUserWithdrawsResponse
+  GetUserWithdrawsResponse,
+  UpdateCoinAccountTransactionRequest,
+  UpdateCoinAccountTransactionResponse
 } from './types'
 
 interface BillingActions {
@@ -79,6 +81,14 @@ interface BillingActions {
     RootState,
     BillingMutations<BillingsState>>,
     req: GetUserPaymentBalancesByOtherAppRequest): void
+
+  [ActionTypes.UpdateCoinAccountTransaction]({
+    commit
+  }: AugmentedActionContext<
+    BillingsState,
+    RootState,
+    BillingMutations<BillingsState>>,
+    req: UpdateCoinAccountTransactionRequest): void
 }
 
 const actions: ActionTree<BillingsState, RootState> = {
@@ -156,6 +166,17 @@ const actions: ActionTree<BillingsState, RootState> = {
       req.Message,
       (resp: GetUserPaymentBalancesByOtherAppResponse): void => {
         commit(MutationTypes.SetUserPaymentBalances, resp.Infos)
+      })
+  },
+
+  [ActionTypes.UpdateCoinAccountTransaction] ({ commit }, req: UpdateCoinAccountTransactionRequest) {
+    doAction<UpdateCoinAccountTransactionRequest, UpdateCoinAccountTransactionResponse>(
+      commit,
+      API.UPDATE_COIN_ACCOUNT_TRANSACTION,
+      req,
+      req.Message,
+      (resp: UpdateCoinAccountTransactionResponse): void => {
+        commit(MutationTypes.UpdateCoinAccountTransaction, resp.Info)
       })
   }
 }

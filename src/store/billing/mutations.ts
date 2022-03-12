@@ -10,6 +10,7 @@ type BillingMutations<S = BillingsState> = {
   [MutationTypes.SetUserWithdrawItems] (state: S, payload: Array<UserWithdraw>): void
   [MutationTypes.SetPayments] (state: S, payload: Array<Payment>): void
   [MutationTypes.SetUserPaymentBalances] (state: S, payload: Array<UserPaymentBalance>): void
+  [MutationTypes.UpdateCoinAccountTransaction] (state: S, payload: CoinAccountTransaction): void
 }
 
 const mutations: MutationTree<BillingsState> & BillingMutations = {
@@ -38,6 +39,14 @@ const mutations: MutationTree<BillingsState> & BillingMutations = {
       }
       state.UserPaymentBalances.push(balance)
     })
+  },
+  [MutationTypes.UpdateCoinAccountTransaction] (state: BillingsState, payload: CoinAccountTransaction): void {
+    for (let i = 0; i < state.Transactions.length; i++) {
+      if (payload.ID === state.Transactions[i].ID) {
+        state.Transactions.splice(i, 1, payload)
+        break
+      }
+    }
   }
 }
 
