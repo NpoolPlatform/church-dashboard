@@ -73,21 +73,6 @@
       </div>
     </template>
   </q-table>
-  <q-table
-    class='bottom-table'
-    flat
-    dense
-    :rows='appUserPurchaseAmountSettings ? appUserPurchaseAmountSettings : []'
-    :title='t("MSG_APP_USER_PURCHASE_AMOUNT_SETTING")'
-    @row-click='(evt, row, index) => onAppUserPurchaseAmountSettingClick(row as AppUserPurchaseAmountSetting)'
-  >
-    <template #top-right>
-      <div class='row'>
-        <q-space />
-        <q-btn :label='t("MSG_CREATE")' @click='onCreateAppUserPurchaseAmountSetting' />
-      </div>
-    </template>
-  </q-table>
   <q-dialog
     v-model='modifying'
     position='right'
@@ -114,16 +99,9 @@
       v-if='addingType === AddingType.AddingTypeAppPurchaseAmountSetting'
       v-model:edit-setting='editAppPurchaseAmountSetting'
       v-model:selected-app='selectedApp'
+      :selected-user='selectedUser.length > 0 ? selectedUser[0] : undefined'
       @update='onUpdateAppPurchaseAmountSetting'
       @submit='onSubmitAppPurchaseAmountSetting'
-    />
-    <CreateAppUserPurchaseAmountSetting
-      v-if='addingType === AddingType.AddingTypeAppUserPurchaseAmountSetting'
-      v-model:edit-setting='editAppUserPurchaseAmountSetting'
-      v-model:selected-app='selectedApp'
-      v-model:selected-user='editUser'
-      @update='onUpdateAppUserPurchaseAmountSetting'
-      @submit='onSubmitAppUserPurchaseAmountSetting'
     />
   </q-dialog>
 </template>
@@ -142,17 +120,16 @@ import { ActionTypes as CoinActionTypes } from 'src/store/coins/action-types'
 import {
   AppCommissionSetting,
   AppInvitationSetting,
-  AppPurchaseAmountSetting,
-  AppUserPurchaseAmountSetting
+  AppPurchaseAmountSetting
 } from 'src/store/inspire/types'
 import { AppUser } from 'src/store/user-helper/types'
 import { Coin } from 'src/store/coins/types'
+import { DefaultID } from 'src/const/const'
 
 const ApplicationSelector = defineAsyncComponent(() => import('src/components/dropdown/ApplicationSelector.vue'))
 const CreateAppCommissionSetting = defineAsyncComponent(() => import('src/components/inspire/CreateAppCommissionSetting.vue'))
 const CreateAppInvitationSetting = defineAsyncComponent(() => import('src/components/inspire/CreateAppInvitationSetting.vue'))
 const CreateAppPurchaseAmountSetting = defineAsyncComponent(() => import('src/components/inspire/CreateAppPurchaseAmountSetting.vue'))
-const CreateAppUserPurchaseAmountSetting = defineAsyncComponent(() => import('src/components/inspire/CreateAppUserPurchaseAmountSetting.vue'))
 
 const store = useStore()
 // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -168,7 +145,6 @@ const selectedApp = computed(() => store.getters.getApplicationByID(selectedAppI
 
 const editAppInvitationSetting = ref(undefined as unknown as AppInvitationSetting)
 const editAppPurchaseAmountSetting = ref(undefined as unknown as AppPurchaseAmountSetting)
-const editAppUserPurchaseAmountSetting = ref(undefined as unknown as AppUserPurchaseAmountSetting)
 
 const users = computed(() => store.getters.getAppUserInfosByAppID(selectedAppID.value))
 const myUsers = computed(() => {
@@ -181,13 +157,6 @@ const myUsers = computed(() => {
   return allUsers
 })
 const selectedUser = ref([] as Array<AppUser>)
-const selectedUserID = computed(() => {
-  if (selectedUser.value.length > 0) {
-    return selectedUser.value[0].ID
-  }
-  return undefined
-})
-const editUser = ref(selectedUser.value.length > 0 ? selectedUser.value[0] : undefined as unknown as AppUser)
 
 const coins = computed(() => store.getters.getCoins)
 const selectedCoin = ref([] as Array<Coin>)
@@ -197,7 +166,6 @@ const selectedAppCommissionSetting = ref(undefined as unknown as AppCommissionSe
 
 const appInvitationSettings = computed(() => store.getters.getAppInvitationSettingsByAppID(selectedAppID.value))
 const appPurchaseAmountSettings = computed(() => store.getters.getAppPurchaseAmountSettingsByAppID(selectedAppID.value))
-const appUserPurchaseAmountSettings = computed(() => store.getters.getAppUserPurchaseAmountSettingsByAppUser(selectedAppID.value, selectedUserID.value as string))
 const commissionCoins = computed(() => store.getters.getCommissionCoins)
 
 const loading = ref(false)
@@ -248,25 +216,6 @@ watch(selectedAppID, () => {
       ModuleKey: ModuleKey.ModuleInspire,
       Error: {
         Title: t('MSG_GET_APP_PURCHASE_AMOUNT_SETTINGS_FAIL'),
-        Popup: true,
-        Type: NotificationType.Error
-      }
-    }
-  })
-})
-
-watch(selectedUserID, () => {
-  if (!selectedUserID.value) {
-    return
-  }
-
-  store.dispatch(InspireActionTypes.GetAppUserPurchaseAmountSettingsByOtherAppUser, {
-    TargetAppID: selectedAppID.value,
-    TargetUserID: selectedUserID.value,
-    Message: {
-      ModuleKey: ModuleKey.ModuleInspire,
-      Error: {
-        Title: t('MSG_GET_APP_USER_PURCHASE_AMOUNT_SETTINGS_FAIL'),
         Popup: true,
         Type: NotificationType.Error
       }
@@ -341,7 +290,6 @@ enum AddingType {
   AddingAppCommissionSetting = 'app-commission-setting',
   AddingAppInvitationSetting = 'app-invitation-setting',
   AddingTypeAppPurchaseAmountSetting = 'app-purchase-amount-setting',
-  AddingTypeAppUserPurchaseAmountSetting = 'app-user-purchase-amount-setting'
 }
 const addingType = ref(AddingType.AddingNone)
 
@@ -384,29 +332,6 @@ const onAppPurchaseAmountSettingClick = (setting: AppPurchaseAmountSetting) => {
   modifying.value = true
 }
 
-const onCreateAppUserPurchaseAmountSetting = () => {
-  if (selectedUser.value.length === 0) {
-    return
-  }
-
-  editUser.value = selectedUser.value[0]
-  addingType.value = AddingType.AddingTypeAppUserPurchaseAmountSetting
-  adding.value = true
-  modifying.value = true
-}
-
-const onAppUserPurchaseAmountSettingClick = (setting: AppUserPurchaseAmountSetting) => {
-  editAppUserPurchaseAmountSetting.value = setting
-  editUser.value = store.getters.getUserByAppUserID(setting.AppID, setting.UserID)?.User as AppUser
-  if (!editUser.value) {
-    return
-  }
-
-  addingType.value = AddingType.AddingTypeAppUserPurchaseAmountSetting
-  updating.value = true
-  modifying.value = true
-}
-
 const onSetCommissionCoin = () => {
   selectedCoin.value.forEach((coin) => {
     store.dispatch(InspireActionTypes.CreateCommissionCoinSetting, {
@@ -435,7 +360,6 @@ const onMenuHide = () => {
   selectedAppCommissionSetting.value = undefined as unknown as AppCommissionSetting
   editAppInvitationSetting.value = undefined as unknown as AppInvitationSetting
   editAppPurchaseAmountSetting.value = undefined as unknown as AppPurchaseAmountSetting
-  editAppUserPurchaseAmountSetting.value = undefined as unknown as AppUserPurchaseAmountSetting
 }
 
 const onUpdateAppCommissionSetting = (setting: AppCommissionSetting) => {
@@ -495,41 +419,14 @@ const onUpdateAppPurchaseAmountSetting = (setting: AppPurchaseAmountSetting) => 
 }
 
 const onSubmitAppPurchaseAmountSetting = (setting: AppPurchaseAmountSetting) => {
-  store.dispatch(InspireActionTypes.CreateAppPurchaseAmountSettingForOtherApp, {
+  store.dispatch(InspireActionTypes.CreateAppPurchaseAmountSettingForOtherAppUser, {
     TargetAppID: selectedAppID.value,
+    TargetUserID: selectedUser.value.length > 0 ? selectedUser.value[0].ID as string : DefaultID,
     Info: setting,
     Message: {
       ModuleKey: ModuleKey.ModuleInspire,
       Error: {
         Title: t('MSG_CREATE_APP_PURCHASE_AMOUNT_SETTING_FAIL'),
-        Popup: true,
-        Type: NotificationType.Error
-      }
-    }
-  })
-
-  onMenuHide()
-}
-
-const onUpdateAppUserPurchaseAmountSetting = (setting: AppUserPurchaseAmountSetting) => {
-  console.log(setting)
-}
-
-const onSubmitAppUserPurchaseAmountSetting = (setting: AppUserPurchaseAmountSetting) => {
-  if (selectedUser.value.length === 0) {
-    return
-  }
-
-  editUser.value = selectedUser.value[0]
-
-  store.dispatch(InspireActionTypes.CreateAppUserPurchaseAmountSettingForOtherAppUser, {
-    TargetAppID: selectedAppID.value,
-    TargetUserID: editUser.value.ID as string,
-    Info: setting,
-    Message: {
-      ModuleKey: ModuleKey.ModuleInspire,
-      Error: {
-        Title: t('MSG_CREATE_APP_USER_PURCHASE_AMOUNT_SETTING_FAIL'),
         Popup: true,
         Type: NotificationType.Error
       }

@@ -7,6 +7,9 @@
       <q-item>
         <q-item-label>{{ $t('MSG_APP_NAME') }}: {{ selectedApp?.App.Name }}</q-item-label>
       </q-item>
+      <q-item>
+        <q-item-label>{{ $t('MSG_USERNAME') }}: {{ selectedUser?.EmailAddress }}</q-item-label>
+      </q-item>
       <q-input
         v-model='amount'
         :label='$t("MSG_PURCHASE_AMOUNT")'
@@ -78,9 +81,11 @@
 import { defineProps, toRef, computed, defineEmits, watch, ref } from 'vue'
 import { Application } from 'src/store/applications/types'
 import { AppPurchaseAmountSetting } from 'src/store/inspire/types'
+import { AppUser } from 'src/store/user-helper/types'
 
 interface Props {
   selectedApp?: Application
+  selectedUser?: AppUser
   editSetting?: AppPurchaseAmountSetting
 }
 
@@ -88,6 +93,7 @@ const props = defineProps<Props>()
 
 const selectedApp = toRef(props, 'selectedApp')
 const editSetting = toRef(props, 'editSetting')
+const selectedUser = toRef(props, 'selectedUser')
 
 const editAmount = computed(() => {
   return editSetting.value ? editSetting.value.Amount : 0

@@ -6,7 +6,6 @@ import {
   AppCommissionSetting,
   AppInvitationSetting,
   AppPurchaseAmountSetting,
-  AppUserPurchaseAmountSetting,
   CommissionCoinSetting,
   CouponAllocated,
   CouponPool,
@@ -36,8 +35,6 @@ type InspireMutations<S = InspiresState> = {
   [MutationTypes.AppendAppInvitationSetting] (state: S, payload: AppInvitationSetting): void
   [MutationTypes.SetAppPurchaseAmountSettings] (state: S, payload: Array<AppPurchaseAmountSetting>): void
   [MutationTypes.AppendAppPurchaseAmountSetting] (state: S, payload: AppPurchaseAmountSetting): void
-  [MutationTypes.SetAppUserPurchaseAmountSettings] (state: S, payload: Array<AppUserPurchaseAmountSetting>): void
-  [MutationTypes.AppendAppUserPurchaseAmountSetting] (state: S, payload: AppUserPurchaseAmountSetting): void
   [MutationTypes.SetCommissionCoins] (state: S, payload: Array<CommissionCoinSetting>): void
   [MutationTypes.AppendCommissionCoin] (state: S, payload: CommissionCoinSetting): void
   [MutationTypes.SetInspireSelectedAppID] (state: S, payload: string): void
@@ -163,29 +160,6 @@ const mutations: MutationTree<InspiresState> & InspireMutations = {
     }
     settings.push(payload)
     state.AppPurchaseAmountSettings.set(payload.AppID, settings)
-  },
-  [MutationTypes.SetAppUserPurchaseAmountSettings] (state: InspiresState, payload: Array<AppUserPurchaseAmountSetting>): void {
-    if (payload.length > 0) {
-      let settings = state.AppUserPurchaseAmountSettings.get(payload[0].AppID)
-      if (!settings) {
-        settings = new Map<string, Array<AppUserPurchaseAmountSetting>>()
-      }
-      settings.set(payload[0].UserID, payload)
-      state.AppUserPurchaseAmountSettings.set(payload[0].AppID, settings)
-    }
-  },
-  [MutationTypes.AppendAppUserPurchaseAmountSetting] (state: InspiresState, payload: AppUserPurchaseAmountSetting): void {
-    let appSettings = state.AppUserPurchaseAmountSettings.get(payload.AppID)
-    if (!appSettings) {
-      appSettings = new Map<string, Array<AppUserPurchaseAmountSetting>>()
-    }
-    let userSettings = appSettings?.get(payload.UserID)
-    if (!userSettings) {
-      userSettings = [] as Array<AppUserPurchaseAmountSetting>
-    }
-    userSettings.push(payload)
-    appSettings.set(payload.UserID, userSettings)
-    state.AppUserPurchaseAmountSettings.set(payload.AppID, appSettings)
   },
   [MutationTypes.SetCommissionCoins] (state: InspiresState, payload: Array<CommissionCoinSetting>): void {
     state.CommissionCoins = payload

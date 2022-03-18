@@ -319,6 +319,7 @@ interface UpdateAppInvitationSettingResponse {
 interface AppPurchaseAmountSetting {
   ID: string
   AppID: string
+  UserID: string
   Amount: number
   Percent: number
   Title: string
@@ -338,6 +339,17 @@ interface CreateAppPurchaseAmountSettingForOtherAppResponse {
   Info: AppPurchaseAmountSetting
 }
 
+interface CreateAppPurchaseAmountSettingForOtherAppUserRequest {
+  TargetAppID: string
+  TargetUserID: string
+  Info: AppPurchaseAmountSetting
+  Message: ReqMessage
+}
+
+interface CreateAppPurchaseAmountSettingForOtherAppUserResponse {
+  Info: AppPurchaseAmountSetting
+}
+
 interface GetAppPurchaseAmountSettingsByOtherAppRequest {
   TargetAppID: string
   Message: ReqMessage
@@ -345,40 +357,6 @@ interface GetAppPurchaseAmountSettingsByOtherAppRequest {
 
 interface GetAppPurchaseAmountSettingsByOtherAppResponse {
   Infos: Array<AppPurchaseAmountSetting>
-}
-
-interface AppUserPurchaseAmountSetting {
-  ID: string
-  AppID: string
-  UserID: string
-  Amount: number
-  Percent: number
-  Title: string
-  BadgeLarge: string
-  BadgeSmall: string
-  Start: number
-  End: number
-}
-
-interface CreateAppUserPurchaseAmountSettingForOtherAppUserRequest {
-  TargetAppID: string
-  TargetUserID: string
-  Info: AppUserPurchaseAmountSetting
-  Message: ReqMessage
-}
-
-interface CreateAppUserPurchaseAmountSettingForOtherAppUserResponse {
-  Info: AppUserPurchaseAmountSetting
-}
-
-interface GetAppUserPurchaseAmountSettingsByOtherAppUserRequest {
-  TargetAppID: string
-  TargetUserID: string
-  Message: ReqMessage
-}
-
-interface GetAppUserPurchaseAmountSettingsByOtherAppUserResponse {
-  Infos: Array<AppUserPurchaseAmountSetting>
 }
 
 interface CommissionCoinSetting {
@@ -467,14 +445,11 @@ export {
   CreateAppPurchaseAmountSettingForOtherAppResponse,
   GetAppPurchaseAmountSettingsByOtherAppRequest,
   GetAppPurchaseAmountSettingsByOtherAppResponse,
-  AppUserPurchaseAmountSetting,
-  CreateAppUserPurchaseAmountSettingForOtherAppUserRequest,
-  CreateAppUserPurchaseAmountSettingForOtherAppUserResponse,
-  GetAppUserPurchaseAmountSettingsByOtherAppUserRequest,
-  GetAppUserPurchaseAmountSettingsByOtherAppUserResponse,
   CommissionCoinSetting,
   GetCommissionCoinSettingsRequest,
   GetCommissionCoinSettingsResponse,
   CreateCommissionCoinSettingRequest,
-  CreateCommissionCoinSettingResponse
+  CreateCommissionCoinSettingResponse,
+  CreateAppPurchaseAmountSettingForOtherAppUserRequest,
+  CreateAppPurchaseAmountSettingForOtherAppUserResponse
 }

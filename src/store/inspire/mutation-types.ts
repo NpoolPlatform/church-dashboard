@@ -31,9 +31,6 @@ export enum MutationTypes {
   SetAppUserInvitationSettings = 'SET_APP_USER_INVITATION_SETTINGS',
   AppendAppUserInvitationSetting = 'APPEND_APP_USER_INVITATION_SETTING',
 
-  SetAppUserPurchaseAmountSettings = 'SET_APP_USER_PURCHASE_AMOUNT_SETTINGS',
-  AppendAppUserPurchaseAmountSetting = 'APPEND_APP_USER_PURCHASE_AMOUNT_SETTING',
-
   SetCommissionCoins = 'SET_COMMISSION_COINS',
   AppendCommissionCoin = 'APPEND_COMMISSION_COIN',
 

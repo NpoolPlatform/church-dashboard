@@ -33,10 +33,8 @@ export enum ActionTypes {
   GetAppInvitationSettingsByOtherApp = 'GET_APP_INVITATION_SETTINGS_BY_OTHER_APP',
 
   CreateAppPurchaseAmountSettingForOtherApp = 'CREATE_APP_PURCHASE_AMOUNT_SETTING_FOR_OTHER_APP',
+  CreateAppPurchaseAmountSettingForOtherAppUser = 'CREATE_APP_PURCHASE_AMOUNT_SETTING_FOR_OTHER_APP_USER',
   GetAppPurchaseAmountSettingsByOtherApp = 'GET_APP_PURCHASE_AMOUNT_SETTINGS_BY_OTHER_APP',
-
-  CreateAppUserPurchaseAmountSettingForOtherAppUser = 'CREATE_APP_USER_PURCHASE_AMOUNT_SETTING_FOR_OTHER_APP_USER',
-  GetAppUserPurchaseAmountSettingsByOtherAppUser = 'GET_APP_USER_PURCHASE_AMOUNT_SETTINGS_BY_OTHER_APP_USER',
 
   GetCommissionCoinSettings = 'GET_COMMISSION_COINS_SETTINGS',
   CreateCommissionCoinSetting = 'CREATE_COMMISSION_COIN_SETTING'
