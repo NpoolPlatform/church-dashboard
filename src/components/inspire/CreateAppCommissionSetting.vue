@@ -31,6 +31,10 @@
         v-model='uniqueSetting'
         :label='$t("MSG_USER_UNIQUE_SETTING")'
       />
+      <q-toggle
+        v-model='kpiSetting'
+        :label='$t("MSG_USER_KPI_SETTING")'
+      />
     </q-item-section>
     <q-item-section>
       <q-btn
@@ -77,6 +81,11 @@ const editUniqueSetting = computed(() => {
 })
 const uniqueSetting = ref(editUniqueSetting.value)
 
+const editKPISetting = computed(() => {
+  return editSetting.value ? editSetting.value.KPISetting : true
+})
+const kpiSetting = ref(editKPISetting.value)
+
 const editID = computed(() => {
   return editSetting.value ? editSetting.value.ID : undefined
 })
@@ -89,7 +98,8 @@ const setting = computed(() => {
     Type: type.value,
     Level: level.value,
     InvitationDiscount: invitationDiscount.value,
-    UniqueSetting: uniqueSetting.value
+    UniqueSetting: uniqueSetting.value,
+    KPISetting: kpiSetting.value
   } as AppCommissionSetting
 })
 
