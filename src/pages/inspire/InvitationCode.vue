@@ -11,6 +11,7 @@
     <template #top-right>
       <div class='row'>
         <q-space />
+        <q-input v-model='userPattern' />
         <ApplicationSelector v-model:selected-app-id='selectedAppID' />
       </div>
     </template>
@@ -54,7 +55,10 @@ const selectedAppID = computed({
     store.commit(UserMutationTypes.SetSelectedAppID, val)
   }
 })
+
 const users = computed(() => store.getters.getAppUserInfosByAppID(selectedAppID.value))
+const userPattern = ref('')
+
 const myUsers = computed(() => {
   const allUsers = [] as Array<AppUser>
   if (users.value) {
@@ -62,7 +66,7 @@ const myUsers = computed(() => {
       allUsers.push(user.User as AppUser)
     })
   }
-  return allUsers
+  return allUsers.filter((user) => user.EmailAddress?.includes(userPattern.value))
 })
 const codes = computed(() => store.getters.getUserInvitationCodesByAppID(selectedAppID.value))
 
