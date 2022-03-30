@@ -5,16 +5,22 @@ import {
   AddLanguageResponse,
   CreateAppLanguageRequest,
   CreateAppLanguageResponse,
+  CreateCountryRequest,
+  CreateCountryResponse,
   CreateMessageForOtherAppRequest,
   CreateMessageForOtherAppResponse,
   GetAppLangInfosByAppRequest,
   GetAppLangInfosByAppResponse,
   GetAppLangInfosByOtherAppRequest,
   GetAppLangInfosByOtherAppResponse,
+  GetCountriesRequest,
+  GetCountriesResponse,
   GetLanguagesRequest,
   GetLanguagesResponse,
   GetMessagesByOtherAppLangRequest,
   GetMessagesByOtherAppLangResponse,
+  UpdateCountryRequest,
+  UpdateCountryResponse,
   UpdateMessageRequest,
   UpdateMessageResponse
 } from './types'
@@ -89,6 +95,30 @@ interface LanguageActions {
     RootState,
     LanguageMutations<LanguagesState>>,
     req: UpdateMessageRequest): void
+
+  [ActionTypes.CreateCountry]({
+    commit
+  }: AugmentedActionContext<
+    LanguagesState,
+    RootState,
+    LanguageMutations<LanguagesState>>,
+    req: CreateCountryRequest): void
+
+  [ActionTypes.UpdateCountry]({
+    commit
+  }: AugmentedActionContext<
+    LanguagesState,
+    RootState,
+    LanguageMutations<LanguagesState>>,
+    req: UpdateCountryRequest): void
+
+  [ActionTypes.GetCountries]({
+    commit
+  }: AugmentedActionContext<
+    LanguagesState,
+    RootState,
+    LanguageMutations<LanguagesState>>,
+    req: GetCountriesRequest): void
 }
 
 const actions: ActionTree<LanguagesState, RootState> = {
@@ -180,6 +210,39 @@ const actions: ActionTree<LanguagesState, RootState> = {
       req.Message,
       (resp: UpdateMessageResponse): void => {
         commit(MutationTypes.SetMyMessages, [resp.Info])
+      })
+  },
+
+  [ActionTypes.CreateCountry] ({ commit }, req: CreateCountryRequest) {
+    doAction<CreateCountryRequest, CreateCountryResponse>(
+      commit,
+      API.CREATE_COUNTRY,
+      req,
+      req.Message,
+      (resp: CreateCountryResponse): void => {
+        commit(MutationTypes.SetCountry, resp.Info)
+      })
+  },
+
+  [ActionTypes.UpdateCountry] ({ commit }, req: UpdateCountryRequest) {
+    doAction<UpdateCountryRequest, UpdateCountryResponse>(
+      commit,
+      API.UPDATE_COUNTRY,
+      req,
+      req.Message,
+      (resp: UpdateCountryResponse): void => {
+        commit(MutationTypes.SetCountry, resp.Info)
+      })
+  },
+
+  [ActionTypes.GetCountries] ({ commit }, req: GetCountriesRequest) {
+    doAction<GetCountriesRequest, GetCountriesResponse>(
+      commit,
+      API.GET_COUNTRIES,
+      req,
+      req.Message,
+      (resp: GetCountriesResponse): void => {
+        commit(MutationTypes.SetCountries, resp.Infos)
       })
   }
 }

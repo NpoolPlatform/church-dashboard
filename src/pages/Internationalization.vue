@@ -13,6 +13,20 @@
       </div>
     </template>
   </q-table>
+  <q-table
+    dense
+    flat
+    :rows='languages'
+  >
+    <template #top-right>
+      <div class='row'>
+        <q-space />
+        <q-btn dense @click='onCreateLanguageClick'>
+          {{ $t('MSG_ADD_LANGUAGE') }}
+        </q-btn>
+      </div>
+    </template>
+  </q-table>
   <q-dialog
     v-model='adding'
     position='right'

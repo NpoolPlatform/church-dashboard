@@ -101,6 +101,40 @@ interface UpdateMessageResponse {
   Info: Message
 }
 
+interface Country {
+  ID: string
+  Country: string
+  Flag: string
+  Code: string
+  Short: string
+}
+
+interface CreateCountryRequest {
+  Info: Country
+  Message: ReqMessage
+}
+
+interface CreateCountryResponse {
+  Info: Country
+}
+
+interface UpdateCountryRequest {
+  Info: Country
+  Message: ReqMessage
+}
+
+interface UpdateCountryResponse {
+  Info: Country
+}
+
+interface GetCountriesRequest {
+  Message: ReqMessage
+}
+
+interface GetCountriesResponse {
+  Infos: Array<Country>
+}
+
 export {
   Language,
   GetLanguagesRequest,
@@ -121,5 +155,12 @@ export {
   CreateMessageForOtherAppRequest,
   CreateMessageForOtherAppResponse,
   UpdateMessageRequest,
-  UpdateMessageResponse
+  UpdateMessageResponse,
+  Country,
+  CreateCountryRequest,
+  CreateCountryResponse,
+  UpdateCountryRequest,
+  UpdateCountryResponse,
+  GetCountriesRequest,
+  GetCountriesResponse
 }

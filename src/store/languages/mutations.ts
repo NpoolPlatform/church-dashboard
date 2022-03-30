@@ -2,7 +2,7 @@ import { LocaleMessages, VueMessageType } from 'vue-i18n'
 import { MutationTree } from 'vuex'
 import { MutationTypes } from './mutation-types'
 import { LanguagesState } from './state'
-import { AppLangInfo, AppLanguage, Language, Message } from './types'
+import { AppLangInfo, AppLanguage, Country, Language, Message } from './types'
 
 type LanguageMutations<S = LanguagesState> = {
   [MutationTypes.SetLanguage] (state: S, payload: Language): void
@@ -11,6 +11,8 @@ type LanguageMutations<S = LanguagesState> = {
   [MutationTypes.SetAppLangInfos] (state: S, payload: Array<AppLangInfo>): void
   [MutationTypes.SetAppLanguage] (state: S, payload: AppLanguage): void
   [MutationTypes.SetMyMessages] (state: S, payload: Array<Message>): void
+  [MutationTypes.SetCountries] (state: S, payload: Array<Country>): void
+  [MutationTypes.SetCountry] (state: S, payload: Country): void
   [MutationTypes.SetSelectedAppID] (state: S, payload: string): void
 }
 
@@ -23,6 +25,12 @@ const mutations: MutationTree<LanguagesState> & LanguageMutations = {
   },
   [MutationTypes.SetMessages] (state: LanguagesState, payload: LocaleMessages<VueMessageType>) {
     state.Messages = payload
+  },
+  [MutationTypes.SetCountries] (state: LanguagesState, payload: Array<Country>) {
+    state.Countries = payload
+  },
+  [MutationTypes.SetCountry] (state: LanguagesState, payload: Country) {
+    state.Countries.push(payload)
   },
   [MutationTypes.SetAppLangInfos] (state: LanguagesState, payload: Array<AppLangInfo>): void {
     if (payload.length > 0) {
