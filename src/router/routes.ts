@@ -28,6 +28,7 @@ const routes: RouteRecordRaw[] = [
       { path: 'applications/contacts', component: () => import('pages/applications/ApplicationContact.vue') },
       { path: 'applications/languages', component: () => import('pages/applications/ApplicationLanguages.vue') },
       { path: 'applications/goods', component: () => import('pages/applications/ApplicationGoods.vue') },
+      { path: 'applications/notifications', component: () => import('pages/applications/ApplicationNotifications.vue') },
 
       // API list
       { path: 'apis', component: () => import('pages/API.vue') },

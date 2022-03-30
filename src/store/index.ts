@@ -154,6 +154,14 @@ import {
   InspireActions
 } from './inspire'
 
+import {
+  mailbox,
+  MailboxState,
+  MailboxMutations,
+  MailboxGetters,
+  MailboxActions
+} from './mailbox'
+
 // 2 combine your store to root store
 export interface RootState {
   user: UserState,
@@ -174,6 +182,7 @@ export interface RootState {
   settings: SettingsState
   billing: BillingsState
   inspire: InspiresState
+  mailbox: MailboxState
 }
 
 // 3 combine your actions, mutations and getters to root, if have multi use & combin
@@ -194,7 +203,8 @@ type Actions =
   CoinAccountActions &
   SettingActions &
   BillingActions &
-  InspireActions
+  InspireActions &
+  MailboxActions
 type Mutations =
   UserMutations &
   MainBreadcrumbsMutations &
@@ -213,7 +223,8 @@ type Mutations =
   CoinAccountMutations &
   SettingMutations &
   BillingMutations &
-  InspireMutations
+  InspireMutations &
+  MailboxMutations
 type Getters =
   UserGetters &
   MainBreadcrumbsGetters &
@@ -232,7 +243,8 @@ type Getters =
   CoinAccountGetters &
   SettingGetters &
   BillingGetters &
-  InspireGetters
+  InspireGetters &
+  MailboxGetters
 
 // 4 attach your module to root
 export default store(function (/* { ssrContext } */) {
@@ -255,7 +267,8 @@ export default store(function (/* { ssrContext } */) {
       accounts,
       settings,
       billings,
-      inspire
+      inspire,
+      mailbox
     },
 
     // enable strict mode (adds overhead!)

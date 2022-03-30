@@ -66,6 +66,14 @@ const MainDrawerMenus = [
         target: '/applications/goods',
         level: 1,
         children: []
+      }, {
+        menuId: uid(),
+        label: '公告和通知',
+        caption: '管理公告与通知',
+        icon: 'perm_identity',
+        target: '/applications/notifications',
+        level: 1,
+        children: []
       }
     ]
   }, {
