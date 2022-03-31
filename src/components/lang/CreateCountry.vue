@@ -48,10 +48,23 @@
 </template>
 
 <script setup lang='ts'>
-import { ref, defineEmits, watch } from 'vue'
+import { ref, defineEmits, watch, defineProps, toRef } from 'vue'
 import { Country } from 'src/store/languages/types'
 
-const country = ref({} as Country)
+interface Props {
+  editCountry: Country
+}
+
+const props = defineProps<Props>()
+const editCountry = toRef(props, 'editCountry')
+
+const country = ref({
+  ID: editCountry.value.ID,
+  Country: editCountry.value.Country,
+  Code: editCountry.value.Code,
+  Short: editCountry.value.Short,
+  Flag: editCountry.value.Flag
+} as Country)
 
 const emit = defineEmits<{(e: 'submit', info: Country): void,
   (e: 'update', info: Country): void

@@ -172,7 +172,7 @@ const onSubmitMessage = (message: LangMessage) => {
     Message: {
       ModuleKey: ModuleKey.ModuleApplications,
       Error: {
-        Title: t('MSG_CREATE_APP_LANG_FAIL'),
+        Title: t('MSG_CREATE_MESSAGE_FAIL'),
         Popup: true,
         Type: NotificationType.Error
       }

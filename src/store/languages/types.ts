@@ -53,6 +53,15 @@ interface AddLanguageResponse {
   Info: Language
 }
 
+interface UpdateLanguageRequest {
+  Info: Language
+  Message: ReqMessage
+}
+
+interface UpdateLanguageResponse {
+  Info: Language
+}
+
 interface CreateAppLanguageRequest {
   TargetAppID: string
   Info: AppLanguage
@@ -146,6 +155,8 @@ export {
   GetAppLangInfosByOtherAppResponse,
   AddLanguageRequest,
   AddLanguageResponse,
+  UpdateLanguageRequest,
+  UpdateLanguageResponse,
   AppLanguage,
   CreateAppLanguageRequest,
   CreateAppLanguageResponse,

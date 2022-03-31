@@ -48,19 +48,32 @@
 </template>
 
 <script setup lang='ts'>
-import { ref, defineEmits, watch, onMounted } from 'vue'
+import { ref, defineEmits, watch, onMounted, defineProps, toRef } from 'vue'
 import { useStore } from 'src/store'
 import { Language } from 'src/store/languages/types'
 import { ActionTypes } from 'src/store/languages/action-types'
 import { ModuleKey, Type as NotificationType } from 'src/store/notifications/const'
 import { useI18n } from 'vue-i18n'
 
+interface Props {
+  editLanguage: Language
+}
+
+const props = defineProps<Props>()
+const editLanguage = toRef(props, 'editLanguage')
+
 const store = useStore()
 
 // eslint-disable-next-line @typescript-eslint/unbound-method
 const { t } = useI18n({ useScope: 'global' })
 
-const language = ref({} as Language)
+const language = ref({
+  ID: editLanguage.value.ID,
+  Name: editLanguage.value.Name,
+  Lang: editLanguage.value.Lang,
+  Logo: editLanguage.value.Logo,
+  Short: editLanguage.value.Short
+} as Language)
 
 const emit = defineEmits<{(e: 'submit', info: Language): void,
   (e: 'update', info: Language): void

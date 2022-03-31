@@ -21,6 +21,8 @@ import {
   GetMessagesByOtherAppLangResponse,
   UpdateCountryRequest,
   UpdateCountryResponse,
+  UpdateLanguageRequest,
+  UpdateLanguageResponse,
   UpdateMessageRequest,
   UpdateMessageResponse
 } from './types'
@@ -63,6 +65,14 @@ interface LanguageActions {
     RootState,
     LanguageMutations<LanguagesState>>,
     req: AddLanguageRequest): void
+
+  [ActionTypes.UpdateLanguage]({
+    commit
+  }: AugmentedActionContext<
+    LanguagesState,
+    RootState,
+    LanguageMutations<LanguagesState>>,
+    req: UpdateLanguageRequest): void
 
   [ActionTypes.CreateAppLanguage]({
     commit
@@ -165,6 +175,17 @@ const actions: ActionTree<LanguagesState, RootState> = {
       req,
       req.Message,
       (resp: AddLanguageResponse): void => {
+        commit(MutationTypes.SetLanguage, resp.Info)
+      })
+  },
+
+  [ActionTypes.UpdateLanguage] ({ commit }, req: UpdateLanguageRequest) {
+    doAction<UpdateLanguageRequest, UpdateLanguageResponse>(
+      commit,
+      API.UPDATE_LANGUAGE,
+      req,
+      req.Message,
+      (resp: UpdateLanguageResponse): void => {
         commit(MutationTypes.SetLanguage, resp.Info)
       })
   },

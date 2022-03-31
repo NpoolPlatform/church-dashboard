@@ -3,6 +3,7 @@
     dense
     flat
     :rows='languages'
+    @row-click='(evt, row, index) => onLanguageClick(row as Language)'
   >
     <template #top-right>
       <div class='row'>
@@ -17,6 +18,7 @@
     dense
     flat
     :rows='countries'
+    @row-click='(evt, row, index) => onCountryClick(row as Country)'
   >
     <template #top-right>
       <div class='row'>
@@ -33,9 +35,20 @@
     full-width
     square
     no-shake
+    @hide='onMenuHide'
   >
-    <CreateLang v-if='addingType === AddingType.AddingLang' @update='onUpdateLang' @submit='onSubmitLang' />
-    <CreateCountry v-if='addingType === AddingType.AddingCountry' @update='onUpdateCountry' @submit='onSubmitCountry' />
+    <CreateLang
+      v-if='addingType === AddingType.AddingLang'
+      :edit-language='editLanguage'
+      @update='onUpdateLang'
+      @submit='onSubmitLang'
+    />
+    <CreateCountry
+      v-if='addingType === AddingType.AddingCountry'
+      :edit-country='editCountry'
+      @update='onUpdateCountry'
+      @submit='onSubmitCountry'
+    />
   </q-dialog>
 </template>
 
@@ -59,6 +72,10 @@ const store = useStore()
 const { t } = useI18n({ useScope: 'global' })
 
 const adding = ref(false)
+const updating = ref(false)
+const editLanguage = ref(undefined as unknown as Language)
+const editCountry = ref(undefined as unknown as Country)
+
 enum AddingType {
   AddingLang = 'lang',
   AddingCountry = 'country'
@@ -102,9 +119,21 @@ const onCreateLanguageClick = () => {
   addingType.value = AddingType.AddingLang
 }
 
+const onLanguageClick = (language: Language) => {
+  adding.value = true
+  updating.value = true
+  editLanguage.value = language
+}
+
 const onCreateCountryClick = () => {
   adding.value = true
   addingType.value = AddingType.AddingCountry
+}
+
+const onCountryClick = (country: Country) => {
+  adding.value = true
+  updating.value = true
+  editCountry.value = country
 }
 
 const onUpdateLang = (lang: Language) => {
@@ -113,7 +142,13 @@ const onUpdateLang = (lang: Language) => {
 
 const onSubmitLang = (lang: Language) => {
   adding.value = false
-  store.dispatch(LangActionTypes.AddLanguage, {
+
+  let action = LangActionTypes.AddLanguage
+  if (updating.value) {
+    action = LangActionTypes.UpdateLanguage
+  }
+
+  store.dispatch(action, {
     Info: lang,
     Message: {
       ModuleKey: ModuleKey.ModuleInternationalization,
@@ -132,7 +167,13 @@ const onUpdateCountry = (country: Country) => {
 
 const onSubmitCountry = (country: Country) => {
   adding.value = false
-  store.dispatch(LangActionTypes.CreateCountry, {
+
+  let action = LangActionTypes.CreateCountry
+  if (updating.value) {
+    action = LangActionTypes.UpdateCountry
+  }
+
+  store.dispatch(action, {
     Info: country,
     Message: {
       ModuleKey: ModuleKey.ModuleInternationalization,
@@ -143,6 +184,12 @@ const onSubmitCountry = (country: Country) => {
       }
     }
   })
+}
+
+const onMenuHide = () => {
+  adding.value = false
+  updating.value = false
+  editLanguage.value = undefined as unknown as Language
 }
 
 </script>
